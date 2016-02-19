@@ -1,0 +1,20 @@
+@media screen and (min-width: 36.25em) {
+	.embed #healers_form .fields {
+		width: 100%;
+		float: left;
+		margin-right: -103px;
+	}
+	.embed #healers_form .fields > div {
+		margin-right: 103px;
+	}
+	.embed .field_zipcode_modality .signup_button {
+		width: 93px;
+		float: right;
+		margin-right: 10px;
+		margin-top: 6px; /* vertical-align */
+	}
+}
+
+.embed .header_top_menu {
+	display: none;
+}

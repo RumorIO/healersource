@@ -1,0 +1,10 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Reviews for {{ healer.user.client|capfirst }}{% endblock %}
+{% block page_title %}<h1 class="nav_icon nav_reviews">Reviews for {{ healer.user.client|capfirst }}</h1>{% endblock %}
+
+{% block body %}
+	{% with 1 as is_not_popup %}
+	{% include "review/review_list_content.html" %}
+	{% endwith %}
+{% endblock %}

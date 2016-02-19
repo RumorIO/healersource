@@ -1,0 +1,5 @@
+{{ wellness_center }} has added you to their list of providers on HealerSource.
+
+To confirm your email address and update your profile, please Click Here: {{ confirm_link }}
+
+{% if html_email %}<a href="{{ tour_link }}">Learn more about HealerSource &raquo;</a>{% else %}Learn more about HealerSource: {{ tour_link }}{% endif %}

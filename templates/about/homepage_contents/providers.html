@@ -1,0 +1,7 @@
+<div style="width: 395px; margin: 2px 0 0 10px;" class="friend_box_zoom_contents">
+	{% for provider in found_providers %}
+		{% with provider.clientlocation_set.all.0.location as location %}{% with provider.distance as distance %}{% with provider.user as user %}{% with provider.modality_set.all as modalities %}
+			{% include "healers/friend_box.html" %}
+		{% endwith %}{% endwith %}{% endwith %}{% endwith %}
+	{% endfor %}
+</div>

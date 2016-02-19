@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	{% include 'fonts.html' %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link rel="stylesheet" href="{{ STATIC_URL }}uni_form/uni-form.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui.min.js"></script>
+	<script src="js/jquery.ui.touch-punch.min.js"></script>
+
+	<script src="{{ STATIC_URL }}healersource/js/util.js"></script>
+	<script src="{{ STATIC_URL }}healersource/js/jquery.placeholder.js"></script>
+	<script src="{{ STATIC_URL }}healersource/js/jquery.ui.autocomplete.html.js"></script>
+	<script src="{{ STATIC_URL }}healersource/js/jquery.cookie.js"></script>
+	<script src="{{ STATIC_URL }}healersource/js/csrf.js"></script>
+	<script src="{{ STATIC_URL }}healersource/js/respond.src.js"></script>
+
+	<link rel="stylesheet" href="js/floatbox/floatbox.css" />
+	<script src="js/floatbox/floatbox.js"></script>
+	<script src="js/phonegap_config{% if app_version == 2 %}2{% endif %}.js"></script>
+	<script src="js/phonegap.js"></script>
+	<script src="cordova.js"></script>
+	<link rel="stylesheet" href="css/phonegap.css" />
+
+	<script>
+		var client_version = JSON.parse('{{ phonegap_version }}');
+		var page_name = '{{ phonegap_page_name }}';
+		var app_id = 1;
+		{% if not skip_last_page_setup %}
+			localStorage.setItem(app_id + 'last_page', page_name);
+		{% endif %}
+		// needed at least for signup ajax validation
+		var STATIC_URL = '{{ STATIC_URL }}';
+	</script>
+
+	{% include 'common_js_vars.html' %}
+
+	{% block extra_head_base %}
+		{% block extra_head %}{% endblock %}
+	{% endblock %}
+
+	{% block extra_head_last %}
+	{% endblock %}
+</head>
+
+<body class="hs_bg">
+	<div class="loading" id="loading"></div>
+	{% block header %}
+		<div class="smallscreen_logo">
+			<a href="javascript:void(0)" onclick="back()">
+				<div class="header_arrow"></div>
+				<div class="header_logo"><img src="site_media/static/healersource/img/home/logo.png"></div>
+				<div class="header_content">{% block header_content %}{% endblock %}</div>
+			</a>
+			<div class="header_additional_content">{% block header_additional_content %}{% endblock %}</div>
+		</div>
+	{% endblock %}
+	<div class="clearfix"></div>
+	<div class="body_content">
+		{% block body %}
+		{% endblock %}
+		{% block inner_content %}
+		{% endblock %}
+
+		{% block extra_body_base %}
+			{% block extra_body %}{% endblock %}
+		{% endblock %}
+
+		<div class="phonegap_footer">
+			<hr>
+			<a href="https://www.healersource.com" target="_blank">Visit the HealerSource Website</a><br>
+			<a href="javascript:void(0);" onclick="logout()" id="logout" class="hidden">Logout</a>
+		</div>
+	</div>
+	<div id="offline_message"><p>Looks like you're not online. Please reconnect :)</p></div>
+</body>
+</html>

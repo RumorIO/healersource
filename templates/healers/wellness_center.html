@@ -1,0 +1,133 @@
+{% extends "healers/healer.html" %}
+
+{% load compress %}
+
+{% block extra_head %}
+	{{ block.super }}
+	{% compress js %}
+		<script>
+			var wcenter_id = {{ wcenter_id }};
+			var providers = {};
+			$(function() {
+				{% for healer in referrals_from_me %}
+					providers[{{ healer.user.id }}] = {{ healer.json_object|safe }};
+				{% endfor %}
+			});
+			var available_treatment_lengths_treatment_mode = $.parseJSON('{{ available_treatment_lengths|safe }}');
+			var is_skip_provider_step = {{ is_skip_provider_step|yesno:'true,false' }};
+			var center_username = '{{ healer.user.username }}';
+		</script>
+		<script src="{{ STATIC_URL }}healersource/js/wellness_center_profile.js"></script>
+		{% if selected_location_id %}
+			<script>
+				selected_location_id = {{ selected_location_id }};
+			</script>
+		{% endif %}
+	{% endcompress %}
+{% endblock %}
+
+{% block extra_head_last %}
+	{{ block.super }}
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/wcenter_profile.css" />
+{% endblock %}
+
+{% block body %}
+
+	{% include "healers/healer_sidebars.html" %}
+
+	<div class="clearfix"></div>
+
+	{% if is_schedule_visible and treatment_types|length > 0 %}
+		{% include "account/facebook_init.html" %}
+		<a href="#schedule_content" class="floatbox single_button orange_button nav_icon nav_schedule book_online_button" id="schedule_button" data-fb-options="width:100% height:100% measureHTML:no {% if treatment_lengths|length == 1 %}afterItemStart:showFirstTreatment{% endif %}">
+			Book Online
+		</a>
+		{% if referrals_from_me and providers_specialities %}
+			<div class="grey_box pale_yellow_box" id="schedule">
+				<div id="schedule_content">
+					<table style="width: 100%;">
+						<tr>
+							<td style="width:1px;">
+								<img src="{{ STATIC_URL }}healersource/img/what_next/schedule_yellow.png" class="what_next_icon" />
+							</td>
+							<td>
+								<div class="float_right">
+									<span class="bold">by: </span>
+									<span class="highlight_container button_container combined_button_container">
+										<span class="tour_appointments selected">
+											<a href="javascript:void(0);" class="icon_providers"
+											   onclick="set_schedule_appointment_mode('treatment');">Treatment</a>
+										</span><span class="tour_availability">
+											<a href="javascript:void(0);" class="icon_users"
+											   onclick="set_schedule_appointment_mode('provider');">Provider</a>
+										</span></span>
+								</div>
+								<h3>{{ appt_schedule_or_request }} an Appointment</h3>
+								<div id="schedule_appointment_mode_treatment" class="schedule_appointment_mode">
+									{% include "healers/center_treatment_mode_treatment_types_bar.html" %}
+								</div>
+								<div id="schedule_appointment_mode_provider" class="schedule_appointment_mode" style="display: none;">
+									{% include "healers/center_provider_mode_treatment_types_bar.html" %}
+								</div>
+							</td>
+						</tr>
+					</table>
+					<div class="clearfix"></div>
+					<div class="loading"></div>
+					{% include "healers/calendar_container.html" %}
+				</div>
+			</div>
+		{% endif %}
+		<hr/>
+	{% endif %}
+	{% include "review/review_short_list.html" %}
+
+	{% if referrals_from_me or is_me %}
+		<div class="grey_box">
+		<div id="show_at_this_center" class="round_yellow_button">&or;</div>
+		<h3 class="nav_icon nav_providers">At This Center</h3>
+	{% endif %}
+
+{% if referrals_from_me and providers_specialities %}
+	<div class="button_container highlight_container" id="providers_list_filter">
+		Show:
+		<span class="selected" onclick="filterProviders(0);"><a>All</a></span>
+		{% for speciality in providers_specialities %}
+			<span onclick="filterProviders({{ speciality.id }});"><a>{{ speciality }}</a></span>&nbsp;
+		{% endfor %}
+	</div>
+{% endif %}
+
+{% if referrals_from_me %}
+	<div id="providers_list" class="clearfix">
+		<a class="buttons prev" href="#"></a>
+		<div class="viewport">
+			<ul class="overview">
+				{% for healer in referrals_from_me %}
+					{% if not healer.is_fill_warning %}
+						{% with user=healer.user modalities=healer.modality_set.all wcenter_member=1 show_schedule=healer.show_schedule %}
+							<li id="provider_{{ healer.id }}"
+							    class="{% for m in healer.get_modalities_categories %}spec_{{ m.id }} {% endfor %}">
+								{% with 94 as avatar_size %}{% include "healers/friend_box.html" %}{% endwith %}
+							</li>
+						{% endwith %}
+					{% endif %}
+				{% endfor %}
+			</ul>
+		</div>
+		<a class="buttons next" href="#"></a>
+	</div>
+{% endif %}
+
+{% if not referrals_from_me and is_me %}
+	<p class="message">No Complete providers at your center yet.</p>
+	<p class="message"><a href="{% url 'friends' 'providers' %}">+ Add Providers</a></p>
+{% endif %}
+
+{% if referrals_from_me or is_me %}
+	</div> {# class="grey_box" #}
+{% endif %}
+<br>
+{% include 'events/events_list_content.html' %}
+{% include 'payments/save_card_dialog.html' %}
+{% endblock %}

@@ -1,0 +1,13 @@
+{% if user.is_authenticated %}
+	<div class="content_frame">
+		<div id="feedback_box">
+			<a href="#" onclick="$('#feedback_input').toggle();">&raquo; Help Us Improve This Page</a><br />
+			<div id="feedback_input">
+				<textarea rows="4" cols="50" id="feedback" placeholder="Write Your Suggestions Here"></textarea>
+				<div>Your feedback is greatly appreciated!</div>
+				<button title="submit" onclick="submitFeedback();">Submit Feedback</button>
+			</div>
+		</div>
+		<div id="footer">{% include "base_content_footer.html" %}</div>
+	</div>
+{% endif %}

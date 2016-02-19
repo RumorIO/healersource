@@ -1,0 +1,80 @@
+[
+	{
+		"pk": 1,
+		"model": "healing_requests.healingrequest",
+		"fields": {
+			"user": 6,
+			"title": "test",
+			"description": "test description",
+			"location": 1,
+			"specialities": [1],
+			"remote_healing": 1,
+			"trade_for_services": 0,
+			"cost_per_session": 50,
+			"created_at": "2014-01-01 12:00:00",
+			"updated_at": "2014-01-01 12:00:00"
+		}
+	},
+	{
+		"pk": 2,
+		"model": "healing_requests.healingrequest",
+		"fields": {
+			"user": 6,
+			"title": "test2",
+			"description": "test description",
+			"location": 2,
+			"specialities": [2],
+			"remote_healing": 1,
+			"trade_for_services": 1,
+			"cost_per_session": 100,
+			"created_at": "2014-01-01 12:00:00",
+			"updated_at": "2014-01-01 12:00:00"
+		}
+	},
+	{
+		"pk": 3,
+		"model": "healing_requests.healingrequest",
+		"fields": {
+			"user": 6,
+			"title": "test3",
+			"description": "test description",
+			"location": 3,
+			"specialities": [1, 2],
+			"remote_healing": 0,
+			"trade_for_services": 1,
+			"cost_per_session": 150,
+			"created_at": "2014-01-01 12:00:00",
+			"updated_at": "2014-01-01 12:00:00"
+		}
+	},
+	{
+		"pk": 4,
+		"model": "healing_requests.healingrequest",
+		"fields": {
+			"user": 6,
+			"title": "test4",
+			"description": "test description",
+			"location": 4,
+			"specialities": [2, 3],
+			"remote_healing": 0,
+			"trade_for_services": 0,
+			"created_at": "2014-01-01 12:00:00",
+			"updated_at": "2014-01-01 12:00:00"
+		}
+	},
+	{
+		"pk": 5,
+		"model": "healing_requests.healingrequest",
+		"fields": {
+			"user": 1,
+			"title": "test5",
+			"description": "test description",
+			"location": 3,
+			"specialities": [4],
+			"remote_healing": 0,
+			"trade_for_services": 0,
+			"created_at": "2014-01-01 12:00:00",
+			"updated_at": "2014-01-01 12:00:00"
+		}
+	}
+]

@@ -1,0 +1,204 @@
+#healer_left_sidebar {
+	float: none;
+	overflow: hidden;
+	text-align: left;
+	width: auto;
+	max-width: 100%;
+	margin-bottom: 10px;
+}
+#healer_right_sidebar {
+	float: none;
+	overflow: hidden;
+	width: auto;
+	max-width: 100%;
+	margin-bottom: 10px;
+	margin-left: 0;
+	padding-right: 4px;
+}
+#healer_left_sidebar .avatar {
+	float: left;
+}
+/*#healer_left_sidebar .avatar img {*/
+	/*width: auto;*/
+	/*height: auto;*/
+/*}*/
+#healer_under_profile_photo {
+	max-width: 130px;
+	float: none;
+	width: auto;
+	overflow: hidden;
+}
+#healer_left_sidebar #healer_social_links{
+	clear:both;
+}
+#healer_about {
+	clear: both;
+}
+#schedule {
+	display: none;
+}
+#schedule_button {
+	display: block;
+	float: none;
+}
+.short_posts_videos {
+	overflow: hidden;
+}
+.featured_articles {
+	min-height: 0;
+}
+.videos {
+	width: auto;
+	min-height: 250px;
+	padding: 6px 18px 6px 12px;
+	margin-left: 0;
+	color: #222;
+	overflow: hidden;
+}
+.videos .video img {
+	width: 100%;
+}
+.short_posts_videos > .featured_articles {
+	width: auto;
+	margin-left: 0;
+	float: none;
+}
+.short_posts_videos > .videos {
+	margin-left: 0;
+	float: none;
+}
+
+a.full_profile_top {
+	font-weight: bold;
+	float: right;
+	margin-right: 18px;
+	margin-top: 2px;
+	display: none;
+}
+
+a.full_profile_bottom {
+	display: block;
+	text-align: center;
+	margin: 14px auto auto;
+	font-weight: bold;
+}
+
+.book_online_bottom {
+	display: none;
+	margin: 14px auto auto;
+	width:100px;
+}
+
+.short_reviews_ratings {
+	margin-right: 5px;
+	width: 150px;
+}
+.short_reviews {
+	overflow: hidden;
+}
+.short_review {
+	width: 265px;
+	display: inline-block;
+	padding-bottom: 10px;
+	vertical-align: top;
+}
+.short_review_left {
+	margin-right: 10px;
+	display: block;
+}
+
+.search_results_provider .info_cell {
+	float: left;
+}
+
+.endless_container {
+	text-align: center;
+	margin-top: 10px;
+}
+
+@media screen and (min-width: 32em) {
+	#healer_left_sidebar {
+		float: left;
+	}
+	.short_reviews_ratings { float: left; }
+	/*#healer_under_profile_photo {*/
+		/*width: auto;*/
+		/*float: none;*/
+	/*}*/
+   #healer_right_sidebar {
+	   margin-left: 157px;
+   }
+	.short_review_left {
+		display: inline-block;
+		border-right: 1px solid black;
+	}
+
+}
+
+@media screen and (min-width: 49.25em) {
+	#healer_left_sidebar {
+		float: left;
+		overflow: hidden;
+		text-align: left;
+		width: 160px;
+		max-width: 160px;
+		margin-bottom: 10px;
+	}
+	#healer_right_sidebar {
+		float: right;
+		overflow: hidden;
+		width: 167px;
+		max-width: 167px;
+		margin-bottom: 10px;
+		margin-left: 8px;
+		padding-right: 4px;
+	}
+	#healer_left_sidebar .avatar {
+		width: auto;
+		float: none;
+	}
+	#healer_about {
+		clear: none;
+	}
+	#schedule {
+		display: block;
+	}
+	#schedule_button {
+		display: none;
+	}
+	.featured_articles {
+		min-height: 220px;
+	}
+	.videos {
+		width: 305px;
+		min-height: 293px;
+		margin-left: 12px;
+	}
+	.short_posts_videos > .featured_articles {
+		width: 330px;
+		float: left;
+	}
+	.short_posts_videos > .videos {
+		margin-left: 6px;
+		float: right;
+	}
+
+	a.full_profile_top {
+		display: block;
+	}
+
+	a.full_profile_bottom {
+		display: none;
+	}
+
+	.book_online_bottom {
+		display: block;
+	}
+
+	.short_review { width: 265px; }
+   /*.short_review_left { display: block; }*/
+
+	.short_posts_videos > .featured_articles {
+		width: 345px;
+	}
+}

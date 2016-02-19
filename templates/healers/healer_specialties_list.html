@@ -1,0 +1,15 @@
+{% if providers_modalities %}
+	<ul>
+		{% for modality in providers_modalities %}
+			{% include 'healers/specialties_list.html' %}
+		{% endfor %}
+	</ul>
+{% else %}
+	{% if modalities %}
+		<ul>
+			{% for modality in modalities %}
+				{% include 'healers/specialties_list.html' %}
+			{% endfor %}
+		</ul>
+	{% endif %}
+{% endif %}

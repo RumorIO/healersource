@@ -1,0 +1,18 @@
+<p>
+	{% if user.customer.can_charge %}
+		Current card on file is a <strong>{{ user.customer.card_kind }}</strong>
+		ending in the digits <strong>{{ user.customer.card_last_4 }}</strong>.
+	{% else %}
+		<span class="message">You do not have a card on file yet.</span>
+	{% endif %}
+</p>
+
+<p><a href="javascript:void(0);" onclick="checkout();">{% if user.customer.can_charge %}&raquo; Change Your{% else %}+ Add a{% endif %} Card</a><br>
+
+{% if user.customer.can_charge %}
+	<a href="{% url 'payments_remove_card' %}">&raquo; Remove Your Card</a><br>
+{% endif %}
+{#{% if history %}#}
+{#	<a href="{% url 'payments_history' %}">&raquo; Payment history</a></p>#}
+{#{% endif %}#}
+<div class="loading" id="loading_card"><div class="loading_icon"></div></div>

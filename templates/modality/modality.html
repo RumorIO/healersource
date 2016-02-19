@@ -1,0 +1,119 @@
+{% extends base_template %}
+{% block head_title %}{{ modality.title }}{% endblock %}
+{% block panel_class %}speciality_panel{% endblock %}
+{% block content_title %}{{ modality.title }}{% endblock %}
+
+{% block extra_head %}
+	<script>
+		$(function(){
+			initCitySearchAutocomplete(true);
+			$('.search_city_or_zipcode').click(function(){
+				$(this).val('');
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block body %}
+	<script>
+		var selected_modality_id = {{ modality.id }};
+	</script>
+{% if not full_page %}<h1>{{ modality.title }}</h1>{% endif %}
+<div class="modality_popup">
+	<div class="modality_content">
+	{% if not user.is_superuser %}
+		{% if modality.description %}
+			{{ modality.description|safe }}
+			{#		<p style="font-style: italic;">Read More about {{ modality.title }} at <a href="http://www.methodsofhealing.com/" target="_blank">www.MethodsOfHealing.com</a> </p>#}
+		{% else %}
+			<p>Nobody has written a description for {{ modality.title }} yet.</p>
+			<p>Please <a href="" class="contact_email" title="Contact HealerSource"
+			             onclick='$(this).get(0).href = "mailto:" + "admin" + "@" + "healersource" + "." + "com?subject=Description%20for%20{{ modality.title|urlencode }}";'
+					>Email Us</a> one and we'll post it asap! </p>
+		{% endif %}
+
+	{% else %}
+		Title: <input type="text" value="{{ modality.title }}" id="modality_title_input" size="42" />
+		<br />
+		<div style="border: 1px solid blue; padding: 8px;">{{ modality.description|safe }}</div>
+		<br>
+		<textarea rows="12" style="width: 95%;" id="modality_description_textarea" placeholder="Modality Description" >{{ modality.description }}</textarea>
+		<br />
+		<input type="checkbox" id="modality_visible" {{ modality.visible|yesno:'checked, ' }}><label for="modality_visible"> Visible</label>
+		<br />
+		<input type="button" value="Save" onclick="update_modality();" />
+
+		{% if modality.added_by %}
+			{% with added_by_user=modality.added_by.user %}
+				<p>Added By:
+					<a href="{% url 'healer_my_profile' modality.added_by.user.username %}">
+						<span>{{ added_by_user.client }}</span>
+					</a>
+					&nbsp;|&nbsp;
+            <span class="look_like_link" onclick="show_compose_message_dlg(
+		            '{{ added_by_user.username }}',
+		            '{{ added_by_user.client }}',
+		            false,
+		            'Your Specialty');">
+			    message
+		    </span>
+				</p>
+			{% endwith %}
+		{% endif %}
+
+		{% if modality %}
+			<p>
+				<u>Categories</u><br />
+			<div id="categories_list">
+				{% for category in categories %}
+					<div>{{ category.title }} | <a href="javascript:void(0)" onclick="removeCategoryFromModality(this, {{ modality.id }}, {{ category.id }})" >remove</a></div>
+				{% endfor %}
+			</div>
+			</p>
+
+			<p>
+				Add Category: <select onchange="addCategoryToModality($(this).find('option:selected').text(), {{ modality.id }}, $(this).val());">
+				<option value=""></option>
+				{% for category in category_options %}
+					<option value="{{ category.id }}" >{{ category.title }}</option>
+				{% endfor %}
+			</select>
+			</p>
+
+			<p><a href="{% url 'modality_remove' modality.id %}">- Remove Modality</a></p>
+
+		{% endif %}
+	{% endif %}
+	</div>
+	<div class="grey_box speciality_providers suggested_recommendations center" style="background-color: #EAF2FB;">
+		{% if no_city %}
+			<div class="bold">Find {{ modality.title }} near you</div>
+		{% else %}
+			<div class="friend_box bold" style="width: 100%">
+				{{ modality.title }} Providers
+			</div>
+		{% endif %}
+		<form action="{% url 'search_results' %}" method="get" id="search_form" class="search_form">
+			{% csrf_token %}
+			{{ form.city }}
+			{{ form.state }}
+			{{ form.zipcode }}
+			{{ form.modality_id }}
+			{{ form.search_city_or_zipcode }}
+		</form>
+		{% for provider in providers %}
+			{% include "healers/friend_box.html" with homepage_featured=True user=provider.user %}
+		{% endfor %}
+		{% if not providers and not no_city %}
+			<div class="message" style="margin-left: 0;">
+				No providers near {{ form.search_city_or_zipcode.value }} yet.<br><br>
+				<i>Be the first to<br><a href="{% url 'signup' %}">Sign up!</a></i>
+			</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock %}
+
+{% block footer %}
+	{% include 'nav_bottom.html' %}
+{% endblock %}

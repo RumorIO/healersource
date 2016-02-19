@@ -1,0 +1,16 @@
+<strong>To:</strong> {{ certificate.purchased_for }}<br>
+<strong>From:</strong> {{ certificate.purchased_by }}<br>
+<strong>Amount:</strong> {{ certificate.discount_code.amount }}<br>
+<strong>Code:</strong> {% if not certificate %}000000{% else %} {{ certificate.discount_code.code }} {% endif %}<br>
+<strong>Expires:</strong> {{ certificate.expiry_date }}<br>
+<strong>Services Available:</strong> <br>
+{{ healer.services|safe }}<br>
+{% if certificate.message %}
+	<strong>Message:</strong> {{ certificate.message }}<br>
+{% endif %}
+<em>REDEEM THIS CERTIFICATE HERE:</em><br>
+{% if clickable_link %}
+	<a href="{{ healer.healer_short_profile_url }}">{{ healer.healer_short_profile_url }}</a>
+{% else %}
+	{{ healer.healer_short_profile_url }}
+{% endif %}

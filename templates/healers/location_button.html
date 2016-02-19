@@ -1,0 +1,12 @@
+<span id="location_{{ location.id }}"
+	class="{% if locations_objects|length == 1 %} selected{% endif %} location_select"
+	{% if location.address_text and not request.is_mobile %} original-title="{{ location.address_text|linebreaksbr }}<br><a href='javascript:void(0);' onclick='show_map({{ location.pk }})'>Map</a>"{% endif %}><a href="javascript:void(0);" onclick="switchLocation({{ location.pk }})">{{ location.title }}</a></span>&nbsp;{# this &nbsp; is critical - DONT TOUCH #}
+{% if location.address_text and not request.is_mobile %}
+	<script>
+		$("#location_{{ location.id }}").tipsy({
+			'gravity': $.fn.tipsy.autoBounds(150, 'n'),
+			html: true,
+		 	delayOut: 1500,
+		});
+	</script>
+{% endif %}

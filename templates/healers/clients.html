@@ -1,0 +1,83 @@
+{% extends "site_base.html" %}
+
+{% load i18n healer_tags compress %}
+
+{% block head_title %}My {{ page_title }}s{% endblock %}
+{% block extra_head %}
+	{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/jquery.weekcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+	{% endcompress %}
+
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/weekcalendar-common.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+		<script type="text/javascript">
+			$(function() {initNewClientDialog();});
+			function newClientSuccess(client) {
+				window.location.reload();
+			}
+			var url_error_report = "{% url 'error_report' %}";
+		</script>
+	{% endcompress %}
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_clients">{{ is_wellness_center|yesno:',My' }} {{ page_title }}s</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "facebook_init.html" %}
+
+	{% with send_invite_button_text='Send a Client Invitation' send_invite_button_float='left' %}
+		{% include 'healers/send_invite_button.html' %}
+	{% endwith %}
+
+	{% include "healers/new_client_dialog.html" %}
+	<div class="highlight_button nav_icon icon_email_new" id="create_new_client_button" onclick="dlg_new_client();" >
+		Create a New Client
+	</div>
+
+	<div class="clearfix"></div>
+
+	{% if invitations %}
+		<div class="single_button pale_button small_line_height" style="margin-top: 8px;">
+			<h3>New Clients</h3>
+			<table class="client_list responsive_table">
+				{% for user in invitations %}
+					{% with 1 as accept_buttons %}
+						{% include "healers/friend_row.html" %}
+					{% endwith %}
+				{% endfor %}
+			</table>
+		</div>
+	{% endif %}
+
+	{% if friends %}
+		<h3>My Clients</h3>
+		<table class="client_list responsive_table">
+			{% for user in friends %}
+				{% if user.recommended %}
+					{% with 0 as remove_button %}{% include "healers/friend_row.html" %}{% endwith %}
+				{% else %}
+					{% with 1 as remove_button %}{% include "healers/friend_row.html" %}{% endwith %}
+				{% endif %}
+			{% endfor %}
+		</table>
+	{% else %}
+		<p class="message">
+			You don't have any Clients here yet unfortunately.
+			<br /><br />
+			You can Send an Invitation by Email Above or Import Your Contacts from Excel or Gmail Below.
+		</p>
+	{% endif %}
+
+	{% if request.user.is_superuser %}
+		{% for f in friends %}
+			{{ f.first_name }}, {{ f.last_name }}, {{ f.email }}<br />
+		{% endfor %}
+	{% endif %}
+
+	<p>{% include "friends_app/import_contacts_links.html" %}</p>
+{#	{% include 'about/fb_share.html' with healer=is_healer %}#}
+	<br>
+{% endblock %}

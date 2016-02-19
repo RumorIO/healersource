@@ -1,0 +1,64 @@
+{% extends "site_base.html" %}
+
+{% load compress %}
+
+{% block extra_head %}
+	{% compress js %}
+		<script src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+	{% endcompress %}
+{% endblock %}
+
+{% block head_title %}Ambassador Dashboard{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_ambassador">Ambassador Dashboard</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "account/facebook_init.html" %}
+
+	{% if first_level_persons %}
+		<table>
+			<thead>
+			<th>Person</th>
+			<th>Signup date</th>
+			<th>Fees</th>
+			</thead>
+			<tbody>
+			{% for person in first_level_persons %}
+				<tr>
+					<td>{{ person }}</td>
+					<td style="text-align:center;"
+					    {% if not person.fees %}colspan="2"{% endif %}>
+						{{ person.user.date_joined }}
+					</td>
+					{% if person.fees %}
+						<td style="text-align:right;">{{ person.fees }}</td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	{% else %}
+		<p class="message">You have no members signed up under you yet.</p>
+	{% endif %}
+
+	<p>This Month's Revenue: {{ month_fees }}</p>
+	<h4>Lifetime Revenue: {{ total_fees }}</h4>
+
+	<hr>
+	<p><a href="{% url 'ambassador:settings' %}">Ambassador Settings &raquo;</a></p>
+
+	<p>Your unique signup link is: <a href="{{ link }}">{{ link }}</a></p>
+
+	<p>
+		<a href="#" class="facebook_icon_small" onclick="send_link_through_fb('{{link}}');return false;">Invite through Facebook</a>
+	</p>
+
+
+	{% with send_invite_button_text='Send an Invitation' %}
+		{% url 'invite_postcard_ambassador' as invite_button_url %}
+		{% include 'healers/send_invite_button.html' %}
+	{% endwith %}
+
+
+{% endblock body %}

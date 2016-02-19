@@ -1,0 +1,5 @@
+{% if not RUNNING_LOCAL %}
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js"></script>
+{% else %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery-ui.min.js"></script>
+{% endif %}

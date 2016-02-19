@@ -1,0 +1,106 @@
+{% load strip_tags client_tags common_tags %}
+
+<div class='healing_request'>
+	<div>
+		<div class='right_pane'>
+			<div class='avatar'>
+				{% if healing_request.show_photo %}
+					{% avatar healing_request.user 100 %}
+				{% else %}
+					{% avatar None 100 %}
+				{% endif %}
+			</div>
+			<div class='tac'>
+				{% if healing_request.show_full_name %}
+					{{ healing_request.user.get_full_name }}
+				{% else %}
+					{{ healing_request.user.get_full_name|starting_letters }}
+				{% endif %}
+				<br>
+				<a class='icon_email no_wrap look_like_link'
+						{% if request.user.is_authenticated %}
+                 onclick="
+		                 show_compose_message_dlg('{{ healing_request.user.username }}',
+		                 '{{ healing_request.user.get_full_name }}',
+		                 {{ user.is_authenticated|yesno:"0,1" }},
+		                 '{{ healing_request.title|safe }}', {{ SOURCE_CHOICE_HR }});"
+						{% endif %}
+						{% if request.user.is_authenticated %}
+				         href="#"
+						{% else %}
+				         href="{% url 'signup' %}"
+				      {% endif %}
+						>Contact
+					<span class='contact_name'>
+						{{ healing_request.user_display_name }}
+					</span>
+				</a>
+			</div>
+			<div class='hr_share_box'>
+				<div class="fb-share-button" data-href="{{ healing_request.absolute_url }}" data-type="button"></div>
+				<div class='float_right'>
+					<a  data-count=none href="https://twitter.com/share?url={{ healing_request.absolute_url }}&text=Healing request by {{ healing_request.user_display_name }}" class='twitter-share-button'>Tweet</a>
+				</div>
+
+			</div>
+
+		</div>
+		<div class='left_pane'>
+			<div class='healing_request_title'>
+				{% if not template_name %}
+					<a href="{% url 'show_healing_request' healing_request.id %}?popup=true" class="floatbox"  data-fb-options="type:ajax minContentWidth: 600px" >{{ healing_request.title }}</a>
+				{% elif template_name == 'healing_requests/my_requests.html' %}
+					<a href="{% url 'edit_healing_request' healing_request.id %}" >{{ healing_request.title }}</a>
+				{% endif %}
+			</div>
+
+			<div class='description mbm'>
+				{% if list_page %}
+					{{ healing_request.description|safe|truncatechars:600 }}
+				{% else %}
+					{{ healing_request.description|safe }}
+				{% endif %}
+			</div>
+
+
+
+		</div>
+	</div>
+
+	<p>
+		{% include 'healing_requests/healing_request_line.html' with obj=healing_request %}
+	</p>
+	<p>
+		{% if healing_request.specialities.count %}
+			<b>Specialities:</b>&nbsp;
+			{% strip '&middot;' %}
+				{% for speciality in healing_request.specialities.all %}
+					{{ speciality }} &middot;
+				{% endfor %}
+			{% endstrip %}
+		{% endif %}
+	</p>
+	<p>
+		{% if healing_request.speciality_categories.count %}
+			<b>Speciality Categories:</b>&nbsp;
+			{% strip '&middot;' %}
+				{% for cat in healing_request.speciality_categories.all %}
+					{{ cat }} &middot;
+				{% endfor %}
+			{% endstrip %}
+		{% endif %}
+	</p>
+
+	<p>
+		{% if healing_request.user == request.user %}
+			<a href="{% url 'show_healing_request' healing_request.id %}">view</a>
+			 |
+			<a href="{% url 'edit_healing_request' healing_request.id %}">edit</a>
+		{% elif not hide_full_link %}
+			<a href="{% url 'show_healing_request' healing_request.id %}">Read more &raquo; </a>
+		{% endif %}
+	</p>
+
+	<div class='clearfix'></div>
+
+</div>

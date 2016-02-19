@@ -1,0 +1,47 @@
+{% load healer_tags endless %}
+{% if not all %}
+	{% lazy_paginate found_providers with url_search %}
+{% endif %}
+<div class="friends">
+	{% for healer in found_providers %}
+		<div class="search_item">
+			{% if not skip_first_hr or not forloop.first %}<hr />{% endif %}
+			<a href="{{ healer.healer_profile_url }}" class="healer_full_profile_link"></a>
+			<a href="{% url 'healer_info' healer.user.username %}" class="healer_profile_link floatbox" data-fb-options="type:ajax width:765"></a>
+
+			<div class="grey_box search_results_provider">
+				<div class="avatar_cell">{% with user=healer.user %}{% include "clients/avatar.html" %}{{ user.client }}{% endwith %}</div>
+				<div class="info_cell">
+					{{ healer.healer_under_profile_photo }}
+					{% if healer.scheduleVisibility == 0 or healer.scheduleVisibility == 1 and request.user.is_authenticated %}
+						<div style="margin-top: 14px;">
+							{% include "healers/book_online_button.html" %}
+						</div>
+					{% endif %}
+					{% if stats.providers_complete.count %}
+						<div style="float: left; margin-top: 11px;">
+							joined: <b>{{ healer.user.date_joined|date:"n/j/Y" }}</b>
+							<br>
+							{% if healer.signup_source %}{{ healer.signup_source }} - {% endif %}{{ healer.user.is_active|yesno:'ACT,UNC' }}
+							<br>
+							<i>{{ healer.get_step_name }}</i>
+						</div>
+					{% endif %}
+				</div>
+				<div class="specialties_cell wrap_normal">{{ healer.healer_specialties_html }}</div>
+				<div class="about_cell wrap_normal">
+					{% if phonegap %}
+						<div>{{ healer.about|safe }}</div>
+					{% else %}
+						<div>{{ healer.about|hs_truncatewords_html:70|safe }}</div>
+						<a href="{{ healer.healer_profile_url }}" class="read_more_link" style="display: none;">Read More &raquo;</a>
+					{% endif %}
+				</div>
+
+			</div>
+		</div>
+	{% endfor %}
+	{% show_more 'Show more &raquo;' %}
+
+</div>
+{% include 'about/search/results_not_found.html' %}

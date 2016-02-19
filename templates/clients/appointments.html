@@ -1,0 +1,144 @@
+{% extends "site_base.html" %}
+
+{% load compress %}
+{# {% load healer_tags %} #}
+
+{% block head_title %}{% if is_healer %}Receiving {% endif %}Appointments{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_appointments">{% if is_healer %}Receiving {% endif %}Appointments</h1>{% endblock %}
+
+{% block extra_head %}
+	{{block.super}}
+	{% compress js %}
+		<script>
+		function cancelDialog(id, start, healer_name, cancellation_policy, repeat)
+		{
+			if (cancellation_policy == "")
+				apptDialog('Cancel', id, start, cancellation_policy, repeat);
+			else
+			{
+				$dialogConfirm = $("#dlg_confirm");
+				if (!$dialogConfirm.length) {
+					$dialogConfirm = $("<div></div>")
+						.attr('id', 'dlg_confirm')
+						.hide()
+						.appendTo($('body'));
+				}
+                                $dialogConfirm.html("<p>"+cancellation_policy+"</p>");
+				hs_dialog($dialogConfirm, {
+					title: healer_name + "'s Cancellation Policy",
+					title_class: 'nav_info',
+					buttons: {
+						"Don't Cancel" : function() { hs_dialog("close"); },
+						"Cancel Appointment" : function() {
+                                                        hs_dialog("close");
+                                                        if (repeat)
+								apptDialog('Cancel', id, start, cancellation_policy, repeat);
+							else
+								location.href = '{% url 'appointment_cancel' 0 %}'.replace('/0', '/'+id);
+
+                                                }
+                                        }
+                                });
+			}
+		}
+
+		function apptDialog(operation, id, start, cancellation_policy, repeat) {
+			console.log(id, start, repeat);
+
+			var operations = {
+				"Cancel": {
+					url: '{% url 'appointment_cancel' 0 %}',
+					confirm_title: 'Cancelation',
+					text: 'Do you want to cancel just this appointment or all in this series?'
+				},
+				"Reschedule": {
+					url: '{% url 'appointment_reschedule' 0 %}',
+					confirm_title: 'Reschedule',
+					text: 'Do you want to reschedule just this appointment or all in this series?'
+				}
+			};
+			var operation_params = operations[operation];
+			var url = operation_params.url.replace('/0', '/'+id);
+
+			if(!repeat) {
+				confirmDialog(url, operation_params.confirm_title);
+				return false;
+			}
+
+			var $dialogAppt = $("#dlg_appt");
+			if (!$dialogAppt.length) {
+				$dialogAppt = $("<div></div>")
+						  .attr('id', 'dlg_appt')					  
+						  .hide()
+						  .appendTo($('body'));
+			}
+			$dialogAppt.html("<p>"+operation_params.text+"</p>");
+
+			hs_dialog($dialogAppt, {
+				title: operation + " Appointment",
+				title_class: 'nav_schedule',
+				buttons: {
+					"All in This Series" : function() {
+						hs_dialog("close");
+						location.href = url;
+					},
+					"Just This One" : function() {
+						hs_dialog("close");
+						location.href = url + '?start=' + Date.parse(start);
+					},
+					"Don't Cancel" : function() { hs_dialog("close"); }
+				}
+			});
+			return false;	
+		}
+		</script>
+	{% endcompress %}
+{% endblock %}
+
+{% block body %}
+	{% if appointment_list %}
+		{% if have_unconfirmed_appts %}<p class="single_button">You will receive an email when your appointment(s) are confirmed.</p>{% endif %}
+		<table class="headings grey_box">
+			<th>Date</th>
+			<th>Time</th>
+			<th>Provider</th>
+			<th>Location</th>
+			{% regroup appointment_list by week as week_list%}
+			{% for appts in week_list %}
+				{% if forloop.counter0 %}<tr><td colspan="4"><hr/></td></tr>{% endif %}
+
+				{% for appt in appts.list %}
+					<tr>
+						<td style="padding-right: 6px;" width="0">{{ appt.start|date:"l, M j" }}</td>
+						<td>
+							{{ appt.start|date:"g:i" }} - {{ appt.end|date:"g:i a" }} {% if appt.repeat_period %}<sup>*</sup>{% endif %}
+							{% if not appt.confirmed %}<span style="color: red;">(unconfirmed)</span>{% endif %}
+						</td>
+						<td><a href="{{ appt.healer.healer_profile_url }}">{{ appt.healer.user.first_name }} {{ appt.healer.user.last_name }}</a></td>
+						<td><a class="location_detail floatbox" data-fb-options="type:ajax" href="{% url 'location_detail' appt.id %}">{{ appt.location.title }}</a></td>
+						<td style="text-align: right;"><a href="#" onclick="return cancelDialog({{appt.id}}, '{{appt.start.isoformat}}', '{{ appt.healer|safe }}', '{{ appt.healer.cancellation_policy|safe }}' {% if appt.repeat_period %}, true{% endif %})">cancel</a>
+						&nbsp;|&nbsp;<a href="#" onclick="return apptDialog('Reschedule', {{appt.id}}, '{{appt.start.isoformat}}' {% if appt.repeat_period %}, true{% endif %})">reschedule</a>
+												</td>
+					</tr>
+				{% endfor %}
+			{% endfor %}
+		</table>
+		<p>* Repeating</p>
+	{% else %}
+		<p class="message">
+		{% if is_healer %}
+			You arent receiving any sessions. Remember to take care of yourself too!
+		{% else %}
+			No Appointments.
+		{% endif %}
+		</p>
+	{% endif %}
+
+	{% if posts and videos %}
+		<div class="short_posts_videos">
+		{% include "about/homepage_contents/blog_and_videos.html" with dont_rotate=1 %}
+		</div>
+	{% endif %}
+
+{% endblock %}

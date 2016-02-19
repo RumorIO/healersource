@@ -1,0 +1,632 @@
+#calendar_container {
+	position: relative;
+}
+
+.ui-widget {
+	font-size: 1em;
+}
+
+.calendar_dialog, #about, #schedule_error {
+	display: none;
+}
+.calendar_dialog {
+	overflow: hidden;
+}
+
+#about_button_container {
+	position: absolute;
+	top: 0em;
+	right: 0em;
+	padding: 0.5em 2em;
+	background: #ddf;
+	border: 1px solid #bbd;
+	width: 25em;
+	text-align: center;
+}
+
+/*.wc-header td {
+	background: url(images/header-bg.png) repeat-x;
+}
+*/
+.calendar_dialog label {
+	margin-top: 1em;
+	margin-bottom: 0.5em;
+}
+
+.calendar_dialog form ul  {
+	padding: 0 0.3em;
+	margin: 0;
+}
+
+.calendar_dialog select {
+	width: 180px;
+}
+
+.calendar_dialog form {
+	padding-right: 1.5em;
+}
+
+.calendar_dialog input[type='text'], .calendar_dialog input[type="password"], .calendar_dialog textarea {
+	padding: 3px 10px 3px 3px;
+	width: 100%;
+	max-width: 245px;
+}
+
+.calendar_dialog textarea {
+	margin-top: 12px;
+	height: 54px;
+}
+
+.calendar_dialog_list textarea {
+	margin-top: 0;
+}
+
+.calendar_dialog ul.formatted, .calendar_dialog ol.formatted {
+	display: block;
+	margin: 1em 0.5em;
+}
+
+.calendar_dialog ul.formatted li, .calendar_dialog ol.formatted li {
+	margin: 5px 30px;
+	display: auto;
+}
+
+.calendar_dialog ul.formatted li {
+	list-style-type: disc;
+}
+
+.calendar_dialog ol.formatted li {
+	list-style-type: decimal;
+}
+#switcher{float:left;}
+
+/************ WEEKCALENDAR SKIN = DEFAULT ***********/
+.wc-toolbar{padding:0.4em;}
+.wc-toolbar h1{font-size:16px;font-weight:bold;}
+.wc-toolbar .ui-buttonset{font-size:0.8em;}
+/*.wc-toolbar .wc-title{text-align:left;}*/
+.wc-header{font-size:11px;}
+.wc-grid-timeslot-header,
+.wc-header .wc-time-column-header{width:28px;display:none;}
+.wc-time-header-cell{font-size:11px;}
+.wc-business-hours .wc-time-header-cell{
+	font-weight: bold;
+	color: #466E9E;
+}
+.wc-am-pm, .wc-business-hours .wc-am-pm {
+	font-size:1em;
+	display: block;
+	font-weight: normal;
+}
+
+/************ CUSTOM CSS ***********/
+
+.wc-cal-event, .wc-cal-event .wc-time {
+	color: white; /*#01090F;*/
+	border: none;
+	font-size: 1.1em;
+}
+
+.wc-cal-event {
+	/*color: black;*/
+	/*border: 1px solid transparent;*/
+	cursor: pointer;
+}
+
+.wc-cal-event .ui-resizable-handle {
+	display: none;
+	color: gray;
+}
+
+.wc-toolbar .wc-nav {
+    /*float:right;*/
+    /*margin-top:2px;*/
+	display: none;
+}
+
+.wc-cal-event .wc-title {
+	color: black;
+	font-size: 1.3em;
+	padding-top: 4px;
+}
+
+/*.wc-container table td {*/
+	/*font-size:12px;*/
+/*}*/
+
+.calendar_dialog li form { display:table; }
+.calendar_dialog li { list-style:none outside none; display:table-row; }
+.normal_list li { list-style: disc outside none; display: list-item; }
+.calendar_dialog li span, .calendar_dialog li select, .calendar_dialog li label { display:table-cell; }
+.calendar_dialog li > span, .calendar_dialog li label {
+	white-space:nowrap;
+	padding-right: 8px;
+}
+
+#appointment_details li span, #appointment_details li label { white-space: normal; }
+
+.calendar_dialog_list li { display: block; }
+
+.wc-day-column-inner .ui-resizable { position:absolute; }
+
+.ui-widget-header, .ui-widget-header a { color:#091F2F; }
+
+.wc-title { border: 0; }
+
+.ui-state-default { background: none; }
+.wc-today { background-image: none; }
+
+.ui-state-default .ui-icon, .ui-state-active .ui-icon, .ui-icon-default {
+	background-image: url("redmond/images/ui-icons_d8e7f3_256x240.png");
+}
+
+.white_title .wc-cal-event .wc-title { color:#00008b;/*#00051E;*/ }
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset { text-align: right; float: none; }
+
+.ui-tabs .ui-tabs-panel { padding: 5px; }
+
+.wc-time-slots .wc-day-column { background: white !important; }
+
+.wc-time-slots .wc-today { background-color: #FFFFCC !important; }
+.wc-time-slots .wc-weekend { background-color: #EFF6FF !important; }
+
+.wc-header .wc-day-column-header { padding: 4px; }
+.wc-header .wc-today { color: #091F2F; padding: 3px; }
+
+.ui-widget-content a  {
+	color: #273272;
+}
+
+#not-available a, #not-available span, #cal_date, #cal_prev, #cal_next {
+	color: white;
+	text-decoration: none;
+	font-weight:normal;
+}
+
+.wc-title span { cursor: pointer; }
+
+.wc-title > a {
+	padding: 0;
+	line-height: normal;
+	display: inline-block;
+}
+
+#calendar { border: 1px solid #ddd; }
+#calendar .ui-state-default a, #calendar .ui-state-default a:link, #calendar .ui-state-default a:visited,
+#calendar .ui-state-active a, #calendar .ui-state-active a:link, #calendar .ui-state-active a:visited {
+	color: #00008b;
+}
+
+#not-available a:hover, .wc-title a:hover, .ui-widget-content a:hover, #calendar .ui-state-default a:hover, #calendar .ui-state-active a:hover  {
+	color: #bf5f0b;
+}
+
+/*#not-available a:hover, .wc-title a:hover {
+	font-weight:bold;
+}
+*/
+
+#not-available.editable {position: absolute; top: 205px; left: 30%; width: 30%;}
+
+.not-available-container {
+	text-align: center;
+	height: 0;
+}
+
+#not-available {
+    width: 300px;
+    z-index: 999;
+    position: relative;
+    top: 235px;
+    display: inline-block;
+}
+
+#not-available > div {
+	height: 47px;
+	text-align: center;
+	font-size: 16px;
+	font-weight: normal;
+	padding: 5px;
+}
+
+#not-available hr {
+	width: 40%;
+	margin: 2px auto;
+}
+
+#not-available a, #not-available .text {
+	font-size: 12px;
+}
+
+#not-available a.control_arrow {
+	font-size: 20px;
+	margin-top:10px;
+}
+
+#not-available a.control_arrow_right {
+	float: right;
+	margin-right: 5px;
+}
+
+#not-available a.control_arrow_left {
+	float: left;
+	margin-left: 5px;
+}
+
+.wc-title-button {
+	/*float: right;*/
+	line-height: 1em;
+	/*cursor: pointer;*/
+	position:absolute;
+}
+
+/*#edit_availability_button a { color: black; }*/
+
+
+/*#edit_availability_button .ui-icon { background-image: url(redmond/images/ui-icons_217bc0_256x240.png); }*/
+
+#schedule_settings {
+	display: none;
+	padding: 0 16px;
+	border: 1px solid gray;
+}
+
+select[name="repeat_period"] { width: auto; }
+
+.avatar_left_box img { border-radius: 8px; }
+
+#appointments_view_selector {
+	white-space: nowrap;
+	padding-left: 6px;
+	/*margin-left: 8px;*/
+	text-align: right;
+	width: 0;
+}
+
+#edit_availability_selector {
+	white-space: nowrap;
+	padding-right: 8px;
+	/*width: 1px;*/
+	/*text-align:right;*/
+}
+#edit_availability_selector > span:first-child {
+	display: none;
+}
+#add_timeslot_type_selector {
+	display: none;
+}
+
+.wc-hour-header.ui-state-active,
+.wc-hour-header.ui-state-default,
+.wc-time-column-header { border-left: 1px solid #ccc; }
+
+.wc-day-7, .wc-scrollable-grid .wc-day-column-last  { border-right: 1px solid #ccc; }
+
+.ui-widget-header {
+	background: #5C9CCC;
+}
+
+.edit_availability_title, .add_timeslot_dlg .ui-dialog-titlebar  {
+    background-image: none;
+    background: #7FCC9F;
+    border: 1px solid #62A874;
+}
+
+.timepicker { width: 100px; max-width: 100px; padding: 3px;}
+
+#invite_dialog textarea { height: 120px;  }
+
+#invite_dialog input[type="text"], #invite_dialog textarea {
+	min-width: 380px;
+	max-width: 380px;
+	width: 380px;
+}
+
+#new_client_dialog h1 { margin: 0; }
+#new_client_dialog th {
+	text-align: left;
+	white-space: nowrap;
+}
+
+#ui-datepicker-div { z-index: 21111125 !important; }
+
+.new_client_dlg_name input[type="text"] { width: 93px; }
+
+.schedule_tour_buttons {
+	border-top: 1px solid #DBC895;
+	margin-bottom: 0;
+	margin-top: 14px;
+	padding-top: 8px;
+	text-align: center;
+}
+
+.schedule_tour_buttons input[type='button'] {
+	font-size: 1em;
+	font-weight: bold;
+}
+
+#help_mode_h { display: none; }
+
+#schedule_welcome, #schedule_tour_end {
+	display:none;
+	width: 420px;
+}
+
+.all_day_checked {padding-left: 5px;}
+.all_day_unchecked {position: relative; left: 195px;}
+
+.event_readonly {
+	cursor: default;
+}
+
+.event_shadow {
+	box-shadow: 0 0 6px 1px gold;
+}
+
+.event_shadow:hover {
+	box-shadow: 0 0 3px 2px coral;
+	z-index: 99 !important;
+}
+
+.event_unavailable_disable {
+	background-color: #777;
+	color: #aaa;
+}
+
+.event_unavailable_disable .wc-time {
+	background-color: #555;
+	color: #aaa;
+}
+
+.event_unconfirmed {
+	border: 3px dotted tomato;
+}
+
+.event_available {
+	border-radius: 0;
+	cursor: pointer;
+	/*color: black;*/
+}
+
+.event_available .ui-icon {
+	background-image: url("redmond/images/ui-icons_ffffff_256x240.png");
+}
+
+/*.event_available .wc-time {*/
+	/*color: black;*/
+/*}*/
+
+.event_timehide .wc-time {
+	display: none;
+}
+
+.event_timeoff {
+	color: #E8E8E8;
+	background-color: #777;
+	border-radius: 0;
+}
+
+.event_timeoff:hover {
+	box-shadow: 0 0 5px 0px royalblue;
+}
+
+.event_timeoff .wc-time {
+	background-color: inherit;
+}
+
+#location_menu { margin-top: 0; }
+#location_menu ul { margin-top: 24px; }
+
+#location_menu a {
+	max-width: 200px;
+	overflow: hidden;
+}
+
+#location_selector { width: 0; white-space: nowrap; }
+
+#schedule_mode_message { display: none; }
+
+.wc-editable .wc-grid-timeslot-header,
+.wc-editable .wc-header .wc-time-column-header{display:table-cell;}
+.new_client_dlg_name input[type="text"] { width: 93px; }
+
+/* stripe connect payments */
+
+#clear_client_filter_button {
+	width: 18em;
+}
+
+#nothing_found, #clear_client_filter_button, #discount_codes_dialog, #client_appointments_dialog {
+	display: none;
+}
+
+.payments_filter_element {
+	margin-right: 14px;
+	vertical-align: middle;
+	display: inline-block;
+	border-bottom: 1px solid grey;
+	padding: 10px 0;
+}
+
+.payments_filter_element:last-child {
+	border: 0;
+}
+
+.payments_paid_filter {
+	display: inline-block;
+	margin: 5px 0;
+}
+
+.payments_paid_filter > span {
+	margin-bottom: 0;
+}
+
+.paid {
+	color: darkgreen !important;
+}
+
+.payments_filter_element #date_end {
+	display: block;
+}
+
+.date_label {
+	float: left;
+	font-weight: bold;
+	margin-right: 4px;
+}
+
+.dates {
+	float: left;
+}
+/* --------- */
+
+.appt_dlg_table {
+	display: table;
+	vertical-align: top;
+}
+
+
+@media screen and (min-width: 25.25em) {
+	/*.wc-title > a {*/
+	/*padding: 0.4em 0.6em;*/
+	/*}*/
+	#new_client_or_login_dialog  {
+		width: 434px;
+		height: 157px;
+	}
+	#new_client_or_login_dialog > div {
+		float: left;
+	}
+
+	#edit_availability_selector > span:first-child {
+		display: inline;
+	}
+	.appt_dlg_table {
+		display: table-cell;
+	}
+}
+
+@media screen and (min-width: 36.25em) {
+	.wc-grid-timeslot-header,
+	.wc-header .wc-time-column-header{
+		display:table-cell;
+		width: 40px;
+	}
+
+	.wc-am-pm, .wc-business-hours .wc-am-pm {
+		display: inline;
+	}
+
+	.wc-header .wc-time-column-header{display:table-cell;}
+	.calendar_dialog input[type="text"],
+	.calendar_dialog input[type="password"],
+	.calendar_dialog textarea {
+		width: 242px;
+	}
+	#new_client_dialog_table input[type="text"],
+	#new_client_dialog_table input[type="password"] {
+		width: 200px;
+	}
+	.new_client_dlg_name input[type="text"] { width: 111px; }
+   #schedule_mode_message { display: block; }
+
+   .payments_filter_element {
+		display: inline-block;
+		border: 0;
+		padding: 0;
+   }
+
+	.payments_filter_element .date, .payments_filter_element #date_end {
+		display: inline;
+		width: 8em;
+	}
+
+}
+.client_content, .edit_client { color: #999; }
+
+.warning-icon {
+	width: 20px;
+	float: left;
+}
+
+.warning-message {
+	margin-left: 30px;
+}
+
+.inline {
+	display: inline;
+}
+
+.schedule_provider_item {
+	text-align: center;
+	width: 59px;
+	height: 96px;
+	display: inline-block;
+	vertical-align: top;
+	cursor: pointer;
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+
+.schedule-provider-select {
+	margin-top: 13px;
+}
+
+.unpaid_provider {
+	border-style: dashed;
+	border-color: red;
+	border-width: 2px;
+}
+
+/* provider dropdown */
+
+#switch_provider_dropdown {
+	display: inline;
+}
+
+#switch_provider_dropdown a {
+	background-color: #fffccd;
+	float: right;
+	color: #273272;
+	border: 1px solid #273272;
+	border-radius: 20px;
+	width: 20px;
+	height: 20px;
+	text-align: center;
+}
+
+#switch_provider_dropdown a:hover {
+	text-decoration: none;
+}
+
+.provider_dropdown {
+	position: absolute;
+	padding: 10px;
+	z-index: 10;
+	background-color: #fff;
+	border: 1px solid grey;
+	border-radius: 5px;
+	margin-top: 2px;
+	max-width: 727px;
+}
+
+#selected_provider {
+	padding: 2px 6px;
+	display: inline;
+}
+
+/* --------- */
+
+.discount_code {
+	width: 60px;
+}
+
+#save_card {
+	display: none;
+}
+
+#tooltip_action_buttons {
+	padding: 0 8px;
+}
+

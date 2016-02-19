@@ -1,0 +1,11 @@
+<div class="my_account_menu" role="navigation">
+	<ul id="left_menu" class="menu main_menu">
+		<li><a class="nav_home" href="{% url 'dashboard:index' %}">Dashboard</a></li>
+		<li><a class="nav_inbox" href="{% url 'dashboard:mails_list' %}">Mail templates</a></li>
+		<li><a class="nav_settings" href="{% url 'dashboard:settings_list' %}">Settings</a></li>
+		<li><a href="{% url 'dashboard:create_user' %}">Create User</a></li>
+		<li><a href="{% url 'dashboard:delete_account' %}">Delete User</a></li>
+		<li><a href="{% url 'dashboard:unconfirmed_list' %}">Confirm Emails</a></li>
+		<li><a href="{% url 'dashboard:custom_schedule_payments_center_list' %}">Custom Payments</a></li>
+	</ul>
+</div>

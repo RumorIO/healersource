@@ -1,0 +1,3 @@
+Name: {{ name }}
+{% if email %}Email: {{ email }}{% endif%}
+{% if phone %}Phone: {{ phone }}{% endif%}

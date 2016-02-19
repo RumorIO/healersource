@@ -1,0 +1,28 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block extra_head %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/tipsy.css" />
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.tipsy.js"></script>
+{% endblock %}
+{% block setup_body %}
+	<p>Now you're ready to setup your schedule!</p>
+
+	<p>Tired of spending hours on the phone playing tag with your clients? Save yourself a hours every week by letting them schedule online. Your clients will love it too!</p>
+
+	<p><b><u>Here are all the great features you'll get:</u></b></p>
+	<div id="tour_benefits">{% include 'about/tour_schedule_benefits_list.html' %}</div>
+
+	<p style="font-size: 1.2em; margin: 20px 0 0 26px; font-style: italic;">Click <b><a href="{% url 'provider_setup' 10 %}">Next</a></b> to get started!</p>
+
+	<p><span id="setup_still_not_sure" style="color: #555; font-style: italic; margin-left: 26px; cursor: pointer;"
+	         original-title="If you're concerned about losing control, just enable <b>Manual Appointment Confirmation</b> so you can screen all your incoming appointments by hand. <br><br>You can also make your schedule private - visible to <b>Your Clients Only</b>. <br><br>There's also a <b>Call to Book</b> option in case you want clients to see your availability but not actually be able to make appointments online.">Still not sure?</span></p>
+
+	<script type="text/javascript">
+		$("#setup_still_not_sure").tipsy({
+			'gravity': 'w',
+			html: true
+		});
+	</script>
+
+	{% include "healers/setup/setup_controls.html" %}
+{% endblock %}

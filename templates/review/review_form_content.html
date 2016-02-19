@@ -1,0 +1,45 @@
+{% load healer_tags %}
+<h1 class="nav_icon nav_reviews">{{ title }}</h1>
+{% if success %}
+	<p>Your review is saved. Thank you.</p>
+	<script type="text/javascript">
+		parent.fb.loadPageOnClose = 'self';
+	</script>
+{% else %}
+<form id="review_form" action=".{% if fb %}?fb=1{% endif %}" method="post">{% csrf_token %}
+	{% include "form_errors.html" %}
+	<div>
+		<div id="rating_menu_label">{{ form.rating.label_tag }} {{ form.rating }}</div>
+		<ul id="rating_menu" class="menu">
+			<li>
+				<a id="rating_selected" class="grey_box icon_star {% rating_star_css_class form.rating.value %}">{{ form.rating.value }} Star</a>
+				<ul>
+					{% for rating in "54321" %}
+						<li><a id="rating_{{ rating }}" href="#" class="icon_star {% rating_star_css_class rating %}">{{ rating }} Star</a></li>
+					{% endfor %}
+				</ul>
+			</li>
+		</ul>
+		<div class="clearfix"></div>
+	</div>
+	<p>{{ form.title.label_tag }}:<br/> {{ form.title }} </p>
+	<p>{{ form.review.label_tag }}:<br/> {{ form.review }} </p>
+	<hr><input type="submit" value="Submit">
+</form>
+{% endif %}
+
+{% block extra_head %}
+	<script type="text/javascript">
+		$(function() {
+			rating_menu = initSubmenu('rating_menu')
+			$('#rating_menu ul a').click(function() {
+				$('#rating_selected').removeClass('icon_star_'+$('#id_rating').val()+'_0');
+				var rating = $(this).attr('id').split('_')[1];
+				$('#id_rating').val(rating);
+				$('#rating_selected').addClass('icon_star_'+rating+'_0');
+				$('#rating_selected').text(rating + ' Star')
+				rating_menu.show(0, 0);
+			});
+		});
+	</script>
+{% endblock %}

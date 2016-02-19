@@ -1,0 +1,32 @@
+<div class="grey_box pale_yellow_box search_box" id="search_providers_container">
+	<span class="nav_icon nav_find_a_provider">{% if is_wellness_center %}Add{% else %}Refer To{% endif %} an Existing HealerSource Provider&nbsp;</span>
+	<input type="text" placeholder="Name or Email" id="search_providers" class="ui-autocomplete-input" style="width: 170px;" maxlength="75" />
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#search_providers").val('');
+
+		$("#search_providers").autocomplete({
+			source: "/autocomplete/{% if no_add_buttons %}search_name_or_email{% else %}search_name_or_email_add_friend{% endif %}/{% if as_add_button %}?add=1{% endif %}",
+			minLength: 2,
+			html: true,
+         autoFocus: true,
+//				appendTo: '#menu-container',
+//				position: { of: '#search_providers_container'}
+			select: function(event, ui) {
+				if(event.target.href || ui.item.action=='add') {
+					var url = ui.item.action=='add' ? ui.item.id : event.target.href;
+					$.get(url, function() {
+						window.location.reload();
+{#						showResult("<p>You've successfully added " + ui.item.value + "</p>", "Thanks!", function () {#}
+{#							window.location.reload();#}
+{#						});#}
+					});
+				} else {
+					window.location = ui.item.id;
+				}
+			}
+		});
+	});
+</script>

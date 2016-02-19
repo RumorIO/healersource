@@ -1,0 +1,87 @@
+{% load client_tags account_tags healer_tags %}
+
+<div class="friend_box">
+	{% if full_profile %}
+		<a href="{{ user.client.healer.healer_profile_url }}">
+	{% else %}
+		<a href="{% if refer_client %}{% url 'refer_from_clients' user.username refer_client.user.username %}{% else %}{% url 'healer_info' user.username %}{% endif %}" class='floatbox' data-fb-options="type:ajax maxContentWidth: 768px">
+	{% endif %}
+	<div class="avatar">{% if avatar_size %}{% avatar user avatar_size %}{% else %}{% avatar user 94 %}{% endif %}</div>
+	<u>{{ user.first_name }}<br />{{ user.last_name }}</u></a>
+
+	<br />
+
+	{% if recommend_link %}
+		<a href="{% url 'friend_add' friend_type user.id %}" class='icon_recommend'>Add Referral</a>
+	{% endif %}
+
+	{% if location.city %}
+		<em>{{ location.city }}, {{ location.state_province }}</em>
+	{% elif location.zipcode %}
+		<em>{{ location.postal_code }}</em>
+	{% else %}
+		<br />
+	{% endif %}
+
+	{% if modalities and not homepage_featured_centers %}
+		{% if homepage_featured %}<hr>{% endif %}
+
+		<div class="search_results_modalities_list">
+			{% for modality in modalities %}
+				{% if forloop.counter <= 3 %}
+					<div title="{{ modality.title }}">{{ modality.title }}</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	{% endif %}
+	{% if homepage_featured %}<hr>{% endif %}
+	{% if provider.scheduleVisibility == provider.VISIBLE_EVERYONE or homepage_featured_centers %}
+		{% if homepage_featured %}
+			{% if provider.scheduleVisibility == provider.VISIBLE_EVERYONE %}
+				{% with healer=provider %}
+					<div class="homepage_schedule_button">
+						<a href="{{ healer.healer_profile_url }}#treatment_bar"
+						   class="single_button nav_icon nav_schedule book_online_button">
+								Book Online
+						</a>
+					</div>
+				{% endwith %}
+			{% endif %}
+
+			{% if homepage_featured_centers %}
+				{{ provider.center_item_under_profile_photo_on_homepage }}
+			{% else %}
+				{{ provider.healer_under_profile_photo_no_years_in_practice }}
+			{% endif %}
+		{% endif %}
+	{% endif %}
+
+	<div class="clearfix" style="margin: 6px 0;">
+		{% if edit_provider_link %}
+			{% if wellness_center in user.client.healer.wellness_center_permissions.all %}
+				<a class="highlight_button" href="{% url 'healer_edit' user.username %}">Edit &raquo;</a>
+			{% else %}
+				<a class="highlight_button" href="{% url 'wcenter_request_permission' user.username %}">Request Edit Permission &raquo;</a>
+			{% endif %}
+		{% endif %}
+	</div>
+
+	{% if email_not_confirmed_button and not user.client.healer.is_confirmed_email %}
+		<div class="clearfix" style="margin: 6px 0;">
+			<a class="highlight_button lightred" href="{% url 'resend_confirmation_to_user' user.username %}">Email Not Confirmed. Resend »</a>
+		</div>
+	{% endif %}
+
+	{% if editable and wellness_center and has_treatments %}
+		<div class="clearfix" style="margin: 6px 0;">
+			{% add_edit_provider_treatments request.user user %}
+		</div>
+	{% endif %}
+
+	{# 	{% if wcenter_member and show_schedule %} #}
+	{# 		<span onclick="showSchedule({{ user.id }})"> #}
+	{# 			<img src="{{ STATIC_URL }}healersource/img/nav_schedule.png" style="width: 12px; vertical-align: top; margin: 1px 2px 0px 0px;"><a>Schedule &raquo;</a> #}
+	{# 		</span> #}
+	{# 		<div class="clearfix"></div> #}
+	{# 	{% endif %} #}
+</div>

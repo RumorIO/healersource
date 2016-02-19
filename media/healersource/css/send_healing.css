@@ -1,0 +1,259 @@
+#map {
+	margin: auto;
+	width: 900px;
+	height: 550px;
+	max-width: 100%;
+}
+
+#sh_box {
+	margin-top: 25px;
+	text-align: center;
+}
+
+#sh_send_healing_to {
+	font-style: italic;
+}
+
+#sh_img {
+	display: inline-block;
+}
+
+#sh_img img {
+	height: 200px;
+	border: 2px solid #bbb;
+	border-radius: 5px 5px 5px 5px;
+	background-image: url('../../floatbox/graphics/white/loader_small.gif');
+	background-repeat: no-repeat;
+	background-position: 50%;
+	min-width: 100px;
+}
+
+#sh_friends_buttons span {
+	padding: 4px 6px;
+}
+#sh_friends_buttons a, #sh_friends_buttons span {
+	display: inline-block;
+	width: 62px;
+}
+/*#sh_friends_buttons #pause { display: none; }*/
+/*#sh_friends_buttons #timer_done { display: none; }*/
+#sh_friends_buttons #continue { display: none; }
+
+#sh_full_name {
+	text-align: center;
+	font-weight: bold;
+	font-size: 1.4em;
+	margin: 0 0 10px 0;
+}
+
+div#timer {
+	font-size: 3em;
+	margin: 0 0 11px 0;
+	display: none;
+}
+
+#main {
+	margin-top: 20px;
+	text-align: center;
+}
+
+#main .connect_with_fb {
+	margin-top: 100px;
+	margin-bottom: 100px;
+}
+
+#main dd {
+	text-align: left !important;
+}
+
+#sh_share_links div {
+	display: inline-block;
+	margin-left: 10px;
+}
+
+
+#sh_info {
+	margin: auto;
+}
+
+#sh_info td:first-child {
+	font-weight: bold;
+	text-align: right;
+}
+
+#sh_info_container {
+	display: inline-block;
+	margin-bottom: 20px;
+	width: 100%;
+	max-width: 100%;
+	padding: 0 36px 18px 36px;
+	box-sizing: border-box;
+}
+
+.sh_panel_container > div {
+	display: inline-block;
+	/*padding: 10px 20px;*/
+	margin-bottom: 8px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+
+#sh_img a, #sh_img div, #sh_img span, #sh_send_healing_to {
+	color: #969696;
+}
+
+.endless_loading {
+	margin-top: -31px;
+	position: absolute;
+	width: 100%;
+}
+
+/* Healing sent history */
+
+#healing_sent_history {
+	width: 100%;
+	bottom: 0;
+}
+
+.healing_history_block {
+	/*text-align: left;*/
+	/*display: inline-block;*/
+	display: table-row;
+}
+
+.healing_history_block .pic, .healing_history_block .name, .healing_history_block .time {
+	padding: 4px;
+	vertical-align: middle;
+	font-size: 1.2em;
+	display: table-cell;
+}
+
+.healing_history_block td {
+	padding: 11px;
+	vertical-align: middle;
+	font-size: 1.4em;
+}
+
+.healing_history_block .pic img {
+	width: 120px;
+}
+
+.healing_history_block .pic {
+	text-align: center;
+}
+.healing_history_block .name {
+	text-align: left;
+	float: left;
+	width: 96%;
+}
+
+.healing_history_block .time {
+	float: left;
+	text-align: left;
+	width: 90px;
+	white-space: nowrap;
+}
+
+#healing_sent_history_arranged {
+	margin-left: auto;
+	margin-right: auto;
+	position: relative;
+	display: table;
+}
+#healing_sent_history_arranged .title {
+	font-size: 20pt;
+	padding: 10px;
+	border-bottom: 1px solid;
+	margin-bottom: 10px;
+	text-align: left
+}
+
+.sh_panel_container .solo_panel {
+	text-align: center;
+}
+
+.sh_panel_container .panel_content {
+	font-style: italic;
+	padding: 14px;
+}
+
+#show_sh_page {
+	font-style: normal;
+	float: none;
+	display: inline-block;
+	margin: 16px 0 32px;
+	font-size: 1.2em;
+}
+
+@media screen and (min-width: 26.25em) {
+	.sh_panel_container .panel_title {
+		font-size: 1.2em;
+		padding: 11px 22px;
+	}
+}
+
+@media screen and (min-width: 36.25em) {
+	.healing_history_block .name {
+		float: none;
+		width: 210px;
+	}
+
+	.healing_history_block .time {
+		text-align: right;
+		float: none;
+	}
+
+	.healing_history_block .pic { width: 148px; }
+
+	.healing_history_block .pic, .healing_history_block .name, .healing_history_block .time {
+		padding: 11px;
+		font-size: 1.4em;
+	}
+	.sh_panel_container > div {
+		font-size: 1.8em;
+	}
+	.sh_panel_container label {
+		font-size: 0.7em;
+	}
+	#sh_img img {
+		height: 350px;
+	}
+	#sh_full_name {
+		font-size: 1.8em;
+	}
+	div#timer {
+		font-size: 4em;
+	}
+}
+
+.invite_button {
+	position: relative;
+	top: 7px;
+	margin-right: 14px;
+	cursor: pointer;
+}
+
+.send_healing_to_inputs {
+	display: block !important;
+	text-align: left;
+}
+
+.content_page, #history, .back {
+	display: none;
+}
+
+.page_link {
+	padding: 0 5px;
+}
+
+.facebook_share_links {
+	margin: 6px 0 18px;
+}
+
+#phrase {
+	font-size: 2em;
+	margin: 10px;
+	font-style: italic;
+	color: #2B4B76;
+}

@@ -1,0 +1,14 @@
+Hi {{ to_user_name }},
+
+{{ from_user_name }} has requested an Appointment with you.
+
+{{ appointment.plain_text }}
+
+{% if client_info %}Client Information:
+{{ client_info }}
+{% endif %}
+{% if appointments_confirm_url %}
+To Confirm this Appointment, {% with appointments_confirm_url as link %}{% include "email_link.html" %}{% endwith %}
+
+To Decline this Appointment, {% with appointments_decline_url as link %}{% include "email_link.html" %}{% endwith %}
+{% endif %}

@@ -1,0 +1,5 @@
+{% for req in my_requests %}
+	<div>
+		{{ req.title }} <a href="{% url 'edit_healing_request' req.id %}" style="float: right;" class="look_like_link">edit</a>
+	</div>
+{% endfor %}

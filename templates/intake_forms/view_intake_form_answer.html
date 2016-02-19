@@ -1,0 +1,7 @@
+<h3 class="nav_icon nav_intake">{{ client }}</h3>
+
+{% for key in qa %}
+	<p><strong>{{ key.question }}</strong></p>
+	<p style="margin-left: 10px;">{{ key.answer }}</p>
+{% endfor %}
+

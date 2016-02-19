@@ -1,0 +1,125 @@
+<div id="booking_dialog" class="calendar_dialog">
+	<form method="post" >
+		<input type="hidden" name="timeslot" />
+		<input type="hidden" name="start" />
+		<ul>
+			{#			<li><span id="dialog_healer"></span></li>#}
+			<li><span id="dialog_treatment"></span></li>
+			<li><span id="dialog_date"></span></li>
+			<li><span id="dialog_time"></span></li>
+			{% if locations|length > 0 %}<li>&nbsp;</li><li><span id="dialog_location"></span></li>{% endif %}
+		</ul>
+		<hr>
+		{% if healer.is_redeem_code_input_available %}
+			<label for="discount_code">Redeem Code:</label> <input id="discount_code" class="discount_code" type="text" name="discount_code" maxlength="10" style="width: 148px;" />
+			<br/>
+		{% endif %}
+		{% if healer.booking_optional_message_allowed %}
+			<textarea name="note" rows="5" style="width: 90%;" placeholder="Optional Message"></textarea>
+		{% endif %}
+		{% if healer.cancellation_policy %}
+			<div style="white-space: nowrap;">
+				<input type="checkbox" id="cancellation_policy_checkbox" onchange="$('#cancellation_policy_enforce').hide();">
+				<label for="cancellation_policy_checkbox">
+					I agree to the <span class="look_like_link fbTooltip" style="padding-right: 8px;"
+					                     data-fb-tooltip="source:#cancellation_policy_text attachToHost:true placement:right zindex:11111131 width:280 showOuterClose:true"
+						>Cancellation Policy</span>
+					<span style="display: none;" id="cancellation_policy_text">{{ healer.cancellation_policy }}</span>
+					<script type="text/javascript">
+						Cancellation_Policy = true;
+					</script>
+				</label>
+			</div>
+			<div id="cancellation_policy_enforce">Please agree to the cancellation policy before booking</div>
+		{% endif %}
+	</form>
+</div>
+
+<div id="new_client_or_login_dialog" class="calendar_dialog">
+	<div class="highlight_button extra_padding" onclick="hs_dialog('close'); hs_dialog($('#new_client_dialog'), 'open');">
+		<img width="64" height="64" src="{{ STATIC_URL }}healersource/img/user.png">
+		<br>
+		<strong>I'm a New Client</strong>
+	</div>
+	<div class="highlight_button extra_padding" onclick="hs_dialog('close'); hs_dialog($('#login_dialog'), 'open');">
+		<img width="64" height="64" src="{{ STATIC_URL }}healersource/img/hs_logo_no_text.png">
+		<br>
+		<strong>I have a HealerSource Account</strong>
+	</div>
+</div>
+
+<div id="new_client_dialog" class="calendar_dialog calendar_dialog_list">
+	<form method="post" id="new_user_form" accept-charset="utf-8">
+		{#		<div style="color: #888; float: right; margin: 14px 0 0;"><em>Have an account? <a href="#" onclick="openLoginDialog()">Log In &raquo;</a></em></div>#}
+		{#		<h1>New Client</h1>#}
+		{#		<a onclick="openLoginDialog()" class="login" style="text-align: right; display: block;">Log In</a>#}
+		{#		<table>{{ new_user_form.as_table }}</table>#}
+		<table>
+			<tr><td>Name: </td><td class="new_client_dlg_name">{{ new_user_form.first_name }} {{ new_user_form.last_name }}</td></tr>
+			<tr><td>Email: </td><td>{{ new_user_form.email }}</td></tr>
+			<tr><td>Phone: </td><td>{{ new_user_form.phone }}</td></tr>
+		</table>
+		<hr />
+		<table id="new_client_dialog_table">
+			<tr><td>Create a Password: </td><td>{{ new_user_form.password1 }}</td></tr>
+			<tr><td>Password (again): </td><td>{{ new_user_form.password2 }}</td></tr>
+			<tr><td>Security Verification: </td><td>{{ new_user_form.security_verification }}</td></tr>
+
+			<tr><td colspan="2" style="color: #555; font-style: italic;text-align: right; font-size: 13px;">A HealerSource account will be created for you.</td> </tr>
+			{#				<td><label for="id_first_name">First Name:</label></td><td><input id="id_first_name" type="text" name="first_name" maxlength="30"></td></tr>#}
+			{#			<tr><th><label for="id_last_name">Last Name:</label></th><td><input id="id_last_name" type="text" name="last_name" maxlength="30"></td></tr>#}
+			{#			<tr><th><label for="id_email">E-mail:</label></th><td><input type="text" name="email" id="id_email"></td></tr>#}
+			{#			<tr><th><label for="id_password1">Password:</label></th><td><input type="password" name="password1" id="id_password1"></td></tr>#}
+			{#			<tr><th><label for="id_password2">Password (again):</label></th><td><input type="password" name="password2" id="id_password2"></td></tr>#}
+			{#			<tr><th><label for="id_phone">Phone Number:</label></th><td><input id="id_phone" maxlength="30" type="text" name="phone" size="56"></td></tr>#}
+			{#			<tr><th><label for="id_note">Optional Message:</label></th><td><textarea id="id_note" rows="5" cols="40" name="note"></textarea></td></tr>#}
+			{#			<tr><th><label for="id_captcha_1">Security Verification:</label></th><td><img src="/captcha/image/a3332b07e1c8f37f52397803ce1f572005c0e80f/" alt="captcha" class="captcha"> <input type="hidden" name="captcha_0" value="a3332b07e1c8f37f52397803ce1f572005c0e80f" id="id_captcha_0"> <input type="text" name="captcha_1" id="id_captcha_1" placeholder="Type the letters in the image above"><input type="hidden" name="confirmation_key" id="id_confirmation_key"></td>#}
+		</table>
+		<input type="hidden" name="timeslot" value="49">
+		<input type="hidden" name="start" value="1341573300000">
+		<div id="new_user_errors" class="form-errors ui-helper-hidden">
+			<ul id="new_user_error_list"></ul>
+		</div>
+	</form>
+	<script type="text/javascript">$('#id_security_verification_1').attr('placeholder','Type the letters in the image above')</script>
+</div>
+
+<div id="login_dialog" class="calendar_dialog calendar_dialog_list">
+	<p id="login_dialog_failure_msg" class="single_button warning_button" style="display: none;">Login Failed.. Please try again or <br><a href="{% url 'acct_passwd_reset' %}" target="_blank">Forgot Password?</a></p>
+	<form method="post" id="login_form" accept-charset="utf-8">
+		{{ login_form.as_ul }}
+		<a href="{% url 'acct_passwd_reset' %}" target="_blank"><i>&raquo; Forgot Password?</i></a>
+		<input type="hidden" name="timeslot" />
+		<input type="hidden" name="start" />
+		<div id="login_errors" class="form-errors ui-helper-hidden">
+			<div id="login_error_list"></div>
+		</div>
+		<p><hr style="float:left; width:32%;" /><div style="float:left; padding: 0 8px;">Or</div><hr style="float:left; width:42%;" /></p>
+		<div class="clearfix"></div><br />
+		<div style="text-align:center; height: 25px;">
+			<fb:login-button size="large" onlogin="on_login_embed()" data-scope="{{ facebook_scopes }}">Log in with Facebook</fb:login-button>
+		</div>
+	</form>
+</div>
+
+<div id="confirm_email" class="calendar_dialog calendar_dialog_list">
+	<div>Please check your mailbox, confirm your email address and then continue booking.</div>
+</div>
+
+<div id="appointment_details" class="calendar_dialog">
+	<a href="javascript:void(0);" class="tooltip_x" onclick="fb.end();">x</a>
+	<ul>
+		{#			<li><span id="dialog_healer"></span></li>#}
+		<li><span id="tooltip_treatment"></span></li>
+		<li><span id="tooltip_date"></span></li>
+		<li><span id="tooltip_time"></span></li>
+		{% if locations|length > 0 %}<li>&nbsp;</li><li><span id="tooltip_location"></span></li>{% endif %}
+	</ul>
+	<p id="tooltip_book_now" style="margin-left: 8px;">
+		<span class="nav_icon nav_schedule single_button" onclick="show_booking_dialog($('#tooltip_book_now')[0].calEvent)"><a>Book Now &raquo;&nbsp;</a></span>
+	</p>
+	<div id="tooltip_contact" class="single_button">
+		<u>Contact Me to Book</u>
+		{% include "healers/healer_contact_info.html" %}
+	</div>
+</div>

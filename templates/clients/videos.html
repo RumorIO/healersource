@@ -1,0 +1,47 @@
+{% extends "site_base.html" %}
+{% load pagination_tags %}
+
+{% block head_title %}Videos{% endblock %}
+
+{% block extra_head %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}infinite_scroll/css/jquery.ias.css" />
+    <script type="text/javascript" src="{{ STATIC_URL }}infinite_scroll/jquery-ias.js"></script>
+    <script>
+    $(function() {
+        $.ias({
+            container: '.client_videos',
+            item: '.video',
+            pagination: '.pagination',
+            next: '.pagination .next',
+            loader: '<img src="{{ STATIC_URL }}infinite_scroll/images/loader.gif"/>'
+        });
+    });
+    </script>
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_videos">Videos</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "blog/blog_nav.html" %}
+	{% include 'clients/new_youtube_video_form.html' %}
+	<div class="clearfix">
+	{% autopaginate videos 7 %}
+
+		<div class="client_videos">
+		{% for video in videos %}
+		<div class="video" data-vid='{{ video.id }}'>
+				<span>{{ video.date_added|date:"m/d/Y" }} | <a href="{% url 'video_remove' video.id %}">remove</a></span>
+				<h3>{{ video.title}}</h3>
+				<p>{{ video.embed }}</p>
+			</div>
+		{% endfor %}
+		</div>
+
+		<p>{% paginate %}</p>
+
+	</div>
+
+
+
+{% endblock %}

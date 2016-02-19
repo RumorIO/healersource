@@ -1,0 +1,17 @@
+{#<span>#}
+{#	<a href="{% url modality_description modality.id %}" class="modality_link" style="{{ modality.visible|yesno:' ,color: #5f5f5f;' }}">#}
+{#		&bull;&nbsp;{{ modality.title }}#}
+{#	</a>#}
+{#</span>#}
+{#<br />#}
+
+<span style="{{ modality.visible|yesno:' ,color: #5f5f5f;' }} padding-right: 99px;">
+	&bull;&nbsp;{{ modality.title }}
+	<span style="display: none;">
+		&nbsp;&nbsp;-&nbsp;&nbsp;
+		<a href="{% url 'modality_description' modality.id %}" class="modality_link floatbox" data-fb-options="type:ajax width:800"
+					>description</a>&nbsp;|&nbsp;
+		<a href="{% url 'modality_providers' modality.id %}" class="find_providers_link floatbox" data-fb-options="type:ajax">find providers</a>
+	</span>
+</span>&nbsp;
+<br />

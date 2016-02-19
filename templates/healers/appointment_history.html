@@ -1,0 +1,68 @@
+{% extends "site_base.html" %}
+
+{% load healer_tags %}
+{% load compress %}
+
+{% block head_title %}Appointment History{% if client %} for {{ client }}{% endif %}{% endblock %}
+
+{% block extra_head %}
+	{# {% jquery_ui_css_import %} #}
+	{# {% jquery_ui_js_import %} #}
+	{% compress css %}
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+	{% endcompress %}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/appointment_history.js"></script>
+		<script>
+			var url_appointment_delete = '{% url 'appointment_delete' %}';
+			var current_url = '{{ request.path }}';
+		</script>
+	{% endcompress %}
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_appointments">Appointment History{% if client %} for {{ client }}{% endif %}</h1>{% endblock %}
+
+{% block body %}
+
+	{% if appointment_list %}
+		{% if have_unconfirmed_appts %}<p class="single_button">You will receive an email when your appointment(s) are confirmed.</p>{% endif %}
+		<table class="headings hide_overflow">
+			<th>Date</th>
+			<th>Time</th>
+			{% if is_wellness_center %}<th>Provider</th>{% endif %}
+			<th>Treatment</th>
+			<th>Client</th>
+			<th>Location</th>
+			<th>Delete</th>
+			{% regroup appointment_list by week as week_list%}
+			{% for appts in week_list %}
+				{% if forloop.counter0 %}<tr><td colspan="4"><hr/></td></tr>{% endif %}
+
+				{% for appt in appts.list %}
+					<tr>
+						<td style="padding-right: 6px; width: 0;">{{ appt.start|date:"l, M j o" }}</td>
+						<td>
+							{{ appt.start|date:"g:i" }} - {{ appt.end|date:"g:i a" }} {% if appt.repeat_period %}<sup>*</sup>{% endif %}
+							{% if not appt.confirmed %}<span style="color: red;">(unconfirmed)</span>{% endif %}
+						</td>
+						{% if is_wellness_center %}<td>{{ appt.healer }}</td>{% endif %}
+						<td class="hide_overflow">{{ appt.treatment_type_name }}</td>
+						<td class="hide_overflow"><a href="{% url 'appointment_history_user' appt.client.user.username  %}">{{ appt.client }}</a></td>
+						<td><a href="{% url 'location_detail' appt.id %}" class="location_detail floatbox" data-fb-options="type:ajax">{{ appt.location.title }}</a></td>
+						<td><a href="javascript:confirm_appointment_delete({{ appt.id }}, '{{ appt.start|date:'U' }}')">x</a></td>
+					</tr>
+				{% endfor %}
+			{% endfor %}
+		</table>
+		<p>* Repeating</p>
+	{% else %}
+		<p class="message">
+{#		{% if is_healer %}#}
+			Unfortunately no Appointments within the last 30 days.
+{#		{% else %}#}
+{#			No Appointments.#}
+{#		{% endif %}#}
+		</p>
+	{% endif %}
+
+{% endblock %}

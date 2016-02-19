@@ -1,0 +1,38 @@
+{% load client_tags account_tags %}
+
+<div class="recommendation_box grey_box">
+	<div class="friend_box">
+		{% if user.private %}
+			<div class="avatar">{% avatar 0 94 %}</div>
+			private
+		{% else %}
+			<a href="{% url 'healer_info' user.username %}" class='floatbox' data-fb-options="type:ajax width:765">
+				<div class="avatar">{% if avatar_size %}{% avatar user avatar_size %}{% else %}{% avatar user 94 %}{% endif %}</div>
+				<u>{{ user.client  }}</u>
+			</a>
+		{% endif %}
+	</div>
+	<div class="recommendation_info">
+        {% if to_me %}
+            {% if user.me_refered %}
+        <strong class="icon_recommend">Referral</strong>
+            {% else %}
+        <a class="icon_recommend" href="{% url 'friend_add' friend_type user.id %}">Add Referral</a>
+            {% endif %}
+        {% else %}
+        <a class="floatbox" href="{% url 'referral_dlg' user.username 'client' %}" data-fb-options="width:470 ">Refer a Client &raquo;</a>
+        {% endif %}
+
+		<hr>
+        {% if not to_me %}
+		{{ user.referrals_to }} Clients Referred<br>
+		{{ user.appointments_to }} Appointments<br>
+        {% else %}
+		{{ user.referrals_from }} Clients Referred<br>
+		{{ user.appointments_from }} Appointments From
+        {% endif %}
+	</div>
+
+	<div class="clearfix"></div>
+
+</div>

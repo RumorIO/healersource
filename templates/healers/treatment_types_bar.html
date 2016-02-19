@@ -1,0 +1,39 @@
+{% if treatment_lengths or provider_mode %}
+	<div style="margin-bottom: 4px;"> {# Treatment Type Table #}
+		<div class="treatment_label">{% if provider_mode %}2{% else %}1{% endif %}. Select Treatment:</div>
+		<div class="highlight_container button_container" id="treatment_types">
+			{% if treatment_length_bar %}
+				{% for treatment in treatment_types %}
+					{% include "healers/treatment_type_button.html" with treatment_title=treatment %}
+				{% endfor %}
+				</div></div> {# END Treatment Type Table #}
+				<div class="clearfix"></div>
+				<div id="treatment_type_select_length" style="display: none; margin-bottom: 4px"><hr />
+					<div class="treatment_label">{% if provider_mode %}3{% else %}2{% endif %}. Select Length:</div>
+					<div class="highlight_container button_container" id="treatment_length"></div>
+				</div>
+			{% else %}
+				{% for treatment in treatment_lengths %}
+					{% include "healers/treatment_type_button.html" with treatment_title=treatment.full_title %}
+				{% endfor %}
+				</div></div> {# END Treatment Type Table #}
+					<div class="clearfix"></div>
+			{% endif %}
+		<div id="locations_select" style="display: none;" class="highlight_container button_container">
+			<hr />
+			<div class="treatment_label">
+				{% if provider_mode %}
+					{% if treatment_length_bar %}4{% else %}3{% endif %}.
+				{% else %}
+					{% if treatment_length_bar %}3{% else %}2{% endif %}.
+				{% endif %}
+				Select Location:
+			</div>
+			{% for location in locations_objects %}
+				{% include "healers/location_button.html" %}
+			{% endfor %}
+		</div>
+		<p id="no_availability_message" class="hidden single_button">Sorry, no availability right now. Please check back again later...</p>
+	<div class="clearfix"></div>
+	{% include "healers/location_map_include.html" %}
+{% endif %}

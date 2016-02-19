@@ -1,0 +1,25 @@
+{% load client_tags healer_tags %}
+<div class="avatar" style="border-bottom: none;">
+	{% with user|client_gallery as c_gallery %}
+		{% if show_edit %}
+			<a class="show_gallery"
+			{% if is_wellness_center %}
+				href="{% url 'avatar_change' healer.user.username %}"
+			{% else %}
+				href="{% url 'avatar_change' %}"
+			{% endif %}>
+		{% else %}
+			<a class="floatbox show_gallery" data-fb-options="type:ajax">
+		{% endif %}
+		{% avatar user 148 %}
+
+			{% if c_gallery|length > 1 %}
+				<div class="avatar_play"></div>
+			{% endif %}
+			</a>
+
+		{% if show_edit %}<a {% if is_wellness_center %} href="{% url 'avatar_change' healer.user.username %}" class="message" {% else %} href="{% url 'avatar_change' %}" class="message" {% endif %} >&laquo; edit {% if is_wellness_center or is_healer %}gallery{% else %}photo{% endif %} &raquo;</a><hr style="width: 90%;" />{% endif %}
+
+		{% include 'clients/gallery.html' %}
+	{% endwith %}
+</div>

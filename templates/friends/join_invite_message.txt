@@ -1,0 +1,12 @@
+{% autoescape off %}{% load i18n %}{% load account_tags %}{% with user.client as user_name %}
+{{ message }}
+{% block accept_message %}
+To accept this {% block accept %}invitation{% endblock %}, {% with accept_url as link %}{% include "email_link.html" %}{% endwith %}
+{% endblock %}
+
+To see {{ user_name }}'s profile, {% with user.client.healer.get_full_url as link %}{% include "email_link.html" %}{% endwith %}
+
+{% if review_url %}To write a review for {{ user_name }}, {% with review_url as link %}{% include "email_link.html" %}{% endwith %}{% endif %}{% endwith %}
+
+{% endautoescape %}
+

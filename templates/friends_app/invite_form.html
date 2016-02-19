@@ -1,0 +1,15 @@
+{% load uni_form_tags %}
+{% load i18n %}
+{% load account_tags %}
+
+<form class="uniForm" id="invite_form" method="POST"
+	action="{% ifequal invite_type "client" %} {% url 'invite_to_join' %} {% else %} {% url 'invite_healer' %} {% endifequal %}">
+    {% csrf_token %}
+    <fieldset>
+        {{ join_request_form|as_uni_form }}
+        <div class="form_block">
+            <input type="submit" value="Send Invitation" />
+        </div>
+{#		Import contacts from <a href="{% url import_google_contacts %}">Google</a>.#}
+    </fieldset>
+</form>

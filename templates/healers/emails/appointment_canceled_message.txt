@@ -1,0 +1,9 @@
+Your Appointment with {{ from_user_name }} has been canceled.
+
+{{ appointment.plain_text }}
+
+{{ appointment.client.contact_info }}
+{% if healer_link %}
+To schedule another appointment, click here:
+{{ healer_link }}
+{% endif %}

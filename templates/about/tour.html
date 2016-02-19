@@ -1,0 +1,217 @@
+{% extends 'base_new.html' %}
+{% load compress %}
+{% load jquery_validation %}
+
+{% block head_title %}Tour{% endblock %}
+
+{% block extra_head_last %}
+	{{ block.super }}
+	{% compress css %}
+		<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}healersource/css/home.css" />
+	{% endcompress %}
+	{% include_validation %}
+{% endblock %}
+{% block inner_content %}
+	<div id="tour_benefits" class="content rotate">
+
+		<div class="panel solo_panel big_panel" id="tour_page_title" style="margin: 0 0 10px;"><div class="panel_title">Provider Tour</div></div>
+
+		<div class="two_panel">
+			<div class="grey_box" id="is_this_how">
+				<img src="{{ STATIC_URL }}healersource/img/tour/bulletin_board.jpg" />
+				<h4>Is This How You Promote Your Practice?</h4>
+				<div style="
+    text-align: center;
+    letter-spacing: 0.1em;
+    color: #6C71AD;
+    font-style: italic;
+    margin-top: 13px;
+">(hint: we can help)</div>
+				<br class="clearfix">
+				<hr style="margin: 16px 0 12px 0;" />
+				<div style="font-weight: 600; font-size: 1.2em; margin: 8px;">
+					Our Mission at HealerSource is to create the world's largest directory of Holistic Providers and Wellness Centers - so new clients can find you easily & you can reach more people.
+					<br><br>
+					We built a state-of-the-art suite of business tools so you can forget about all the details and focus on your craft and your clients.
+					<br><br>
+					Together lets leverage the collective power of our community and bring healing to the mainstream!
+					<br><br>
+					<a href="{% url 'signup' %}">Create your free profile today - click here &raquo;</a>
+				</div>
+
+			</div>
+			<div class="right grey_box">
+				<a href="{{ STATIC_URL }}healersource/img/tour/tour_schedule_preview_big.gif" class="floatbox"><img src="{{ STATIC_URL }}healersource/img/tour/schedule.jpg" style="height: 128px;" /></a>
+				<h4>Schedule Online - for Free!</h4>
+				<hr />
+				{#				We interviewed dozens of practitioners to find out what is important to you. #}
+				HealerSource is the <b>only</b> online scheduling system where your Clients can see your week schedule all at once. And we're making it totally free for you - so you can help more people and spend more time doing what you love!
+				<p><u>Here are all the benefits you'll get when you sign up:</u></p>
+				{% include 'about/tour_schedule_benefits_list.html' %}
+			</div>
+			<div class="right grey_box">
+				<img src="{{ STATIC_URL }}healersource/img/tour/mobile.jpg" />
+				<div >
+					<h4>Designed for Mobile</h4>
+					<hr />
+					HealerSource is built with responsive design from the ground-up to give you the optimum experience on your mobile phone or tablet.
+					<p>Schedule on the go!</p>
+				</div>
+			</div>
+			<div class="left grey_box">
+				<img src="{{ STATIC_URL }}healersource/img/tour/intake.gif" />
+				<div >
+					<h4>Intake Forms</h4>
+					<hr />
+					Ever wish you could start a first session on time instead of spending the first 45 minutes figuring out the basics? Now you can! Just send your clients a link to your Intake Form and they can fill it out online ahead of time.
+
+				</div>
+			</div>
+			<div class="right grey_box">
+				<img src="{{ STATIC_URL }}healersource/img/tour/notes.gif" />
+				<div >
+					<h4>SOAP Notes</h4>
+					<hr />
+					When you're with a client taking notes, you want to focus on them and not your software.
+					<p>HealerSource Notes get out of your way - they're lightning-fast and super easy to use.</p>
+					<p><a href="{% url 'landing_page_notes' %}" style="font-style: italic; font-weight: bold; font-size: 1.2em;">Learn More about our SOAP Notes &raquo;</a></p>
+				</div>
+			</div>
+		</div>
+
+		{#	~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ #}
+
+		<div class="two_panel">
+			<div class="left grey_box">
+				<img src="{{ STATIC_URL }}healersource/img/tour/clients.jpg" style="height: 112px;" />
+				<h4>Get More Clients</h4>
+				<hr />
+				When you sign up with HealerSource, you'll automatically be registered with all the major search engines so new clients can find you easily. Leverage the power of our growing user base and let us do the marketing for you!
+			</div>
+
+			<div class="right grey_box">
+				<img src="{{ STATIC_URL }}healersource/img/tour/profile.jpg" style="height: 94px;" />
+				<h4>Professional Profile in Minutes</h4>
+				<hr />
+				With our easy-to-use profile editor, you'll create a beautiful personal page in under 5 minutes. List all your specialties, link to your social networks, post articles to your built-in blog, add videos, and much more.
+			</div>
+
+			<div class="left grey_box">
+				<h4>Wellness Center & Yoga Studio Management</h4>
+				<hr />
+				<div style="float: left; margin-right: 7px;">
+					<img src="{{ STATIC_URL }}healersource/img/tour/spa_massage.jpg" style="display: inline-block; margin-bottom: 8px;" />
+					<br>
+					<img src="{{ STATIC_URL }}healersource/img/tour/yoga.jpg" style="display: inline-block;" />
+				</div>
+				We've created the world's <span style="font-weight: bold;">most user-friendly</span> scheduling system for Wellness Centers and Spas. Don't believe us?
+				<p><i>Try it out for yourself!</i></p>
+				<p>Right now we're also busy building an industry-leading platform for Yoga Studios.</p>
+				<p>Be the first to experience it - just <a href="" class="contact" title="Contact HealerSource">click here</a> to <a href="" class="contact" title="Yoga Studio Management">Contact Us</a>.</p>
+			</div>
+
+			<div class="right grey_box">
+				<div id="tour_benefits_cc">
+					<img src="{{ STATIC_URL }}healersource/img/tour/cc/mc.gif" />
+					<br>
+					<img src="{{ STATIC_URL }}healersource/img/tour/cc/visa.gif" />
+					<br>
+					<img src="{{ STATIC_URL }}healersource/img/tour/cc/amex.gif" />
+					<br>
+					<img src="{{ STATIC_URL }}healersource/img/tour/cc/discover.gif" />
+				</div>
+				<h4>Accept Credit Cards</h4>
+				<hr />
+				Yes we know cash is king. But sometimes you get that one client who wants to pay in plastic. And the customer is always right.. Right?
+				<p>HealerSource makes everything easy - you can capture your clients cards when they book online, and then charge the balance when they arrive at your office. Or you can require the full amount upfront - its up to you! You can also charge payments manually at any time.
+				</p><p>
+				Repeat customers are a breeze.. HealerSource saves your clients' card information securely on Stripe so you never have to enter a card twice.</p>
+			</div>
+
+			<div class="left grey_box">
+				<img src="{{ STATIC_URL }}healersource/img/tour/embed.jpg" style="height: 118px;" />
+				<h4>Embed Your Schedule</h4>
+				<hr />
+				HealerSource is the only online scheduling system that lets you embed your schedule directly into your website. That means your Clients get a completely seamless experience when booking from your site. <p>No buttons or confusing links to external pages, just <em>your</em> calendar on <em>your</em> site.</p>
+				<p><u>Click Below to Visit a Live Site:</u></p>
+				<div class="friend_box" >
+					<a href="http://eftwithlucie.com/schedule/" target="_blank">
+						<img src="{{ STATIC_URL }}healersource/img/tour/eft_with_lucie.jpg" style="height: 100px;" /><br />
+						<u>EFT With Lucie</u>
+					</a>
+				</div>
+				<div class="friend_box" >
+					<a href="http://www.chironenergymedicine.com/html/calendar.html" target="_blank">
+						<img src="{{ STATIC_URL }}healersource/img/tour/carolyn_osborn.jpg" style="height: 100px;" /><br />
+						<u>Carolyn Osborn</u>
+					</a>
+				</div>
+				<div class="friend_box" style="margin-right: 0;" >
+					<a href="http://angelaid4all.magix.net/index_3.htm" target="_blank">
+						<img src="{{ STATIC_URL }}healersource/img/tour/amy_christner.jpg" style="height: 100px;" /><br />
+						<u>Amy Christner</u>
+					</a>
+				</div>
+			</div>
+
+			<div class="left grey_box">
+				<img src="{{ STATIC_URL }}healersource/img/tour/gift.png" style="height: 123px; border: 0;" />
+				<h4>Gift Certificates</h4>
+				<hr />
+				Sell Gift Certificates right from your profile page. Your clients will get a pdf to print out, plus a special code to use when booking online. You also get a list of all the gift certificates you've sold - so you never have to deal with another lost piece of paper again.
+			</div>
+
+			<div class="right grey_box">
+				<img src="{{ STATIC_URL }}healersource/img/tour/recommend.jpg" style="height: 130px; border: none;" />
+				<h4>Track Referrals</h4>
+				<hr />
+				There's nothing quite like a personal recommendation for bringing in New Clients. We make it easy to build a referral network by giving you a dedicated space to recommend your colleagues and friends - right on your profile page.
+				<p>Then you can send and receive referrals right through our easy-to-use interface. HealerSource keeps track of all the clients you send and receive from other providers.</p>
+			</div>
+
+			<div class="left grey_box">
+				<img src="{{ STATIC_URL }}healersource/img/tour/unknown.jpg" style="height: 100px;" />
+				<div>
+					<h4>Screen New Clients</h4>
+					<hr />
+					We know that privacy is important to you and that you're picky about your clients. That's why we let you screen all of your New Clients before they end up on your Client List. <p>We also make sure to hide all of your sensitive contact information from prying eyes. You can even hide your profile completely from public view so that only your clients can see it.</p>
+				</div>
+			</div>
+			<div class="right grey_box">
+				<div style="float: right; margin-left: 30px;">
+					<img src="{{ STATIC_URL }}healersource/img/tour/fb.jpg" style="height: 50px; display: inline-block; margin-bottom: 8px;" />
+					<br>
+					<img src="{{ STATIC_URL }}healersource/img/tour/gmail.jpg" style="height: 50px; display: inline-block;" />
+				</div>
+				<div>
+					<h4>Import Existing Clients</h4>
+					<hr />
+					Getting started with HealerSource is easy! Import your contacts from Facebook and Gmail so you can quickly invite all your current clients and friends. <p style="margin-bottom: 3px;">Unlike other sites, we respect your confidentiality. We <strong>never</strong> send mass emails. <em>You</em> pick and choose who to invite individually.</p>
+				</div>
+			</div>
+			<div class="grey_box">
+				<div>
+					<h4>Get Real Phone Apps</h4>
+					<hr />
+					<a href="https://itunes.apple.com/us/app/healersource/id966154338?ls=1&mt=8" target="_blank"><img src="{{ STATIC_URL }}healersource/img/landing/Available_on_the_App_Store_black-sm.png" alt="Available on the App Store" style="border: 0; "></a>
+					<a href="https://play.google.com/store/apps/details?id=com.healersource.www" target="_blank"><img src="{{ STATIC_URL }}healersource/img/landing/google-play-logo-sm.png" alt="Google Play" style="border: 0; "></a>
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<hr style="margin: 18px;">
+
+		<div id="tour_signup">
+			{% if not request.user.is_authenticated %}
+				{% include 'account/signup_content.html' %}
+			{% endif %}
+		</div>
+
+	</div>
+{% endblock %}
+
+{% block extra_body %}
+	{% include 'account/signup_content_additional.html' with signup_form=client_signup_form %}
+{% endblock %}

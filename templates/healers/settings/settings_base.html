@@ -1,0 +1,115 @@
+{% extends "site_base.html" %}
+
+{% load compress %}
+
+{% block extra_head %}
+	<script>
+		var current_page = '{{ request.build_absolute_uri }}';
+		var is_wellness_center = {% if is_wellness_center %} true {% else %} false {% endif %};
+		// var username = '{{ username }}';
+		// var names = {'{{ user.username }}': '{{ user.client }}'};
+		//  for healer in healers_in_wcenter_with_schedule_perm
+		// 	names['{{ healer.user.username }}'] = '{{ healer.user.client }}';
+		//  endfor
+	</script>
+
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/settings.js"></script>
+	{% endcompress %}
+
+	{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/settings.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer.css" />
+	{% endcompress %}
+
+{% endblock %}
+
+{% block page_title %}
+	<h1 class="nav_icon nav_settings">
+		{% block title %}Settings{% endblock %}
+		{% for healer in healers_in_wcenter_with_schedule_perm %}
+			{% ifequal healer.user.username username %}
+				for {{ healer.user.client }}
+			{% endifequal %}
+		{% endfor %}
+	</h1>
+{% endblock %}
+
+{% block body %}
+
+	{% if is_schedule_settings %}
+		<ul id="schedule_menu" class="menu settings_menu">
+			<li class="highlight_container">
+			{% if healers_in_wcenter_with_schedule_perm %}
+				<span><a href="#" class="highlight_button">General &or;</a></span>
+				<ul class="submenu">
+					<li><span><a href="{% url 'schedule_settings' %}">{{ user.client }}</a></span></li>
+					{% for healer in healers_in_wcenter_with_schedule_perm %}
+						<li><span><a href="{% url 'schedule_settings' healer.user.username %}">{{ healer.user.client }}</a></span></li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<span><a href="{% url 'schedule_settings' %}" class="highlight_button">General</a></span>
+			{% endif %}
+			</li>
+		</ul>
+		<ul id="treatment_types_menu" class="menu settings_menu">
+			<li class="highlight_container">
+			{% if healers_in_wcenter_with_schedule_perm %}
+				<span><a href="#" class="highlight_button">Treatment Types &or;</a></span>
+				<ul class="submenu">
+					<li><span><a href="{% url 'treatment_types' %}">{{ user.client }}</a></span></li>
+					{% for healer in healers_in_wcenter_with_schedule_perm %}
+						<li><span><a href="{% url 'treatment_types' healer.user.username %}">{{ healer.user.client }}</a></span></li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<span><a href="{% url 'treatment_types' %}" class="highlight_button">Treatment Types</a></span>
+			{% endif %}
+			</li>
+		</ul>
+		<ul id="vacation_menu" class="menu settings_menu">
+			<li class="highlight_container">
+			{% if healers_in_wcenter_with_schedule_perm %}
+				<span><a href="#" class="highlight_button">Time Off &or;</a></span>
+				<ul class="submenu">
+					{% for healer in healers_in_wcenter_with_schedule_perm %}
+						<li><span><a href="{% url 'vacation' healer.user.username %}">{{ healer.user.client }}</a></span></li>
+					{% endfor %}
+				</ul>
+			{% else %}
+				<span><a href="{% url 'vacation' %}" class="highlight_button">Time Off</a></span>
+			{% endif %}
+			</li>
+		</ul>
+	{% else %}
+		<ul class="menu settings_menu">
+			<li class="highlight_container"><span><a href="{% url 'location' %}" class="highlight_button">Locations</a></span></li>
+		</ul>
+		<ul id="schedule_menu" class="menu settings_menu">
+			<li class="highlight_container">
+				<span><a href="#" class="highlight_button">Schedule Settings &or;</a></span>
+				{% include 'nav_left_schedule_settings.html' %}
+			</li>
+		</ul>
+		<ul class="menu settings_menu">
+			<li class="highlight_container"><span><a href="{% url 'account' %}" class="highlight_button">Account</a></span></li>
+		</ul>
+		{% if is_stripe_connect_beta_tester %}
+			<ul class="menu settings_menu">
+				<li class="highlight_container"><span><a href="{% url 'payments_settings' %}" class="highlight_button">Payments</a></span></li>
+			</ul>
+		{% endif %}
+	{% endif %}
+
+	<hr style="margin-bottom: 14px;">
+
+	<div id="settings_content">
+		{% block settings_content %}{% endblock %}
+	</div>
+	{% if is_wellness_center and healer and request.user.username != username %}
+		<br>
+		<a href="{% url 'schedule' healer.user.username %}">Go to {{ healer }}'s Schedule »</a>
+	{% endif %}
+
+{% endblock %}

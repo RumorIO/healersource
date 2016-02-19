@@ -1,0 +1,24 @@
+{% extends 'base_phonegap2.html' %}
+{% load compress %}
+
+{% block extra_head %}
+	<script>
+		$(function() {
+			$('.back_arrow_container').click(function(e) {
+				e.preventDefault();
+				back();
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block body %}
+	<div class="application2_container">
+		<a class="back_arrow_container" href="#"><div class="back_arrow"></div></a>
+		<div class="header_title">Do you want to receive Loving Kindness from others?</div>
+		<div class="header_logo_container"><a href="https://www.healersource.com" target="_blank"><div class="header_logo"></div></a></div>
+		<hr>
+		<p class="answer_link"><a href="signup0.html">Yes! I want to receive.</a></p>
+		<p class="answer_link"><a href="list.html">No Thanks, I'll just send good wishes outward</a></p>
+	</div>
+{% endblock %}

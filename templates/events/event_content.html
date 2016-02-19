@@ -1,0 +1,28 @@
+Type: {{ event.type }}<br>
+
+{% if event.photo and not without_photo %}{% include 'events/event_photo.html' %}<br>{% endif %}
+{% if event.description %}
+	Description:
+	{% if short %}
+		{{ event.description|truncatechars:600 }}
+	{% else %}
+		{{ event.description}}
+	{% endif %}
+	<br>
+{% endif %}
+{% if events.hosts %}
+	Hosts:
+	<ul>
+		{% for host in events.hosts.all %}
+			<li>{{ host }}</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+{% if event.location_dates.all.0.location %}
+	Location: {{ event.location_dates.all.0.location }}<br>
+{% endif %}
+{% if event.location_dates.all.0.start %}
+	Date:<br>
+	Start - {{ event.location_dates.all.0.start }}<br>
+	End - {{ event.location_dates.all.0.end }}<br>
+{% endif %}

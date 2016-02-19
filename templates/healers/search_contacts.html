@@ -1,0 +1,27 @@
+<div style="float: right;" id="search_contacts_container">
+	<span style="display: inline-block; height: 22px;" class="nav_icon nav_find_a_provider">Search Contacts</span>
+	<input type="text" placeholder="Name or Email" id="search_contacts" class="ui-autocomplete-input" style="width: 190px;" maxlength="75" />
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#search_contacts").val('');
+
+		$("#search_contacts").autocomplete({
+			source: url_autocomplete_contacts,
+			minLength: 2,
+			html: true,
+         autoFocus: true,
+			select: function(event, ui) {
+				if(ui.item.facebook_id)
+					sendFacebookInvite(ui.item.id, ui.item.facebook_id, '{{ user.client }}' {% if is_to_healer %}, "Refer To You"{% endif %});
+				else
+					inviteDialog(ui.item.email, {{ is_to_healer|yesno:"1,0" }});
+
+				$("#search_contacts").val('');
+
+				return false;
+			}
+		});
+	});
+</script>

@@ -1,0 +1,8 @@
+{% if friends %}
+	{% for user in friends %}
+		{% if box_template %}{% include box_template %}{% else %}{% include "healers/friend_box.html" %}{% endif %}
+		{% with 1 as table_divider %}{% include "healers/avatar_divider.html" %}{% endwith %}
+	{% endfor %}
+{% else %}
+	<p class="message">No {{ message }} Yet.</p>
+{% endif %}

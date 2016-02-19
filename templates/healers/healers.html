@@ -1,0 +1,23 @@
+{% extends "site_base.html" %}
+
+{% load i18n pagination_tags client_tags humanize account_tags %}
+
+{% block head_title %}{% blocktrans %}All Providers{% endblocktrans %}{% endblock %}
+
+{% block page_title %}<h1>All {% trans "Providers" %}</h1>{% endblock %}
+
+{% block body %}
+    {% if users %}
+        {% autopaginate users%}
+
+         {% for user in users %}
+            {% include "healers/friend_box.html" %}
+            {% include "healers/avatar_divider.html" %}
+         {% endfor %}
+
+        {% paginate %}
+
+       {% else %}
+           <p>No providers were found.</p>
+      {% endif %}
+{% endblock %}

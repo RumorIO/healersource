@@ -1,0 +1,31 @@
+	{% load healer_tags %}
+{% if healer.review_permission != healer.VISIBLE_DISABLED %}
+	{% with healer.reviews.all as reviews %}
+		{% if reviews %}
+			<div class="grey_box">
+				<h3 class="icon_star {% rating_star_css_class healer.ratings_average %}">{{ reviews|length }} Review{{ reviews|pluralize }}</h3>
+				<div class="short_reviews_ratings">
+					<a href="{% url 'review_list_popup' healer.user.username %}?tab_id=4" class="reviews_link floatbox" data-fb-options="type:ajax width:800 height:550" rel="nofollow">5 star</a><span class="rating_bar"><span style="width: {{ healer.ratings_5_star_perc }}%;"></span></span> {{ healer.ratings_5_star }}<br/>
+					<a href="{% url 'review_list_popup' healer.user.username %}?tab_id=3" class="reviews_link floatbox" data-fb-options="type:ajax width:800 height:550" rel="nofollow">4 star</a><span class="rating_bar"><span style="width: {{ healer.ratings_4_star_perc }}%;"></span></span> {{ healer.ratings_4_star }}<br/>
+					<a href="{% url 'review_list_popup' healer.user.username %}?tab_id=2" class="reviews_link floatbox" data-fb-options="type:ajax width:800 height:550" rel="nofollow">3 star</a><span class="rating_bar"><span style="width: {{ healer.ratings_3_star_perc }}%;"></span></span> {{ healer.ratings_3_star }}<br/>
+					<a href="{% url 'review_list_popup' healer.user.username %}?tab_id=1" class="reviews_link floatbox" data-fb-options="type:ajax width:800 height:550" rel="nofollow">2 star</a><span class="rating_bar"><span style="width: {{ healer.ratings_2_star_perc }}%;"></span></span> {{ healer.ratings_2_star }}<br/>
+					<a href="{% url 'review_list_popup' healer.user.username %}?tab_id=0" class="reviews_link floatbox" data-fb-options="type:ajax width:800 height:550" rel="nofollow">1 star</a><span class="rating_bar"><span style="width: {{ healer.ratings_1_star_perc }}%;"></span></span> {{ healer.ratings_1_star }}<br/>
+					 <br/>
+					{% include 'review/write_review_link.html' %}
+				</div>
+
+				<div class="short_reviews">
+					{% for review in reviews|slice:":4" %}
+						<div id="review_{{ review.id }}" class="review {% if reviews|length > 1 %}short_review {% cycle 'short_review_left' '' %}{% endif %}">
+						 <span class="icon_star {% rating_star_css_class review.rating %}"></span>	{{ review.review|truncatewords:50 }} {% if review.review|wordcount > 50 %}<a href="{% url 'review_list_popup' healer.user.username %}?id={{ review.id }}" class="floatbox" data-fb-options="type:ajax width:800 height:550">Read More &raquo;</a>{% endif %}
+							<div class="reviewer">- {{ review.reviewer.user.client|capfirst }} {{ review.date|date:"n/j/y" }}</div>
+						</div>
+					{% endfor %}
+				</div>
+
+				<div class="center clearfix" style="margin: 0 12px 6px 0;"><a href="{% url 'review_list_popup' healer.user.username %}" class="reviews_link floatbox" data-fb-options="type:ajax width:800 height:550" style="font-weight: bold; font-style: italic;">&nbsp;Read All Reviews &raquo;</a></div>
+			</div>
+			<hr>
+		{% endif %}
+	{% endwith %}
+{% endif %}

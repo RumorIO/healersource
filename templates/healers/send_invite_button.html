@@ -1,0 +1,2 @@
+<a style="float: {{ send_invite_button_float }}; " id="send_invite_button"
+	class="nav_icon nav_inbox highlight_button {% if not request.is_mobile %}floatbox{% endif %}" href="{% if invite_button_url %}{{ invite_button_url }}{% else %}{% url 'invite_postcard' %}{% if invite_provider %}?provider=1{% endif %}{% endif %}" data-fb-options="width:710px">{{ send_invite_button_text }}</a>

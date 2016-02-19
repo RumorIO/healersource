@@ -1,0 +1,12 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}
+	{{ feature }}
+{% endblock %}
+
+{% block page_title %}<h1>{{ feature }}</h1>{% endblock %}
+
+{% block body %}
+	<p class="panel single_button message">You must confirm your email before using {{ feature }}. </p>
+	<p>Check your Inbox and Spam folders, or <a href="{% url 'resend_confirmation_to_user' %}">Resend the Confirmation Email &raquo;</a></p>
+{% endblock %}

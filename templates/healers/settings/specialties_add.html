@@ -1,0 +1,94 @@
+<a name="specialties_anchor"></a>
+<div>{% include "healers/settings/specialties_modalities_list.html" %}</div>
+
+<input type="text" id="modality_input" placeholder='Try Typing "Massage"' style="display: {% if modalities|length < max_modalities %}inline{% else %}none{% endif %};" />
+
+<br />
+<br />
+
+or <a href="{% url 'modailty_list' %}?fb" class="floatbox" style="font-style: italic;" target="_blank">Browse All Specialties &raquo;</a>
+{% if show_no_modalities_warning %}<div id="specialties_hint" {% if modalities %}style="display: none;"{% endif %}><div class="warning_button">Important: Enter your Specialties to show up in Search Results</div></div>{% endif %}
+<script type="text/javascript">
+	Modalities_Count = {{ modalities|length }};
+	var url_add_healer = "{% url 'modality_add_healer' %}";
+	var url_remove_healer = "{% url 'modality_remove_healer' %}";
+
+	$(function() {
+		function addModalityCallback(result) {
+			if (!result)
+				showError("Adding Specialty Failed. Please Try Again.");
+			else {
+				$('<div id="modality_'+result.id+'"><span class="modality_title">'+result.title+'</span> | <a href="javascript:void(0);" onclick="removeModality('+result.id+')">remove</a></div>').insertBefore('#modality_input');
+
+				Modalities_Count++;
+				if (Modalities_Count >= {{ max_modalities }})
+					$('#modality_input').hide();
+
+				$("#specialties_hint").hide();
+			}
+		}
+
+		$("#modality_input").autocomplete({
+			source: "{% url 'autocomplete_modality' %}",
+			minLength: 1,
+			autoFocus: true,
+			html: true,
+			select: function(event, ui) {
+				$('#modality_input').val('');
+				var modality_id = ui.item.id;
+				if(modality_id) {
+					{% if not use_parent_js %}
+						var username = {% if username %}'{{ username }}'{% else %}null{% endif %};
+						rest_ajax_post_request_no_timeout([url_add_healer, modality_id],
+							addModalityCallback, {username: username})
+					{% else %}
+						parentAddModality(ui.item);
+						addModalityCallback({id: modality_id, title: ui.item.value});
+					{% endif %}
+				} else {
+					document.location.href = '{% url 'modality_add' healer.user.username %}?title='+ui.item.value;
+				}
+				$("#modality_input").focus();
+				return false;
+			}
+		});
+
+		$("#modality_input").focus(function() {
+			$("#modality_input").val('');
+		});
+
+		$("#modality_input").blur(function() {
+			$("#modality_input").val('');
+		});
+	});
+
+	$('#modality_input').keydown(function (e){
+		if(e.keyCode == 13)
+			return false;
+	});
+
+	function removeModality(id) {
+		function removeModalityCallback(result) {
+			if (!result)
+				showError("Removing Modality Failed. Please Try Again.");
+			else {
+				$('#modality_' + result.id).remove();
+				Modalities_Count--;
+				if (Modalities_Count < {{ max_modalities }})
+					$('#modality_input').show();
+
+				if (Modalities_Count == 0)
+					$("#specialties_hint").show();
+			}
+		}
+
+		{% if not use_parent_js %}
+			rest_ajax_post_request_no_timeout([url_remove_healer, id],
+				removeModalityCallback,
+				{username: '{{ healer.user.username }}'});
+		{% else %}
+			parentRemoveModality(id);
+			removeModalityCallback({id: id });
+		{% endif %}
+	}
+</script>

@@ -1,0 +1,32 @@
+<div id="healer_under_profile_photo">
+ 	{% include "healers/reviews.html" %}
+	{% if is_center %}
+		{{ number_of_providers }} Providers
+	{% else %}
+		{% if referrals_to_me_count > 0 %}
+			<a href="{% if in_email %}{{ healer.healer_profile_url }}{% else %}{% url 'referrals_to_me' healer.user.username %}{% endif %}" class="recommendations_link icon_star {% include "healers/thumbs_class.html" %}
+			floatbox" data-fb-options="type:ajax width:700">
+				{{ referrals_to_me_count }} Referral{{ referrals_to_me_count|pluralize }}
+			</a>
+		{% else %}
+			0 Referrals
+		{% endif %}
+	{% endif %}
+	<br />
+	{% if not no_years_in_practice %}
+		{% if healer.years_in_practice %}{{ healer.years_in_practice }} Year{% if healer.years_in_practice != "1" %}s{% endif %} in Practice<br />{% endif %}
+	{% endif %}
+
+	{% if locations %}
+		<div class="divider">&nbsp;</div>
+		{% for loc in locations|dictsort:"city" %}
+			{% if loc.city %}
+				{% ifchanged loc.city %}
+					{% if loc.city %}<div class="wrap_normal">{{ loc.city }}{% if loc.state_province %}, {{ loc.state_province }}{% endif %}</div>{% endif %}
+				{% endifchanged %}
+			{% else %}
+				<div class="wrap_normal">{{ loc.text }}</div>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+</div>

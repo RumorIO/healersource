@@ -1,0 +1,74 @@
+[
+   {
+      "pk": 1,
+      "model": "auth.user",
+      "fields": {
+         "username": "daniel",
+         "first_name": "daniel",
+         "last_name": "levin",
+         "is_active": true,
+         "is_superuser": true,
+         "is_staff": true,
+         "last_login": "2011-01-11 19:12:12",
+         "groups": [],
+         "user_permissions": [],
+         "password": "sha1$f9d3e$c816a0a7e235d20a181315b7a9d09cba6ce5515e",
+         "email": "daniel@innergraphics.com",
+         "date_joined": "2010-08-15 12:24:19"
+      }
+   },
+   {
+      "pk": 6,
+      "model": "auth.user",
+      "fields": {
+         "username": "frankus",
+         "first_name": "frankus",
+         "last_name": "cattus",
+         "is_active": true,
+         "is_superuser": true,
+         "is_staff": true,
+         "last_login": "2011-01-10 17:56:44",
+         "groups": [],
+         "user_permissions": [],
+         "password": "sha1$d8d88$7fd5d6a84f9fdc713b44477341f2f479594b912a",
+         "email": "frank@healersource.com",
+         "date_joined": "2010-09-09 23:26:26"
+      }
+   },
+   {
+      "pk": 7,
+      "model": "auth.user",
+      "fields": {
+         "username": "ken",
+         "first_name": "ken",
+         "last_name": "rich",
+         "is_active": true,
+         "is_superuser": false,
+         "is_staff": false,
+         "last_login": "2011-01-10 18:00:08",
+         "groups": [],
+         "user_permissions": [],
+         "password": "sha1$4903e$2f453458ad76e51e5cc9601ac50d6d3fe2eef99b",
+         "email": "ken@healersource.com",
+         "date_joined": "2011-01-05 22:47:57"
+      }
+   },
+   {
+      "pk": 8,
+      "model": "auth.user",
+      "fields": {
+         "username": "healersource_tv",
+         "first_name": "ceil",
+         "last_name": "michelle",
+         "is_active": true,
+         "is_superuser": false,
+         "is_staff": false,
+         "last_login": "2011-01-10 17:13:29",
+         "groups": [],
+         "user_permissions": [],
+         "password": "sha1$d851e$ea04f92ead12dff89f2e8e62025125e4a63b2360",
+         "email": "ceil@healersource.com",
+         "date_joined": "2011-01-10 17:06:10"
+      }
+   }
+]

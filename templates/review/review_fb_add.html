@@ -1,0 +1,15 @@
+{% load healer_tags %}
+<html>
+<head>
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+	{% jquery_ui_css_import %}
+
+	{% jquery_js_import %}
+	{% jquery_ui_js_import %}
+</head>
+
+<body>
+{% include "review/review_form_content.html" %}
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+{% extends 'base_phonegap2.html' %}
+{% block extra_head %}
+	<script>
+    var PhotoUploader = function(urlSavePhoto) {
+        this.urlSavePhoto = urlSavePhoto;
+        // this.progressBar = $('#filetransfer_progress');
+        this.image = $('#image');
+        this.saveBtn = $('#save_photo');
+
+        var that = this;
+
+        this.saveBtn.unbind('click').click(this.savePhoto.bind(this));
+        $('#get_photo_library').unbind('click').click(
+            function() {
+                that.getPhoto(navigator.camera.PictureSourceType.PHOTOLIBRARY);
+            });
+        $('#get_photo_camera').unbind('click').click(
+            function() {
+                that.getPhoto(navigator.camera.PictureSourceType.CAMERA);
+            });
+    };
+    PhotoUploader.prototype = {
+        getPhoto: function(source) {
+            navigator.camera.getPicture(
+                this.onGetPhotoSuccess.bind(this),
+                this.onGetPhotoFail.bind(this),
+                {
+                    quality: 90,
+                    destinationType: navigator.camera.DestinationType.FILE_URI,
+                    sourceType: source,
+                    cameraDirection: Camera.Direction.FRONT
+                });
+
+        },
+        onGetPhotoSuccess: function(imageURI) {
+          this.image.show();
+          this.image.prop('src', imageURI);
+          this.saveBtn.show();
+        },
+        onGetPhotoFail: function(message) {
+            alert('Failed because: ' + message);
+        },
+        savePhoto: function() {
+            var that = this;
+            // this.progressBar.show();
+
+            var params = {};
+            updateDataWithAuth(params);
+
+            var fileTransfer = new FileTransfer();
+            // fileTransfer.onprogress = function(progressEvent) {
+            //     if(progressEvent.lengthComputable) {
+            //         var percent = (progressEvent.loaded / progressEvent.total) * 100;
+            //         that.progressBar.prop('value', percent);
+            //     }
+            // };
+            fileTransfer.upload(
+                this.image.prop('src'),
+                encodeURI(this.urlSavePhoto),
+                function() {
+                    document.location.href = 'crop_photo.html';
+                },
+                function(error) {
+                    if(error.http_status === 403) {
+                        alert('Authentication failed.')
+                    } else {
+                        var messages = {};
+                        messages[FileTransferError.FILE_NOT_FOUND_ERR] = 'File not found.';
+                        messages[FileTransferError.INVALID_URL_ERR] = 'Invalid url for upload.';
+                        messages[FileTransferError.CONNECTION_ERR] = 'Connection error.';
+                        var message = messages[error.code];
+                        alert(message ? message : 'Can not upload photo.');
+                    }
+                },
+                {params:params});
+        }
+    }
+
+    function onDeviceReady() {
+        new PhotoUploader("{% url 'save_photo_ajax' %}");
+    }
+    document.addEventListener("deviceready", onDeviceReady, false);
+	$(function() {
+		changeBackButton(function(){
+			document.location.href = "my_info.html";
+		});
+	});
+	</script>
+	<link rel="stylesheet" href="css/login.css" />
+{% endblock %}
+
+{% block body %}
+	<div class="application2_container">
+		<div id="menu">
+			<a class="back_arrow_container" href="my_info.html"><div class="back_arrow"></div></a>
+			<div class="header_title">Get Visible!</div>
+			<div class="header_logo_container"><a href="https://www.healersource.com" target="_blank"><div class="header_logo"></div></a></div>
+			<hr class="clearfix">
+			Upload your photo so people can see who they're sending all that love!<br>
+			<p><button id="get_photo_library" type="button" class="btn">Pick Photo from Gallery</button></p>
+			<p><button id="get_photo_camera" type="button" class="btn">Take a Photo with Your Camera</button></p>
+			<!--<button type="button" class="btn" onclick="">Get Photo from Facebook</button><br> -->
+			<p style="font-style: italic;">You must add a photo to continue.</p>
+			<div style="width: 80%; margin: auto;"><img style="display:none; width: 100%" id="image" src="" /></div>
+			<div style="text-align: right;">
+{#                 <progress max="100" value="0" id="filetransfer_progress" style="display: none; margin-right: 1em;"></progress> #}
+                <button id="save_photo" type="button" class="btn" style="display: none;">Save My Photo</button>
+            </div>
+		</div>
+	</div>
+{% endblock %}
+
+
+

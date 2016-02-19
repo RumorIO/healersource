@@ -1,0 +1,78 @@
+{% load healer_tags %}
+{% load uni_form_tags %}
+{% load compress %}
+
+<!DOCTYPE html>
+<html>
+<head>
+	{% jquery_js_import %}
+{#	<script src="//cdn.optimizely.com/js/2425320641.js"></script>#}
+	{% include 'fonts.html' %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>{% block head_title_base %}{% block head_title %}{% endblock %}{% if SITE_NAME %} :: {{ SITE_NAME }}{% endif %}{% endblock %}</title>
+	<link rel="shortcut icon" href="{{ STATIC_URL }}healersource/img/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="152x152" href="{{ STATIC_URL }}healersource/img/touch-icon-ipad-retina.png">
+
+	{% include "og.html" %}
+	{% block og-image %}<meta property="og:image" content="https://www.healersource.com/static/default/healersource/img/hs_logo_og.png" />{% endblock %}
+
+	<link rel="stylesheet" href="{{ STATIC_URL }}uni_form/uni-form.css" />
+	{% jquery_ui_css_import %}
+	{% compress css %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}tinydropdown/tinydropdown.css" />
+		<link rel="stylesheet" href="{{ STATIC_URL }}floatbox/floatbox.css" />
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/landing.css" />
+	{% endcompress %}
+
+	{% jquery_ui_js_import %}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/underscore-min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/util.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.placeholder.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}tinydropdown/tinydropdown.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.ui.autocomplete.html.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/csrf.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/healer_search_autocomplete.js"></script>
+
+	{% endcompress %}
+	{% include 'common_js_vars.html' %}
+	<script type="text/javascript" src="{{ STATIC_URL }}floatbox/floatbox_6.js"></script>
+
+	{% block extra_head_base %}
+		{% block extra_head %}{% endblock %}
+	{% endblock %}
+
+	{% block extra_head_last %}
+	{% endblock %}
+
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/respond.src.js"></script>
+	{% endcompress %}
+
+	{% include 'ga.html' %}
+	{% include 'hotjar.html' %}
+</head>
+
+<body class="hs_bg">
+	<div class="col_group">
+		{% block header %}
+			{% if not phonegap %}
+				{% include 'nav_top.html' with landing=True %}
+			{% endif %}
+			<div class="smallscreen_logo">
+				<a href="{% url 'home' %}"><img src="{{ STATIC_URL }}healersource/img/home/logo.png" width="367"></a>
+				<div class="logo_title">The Best in Holistic Wellness</div>
+			</div>
+		{% endblock %}
+	</div>
+	{% block body %}
+	{% endblock %}
+
+	{% block extra_body_base %}
+		{% block extra_body %}{% endblock %}
+	{% endblock %}
+</body>
+</html>

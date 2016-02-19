@@ -1,0 +1,29 @@
+{% extends "blog/base.html" %}
+
+{% load i18n %}
+{#{% load uni_form_tags %}#}
+
+{% block head_title %}{% blocktrans %}Write a Blog Post{% endblocktrans %}{% endblock %}
+
+{% block extra_head %}{{ blog_form.media }}{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_blog">New Blog Post</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "blog/blog_nav.html" %}
+
+	{# @@@ not sure how to bring back teaser toggle with uni_form #}
+	{% with "Create Post" as submit_button_text %}{% include "blog/new_or_edit_form.html" %}{% endwith %}
+
+{% endblock %}
+
+{#{% block extra_body %}#}
+{#	{% load jquery_validation %}#}
+{#	{% include_validation %}#}
+{#	<script type="text/javascript">#}
+{#		$(function(){#}
+{#			$('#blog_form').validate('{% url blog_form_validate %}', {type: 'table'});#}
+{#		});#}
+{#	</script>#}
+{#{% endblock %}#}

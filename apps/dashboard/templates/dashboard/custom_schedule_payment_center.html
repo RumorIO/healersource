@@ -1,0 +1,28 @@
+{% extends 'dashboard/base.html' %}
+
+{% block extra_head %}
+	{% load compress %}
+	{% compress js %}
+		<script src="{{ STATIC_URL }}healersource/js/custom_schedule_payment.js"></script>
+		<script>
+			var user_id = {{ user.pk }};
+			var url_save_account_settings = "{% url 'payments_save_account_settings' %}";
+		</script>
+	{% endcompress %}
+{% endblock %}
+
+{% block head_title %}Custom Schedule Payment for {{ user.get_full_name }}{% endblock %}
+{% block page_title %}<h1>Custom Schedule Payment for {{ user.get_full_name }}</h1>{% endblock %}
+
+{% block body %}
+	<div class="loading" id="loading"></div>
+
+	{% if user.customer.is_custom_schedule_plan %} Custom Payment Enabled. {% endif %}<br><br>
+
+	<select name="amount" id="amount">
+		{% for amount in amounts %}
+			<option value="{{ amount }}" {% if user.customer.payment_schedule == amount %} selected {% endif %}>{{ amount }}</option>
+		{% endfor %}
+	</select>
+	<input id="save_account_settings" type="button" onclick="save_settings()" value="Save">
+{% endblock %}

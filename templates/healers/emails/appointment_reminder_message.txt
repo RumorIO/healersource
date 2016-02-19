@@ -1,0 +1,5 @@
+{{ appointment.plain_text }}
+
+{% include "healers/emails/appointment_footer.txt" %}
+
+To stop receiving these Appointment Reminders, {% with reminder_disable_link as link %}{% include "email_link.html" %}{% endwith %}

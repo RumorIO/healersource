@@ -1,0 +1,9 @@
+{# {% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+	<h4 style="color: #8b0000; font-size: 1.5em; margin: 0;">Congratulations, Your Profile is Complete!</h4>
+	<p style="margin: 12px 0 24px; ">You can click the button below to preview your profile and make sure everything looks correct. <br /> Then click <b><a href="{% url 'provider_setup' 7 %}">Next &raquo;</a></b> to continue with the rest of your account setup.</p>
+
+	<p><span class="single_button"><a class="floatbox icon_eye" href="{% url 'healer_info' healer.user.username %}" data-fb-options="type:ajax width:765">Preview Profile</a></span></p>
+	{% include "healers/setup/setup_controls.html" %}
+{% endblock %} #}

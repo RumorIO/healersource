@@ -1,0 +1,7 @@
+Your Appointment with {{ from_user_name }} has been changed.
+
+Original date: {{ previous_dates }}
+
+New date: {{ appointment.plain_text }}
+
+{% include "healers/emails/appointment_footer.txt" %}

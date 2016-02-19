@@ -1,0 +1,87 @@
+{% extends "site_base.html" %}
+
+{% load healer_tags %}
+{% load compress %}
+
+{% block head_title %}Payments{% endblock %}
+
+{% block extra_head %}
+	{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+	{% endcompress %}
+
+	{% include "payments/checkout.html" %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/stripe_connect_payments.js"></script>
+	<script>
+		var url_load_payments = '{% url "stripe_connect_load_payments" %}';
+		var url_mark_unpaid = '{% url "stripe_connect_mark_unpaid" %}';
+		var url_mark_paid = '{% url "stripe_connect_mark_paid" %}';
+		var url_charge_card = '{% url "stripe_connect_charge" %}';
+		var url_save_discount_code = '{% url "save_discount_code" %}';
+		var url_client_appointments = '{% url "stripe_connect_client_appointments" %}';
+
+		var clients = {{ clients|safe }};
+		var stripe_public_key = '{{ STRIPE_APP_PUBLIC_KEY }}';
+
+		var initial_dates = {start: '{{ date_start|date:"m/d/Y" }}', end: '{{ date_end|date:"m/d/Y" }}'};
+	</script>
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_payments">Payments</h1>{% endblock %}
+
+{% block body %}
+
+	<div class="loading" id="loading"></div>
+
+	{% if is_healer and is_healer.has_enabled_stripe_connect %}
+		<div class="grey_box">
+			<div class="payments_filter_element">
+				<b>Client </b> <input id="client" placeholder="Client name or last name">
+				<a id="clear_client_filter_button" href="javascript:void(0);" onclick="clear_client_filter();">x</a>
+			</div>
+			<div class="payments_filter_element">
+				<b>Status </b>
+				<div class="highlight_container button_container combined_button_container payments_paid_filter">
+					<span id="filter_unpaid" class="paid_filter"><a>Unpaid</a></span><span id="filter_paid" class="paid_filter"><a>Paid</a></span>
+				</div>
+			</div>
+			<div class="payments_filter_element">
+				<span class="date_label">Date</span>
+				<div class="dates">
+					<input placeholder="Start" class="date" id="date_start"> <input placeholder="End" id="date_end" class="date">
+				</div>
+			</div>
+			<div class="payments_filter_element">
+				<a href="javascript:void(0);" onclick="reset_filters();">reset</a>
+			</div>
+		</div>
+		<br>
+		<div class="message" id="nothing_found">
+			No Appointments match your search | <a href="javascript:void(0);" onclick="reset_filters();">reset filter</a>
+		</div>
+		<div id="appointment_list"></div>
+		<br><br>
+		<p><a href="{% url 'gift_certificates' %}">Manage Gift Certificates &raquo;</a></p>
+		<div id="discount_codes_dialog">
+			<select id="discount_code" name="discount_code">
+				<option value="">None</option>
+				{% for code in discount_codes %}
+					<option value="{{ code.pk }}">{{ code }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div id="client_appointments_dialog"></div>
+	{% else %}
+		{% if is_stripe_connect_beta_tester %}
+			{% include "payments/stripe_connect_settings_content.html" %}
+		{% else %}
+			<div class="single_button" style="padding: 11px; font-size: 1.1em;">
+				<img src="{{ STATIC_URL }}healersource/img/icons/credit-cards.jpg" style="margin-right: 11px; float:left; width: 200px;" />
+				<b>You can now accept payments right from your HealerSource account!</b>
+				<br><br>
+				We're currently letting a few select users preview the payments module before we release it to the general public.. <br><br>
+				If you want to be one of the first - just click here to <a href="" class="contact" title="Contact HealerSource">Contact Us</a>.
+			</div>
+		{% endif %}
+	{% endif %}
+{% endblock %}

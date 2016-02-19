@@ -1,0 +1,161 @@
+{% extends "blank_page_base.html" %}
+{% load healer_tags pagination_tags compress dajaxice_templatetags cache %}
+
+{% block head_title %}Home{% endblock %}
+{% block extra_head %}
+	{% jquery_ui_css_import %}
+	{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tinydropdown/tinydropdown.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}floatbox/floatbox.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}infinite_scroll/css/jquery.ias.css" />
+	{% endcompress %}
+
+	{% dajaxice_js_import %}
+	{% jquery_ui_js_import %}
+
+	{{ request_form.media }}
+
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/underscore-min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.ui.autocomplete.html.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.placeholder.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/home.js"></script>
+
+		<script type="text/javascript" src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/healing_requests.js"></script>
+	{% endcompress %}
+	{% load jquery_validation %}
+	{% include_validation %}
+
+	<script type="text/javascript" src="{{ STATIC_URL }}floatbox/floatbox_6.js"></script>
+
+	<script>
+		var STATIC_URL = "{{ STATIC_URL }}";
+		var Modality_Autocomplete_Url = "{% url 'autocomplete_modality_or_category' %}";
+		var FeaturedProviders = {{ featured_providers|safe }};
+		var start_intervals = {{ request.user.is_authenticated|yesno:'false, true' }};
+		var no_find_popup = true;
+
+		var url_featured_providers = "{% url 'featured_providers' %}";
+
+		$(function() {
+			$(':input[placeholder]').placeholder();
+			fb.activate();
+		});
+	</script>
+{% endblock %}
+{% block extra_head_last %}
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer.css" />
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/home.css" />
+{% endblock %}
+
+{% block content %}
+	{% include "account/facebook_init.html" %}
+	<div class="col_group">
+		<div class="smallscreen_logo"><a href="{% url 'home' %}"><img src="{{ STATIC_URL }}healersource/img/home/logo.png" width="367"></a>
+			{% with 'find' as selected %}
+				{% include 'nav_top_mobile_buttons.html' %}
+				{% include 'nav_top.html' with show_my_account=True tabs=True %}
+				{% include 'nav_left.html' %}
+			{% endwith %}
+		</div>
+		{{ modality_menu|safe }}
+		<div class="contents">
+			<div id="find" class="content">
+				<div class="right">
+					<div class="panel">
+						<div class="panel_title" id='panel_title_find'>Find a Healer Near You</div>
+						<div class="content panel_content_find">
+							{% include 'healers/find_healer_form.html' %}
+						</div>
+					</div>
+
+					{% include 'account/signup_content.html' %}
+
+					{% if not request.user.is_authenticated %}
+						<div id="mobile_bottom_menu">
+							<ul class="buttons menu">
+								{% include 'about/menu_items.html' with tabs=True %}
+								<li class="top_menu_signup"><a href="{% url 'signup' %}" class="signup">Sign Up</a></li>
+							</ul>
+						</div>
+					{% endif %}
+
+					{% cache 3600 quick_links %}
+					<div class="panel">
+						<div class="panel_title" id='panel_title_quick_links'>Quick Links</div>
+						<div class="content panel_content_find">
+							{% include 'about/homepage_contents/search_links.html' %}
+						</div>
+					</div>
+					{% endcache %}
+
+					<div class="panel" id="footer_home">
+						<hr />
+						<div style="float:right; white-space: nowrap;">
+							<a href="https://www.facebook.com/healersource" target="_blank">
+								<img src="{{ STATIC_URL }}healersource/img/icons/social/fb_flat.png" />
+							</a>
+							<a href="https://www.twitter.com/healersource" target="_blank">
+								<img src="{{ STATIC_URL }}healersource/img/icons/social/tw_flat.png" />
+							</a>
+							<a href="http://www.linkedin.com/company/healersource" target="_blank">
+								<img src="{{ STATIC_URL }}healersource/img/icons/social/li_flat.png" />
+							</a>
+							<a href="http://www.youtube.com/healersourcetv" target="_blank">
+								<img src="{{ STATIC_URL }}healersource/img/icons/social/youtube.png" />
+							</a>
+						</div>
+						HealerSource &copy; 2015&nbsp;&middot;&nbsp;
+						<a href="{% url 'terms' %}">Terms of Service</a>&nbsp;&middot;&nbsp;
+						<a href="{% url 'privacy' %}">Privacy Policy</a>&nbsp;&middot;&nbsp;
+						<a href="{% url 'hipaa' %}">HIPAA</a><br>
+						<a href="{% url 'partners' %}">Partners</a>&nbsp;&middot;&nbsp;
+						<a href="" class="contact" title="Contact HealerSource">Contact Us</a>
+					</div>
+				</div>
+				<div class="left">
+					<div id="arrows_container">
+						<span id="arrows_left" class="arrow">&lt;</span>
+						<span id="arrows_play_pause" class="arrow">&#9658;</span>
+						<span id="arrows_right" class="arrow">&gt;</span>
+					</div>
+					<div class="providers">
+						{% if featured_provider %}
+							{% include 'about/homepage_featured_provider.html' %}
+						{% endif %}
+					</div>
+				</div>
+			</div>
+
+			<div id="signup" class="content" style="display: none;">
+				{% if not request.user.is_authenticated %}
+					{% include 'account/signup_content.html' %}
+				{% endif %}
+			</div>
+
+			<div id="login" class="content" style="display: none;">
+				{% include 'about/homepage_login.html' %}
+			</div>
+
+			<div id="request" class="content" style="display: none;">
+				<div class="panel solo_panel big_panel">
+					<div class="panel_title" id='panel_title_request'>Healing Requests</div>
+					<div class="content">
+						{% include 'healing_requests/home_content.html' %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% include "base_content_compose_dlg.html" %}
+	{% include "healers/unreg_send_msg_dlg.html" %}
+{% endblock %}
+
+{% block extra_body %}
+	{% include 'account/signup_content_additional.html' with signup_form=client_signup_form %}
+{% endblock %}

@@ -1,0 +1,96 @@
+{% if info_only %}
+	<a href="{{ healer.healer_profile_url }}" class="full_profile_top">
+		<span class="single_button orange_button" style="float: right;">See Full Profile &raquo;</span>
+	</a>
+	{% if not healer_page %}
+		<h1 class="small_margin_bottom">{{ healer.user.client|capfirst }}</h1>
+	{% endif %}
+{% endif %}
+{% include "healers/healer_profile_incomplete_warning.html" %}
+
+<div id="healer_left_sidebar">
+	{% with healer.user as user %}
+		{% include "clients/avatar.html" %}
+	{% endwith %}
+
+	{% include "healers/healer_under_profile_photo.html" %}
+
+	<div id="healer_social_links">
+		{% if healer.facebook %}<a target="_blank" href="{{ healer.facebook_link }}"><img src="{{ STATIC_URL }}healersource/img/icons/social/facebook.png" /></a>{% endif %}
+		{% if healer.twitter %}<a target="_blank" href="{{ healer.twitter_link }}"><img src="{{ STATIC_URL }}healersource/img/icons/social/twitter.png" /></a>{% endif %}
+		{% if healer.google_plus %}<a target="_blank" href="{{ healer.google_plus_link }}"><img src="{{ STATIC_URL }}healersource/img/icons/social/google.png" /></a>{% endif %}
+		{% if healer.linkedin %}<a target="_blank" href="{{ healer.linkedin_link }}"><img src="{{ STATIC_URL }}healersource/img/icons/social/linkedin.png" /></a>{% endif %}
+		{% if healer.yelp %}<a target="_blank" href="{{ healer.yelp_link }}"><img src="{{ STATIC_URL }}healersource/img/icons/social/yelp.png" /></a>{% endif %}
+	</div>
+	{% if healer.gift_certificates_enabled and healer.has_enabled_stripe_connect and is_gift_certificates_beta_tester or is_me %}
+		<hr style="float: left; width: 94%;" />
+		<div class="grey_box clearfix" style="margin-bottom: 6px;">
+			<img src="{{ STATIC_URL }}healersource/img/icons/gift_large.png" style="float: left; margin: 0 6px 0 2px;" />
+			{% if healer.gift_certificates_enabled %}
+				<a href="{% url 'purchase_gift_certificate' healer.user.username %}" style="display: inline;">
+					Purchase a<br />Gift Certificate
+				</a>
+			{% else %}
+				<a href="{% url 'gift_certificates' %}" style="display: inline; font-weight: bold; font-style: italic;">
+					Click Here to Enable<br /><span style="margin-left: 22px;">Gift Certificates</span>
+				</a>
+			{% endif %}
+		</div>
+	{% endif %}
+</div>
+
+<div id="healer_right_sidebar">
+
+	{% include "healers/contact_box.html" %}
+
+	<div class="info_box grey_box" style="max-height: 200px; overflow-y: auto;">
+		{% include "healers/healer_specialties.html" %}
+	</div>
+
+	{% if not RUNNING_LOCAL %}
+		<div style="margin: 11px 0 0 23px; ">
+			{% include 'about/fb_share.html' %}
+
+			<a href="https://twitter.com/share" class="twitter-share-button" data-lang="en" data-count="none" style="float: left; margin-right: 8px;" >Tweet</a>
+			<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		</div>
+	{% endif %}
+</div>
+
+
+<div id="healer_about" class="healer_about">
+	<div id="healer_about_content">
+		{{ healer.about|safe }}
+
+		{% if info_only  %}
+			<div class="clearfix" style="margin: 10px 0;">
+				{% if is_schedule_visible and not is_me %}
+					<div class="book_online_bottom">
+						{% include "healers/book_online_button.html" %}
+					</div>
+				{% else %}
+					<a href="{{ healer.healer_profile_url }}" class="full_profile_bottom single_button orange_button">
+						See Full Profile &raquo;
+					</a>
+				{% endif %}
+			</div>
+		{% endif %}
+
+	</div>
+	{% if is_me %}
+		{% if not healer.about %}
+			<p style="text-align: center"><a href="{% url 'healer_edit' %}" class="message">&laquo; Edit this Section &raquo;</a></p>
+			{#		{% else %}#}
+			{#			| <a href="{% url healer_edit %}">(edit text)</a>#}
+		{% endif %}
+	{% endif %}
+</div>
+
+
+<div class="clearfix"></div>
+
+<script>
+	$(function(){
+		activate_gallery();
+	});
+</script>

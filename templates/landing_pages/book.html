@@ -1,0 +1,37 @@
+{% extends 'base_landing.html' %}
+
+{% load compress %}
+
+{% block head_title %}Book{% endblock %}
+
+{% block extra_head %}
+	{% compress css %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/book.css" />
+	{% endcompress %}
+{% endblock %}
+
+{% block header %}
+	<div class="center">
+		<h1>The Ultimate Guide to Landing Page Optimization</h1>
+		<h2>Everything You Need to Know About LPO</h2>
+	</div>
+{% endblock %}
+
+{% block body %}
+<div class="columns">
+	<div class="column">
+		<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+		<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi.</p>
+	</div>
+	<div class="column">
+		<img class="book" src="http://d9hhrg4mnvzow.cloudfront.net/get.unbounce.com/the-ultimate-guide-to-lpo/86jcxq-the-ultimate-guide-to-landingpage-optimization.png" />
+	</div>
+	<div class="column">
+		{% include 'about/fb_twitter_share.html' %}
+	</div>
+</div>
+{% endblock %}
+
+{% block extra_body %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'account/thanks.html' %}
+
+{% load i18n compress %}
+
+{% block extra_head_last %}
+	{{ block.super }}
+	<script>
+		var url_ajax_update_link_source = "{% url 'update_link_source' %}";
+		{% if email %}
+			var email = '{{ email }}';
+		{% else %}
+			var email = localStorage.getItem('email');
+		{% endif %}
+	</script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/signup_thanks.js"></script>
+	{% if embed %}
+		{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/embed.css" />
+		{% endcompress %}
+	{% endif %}	
+{% endblock %}
+
+{% block body_class %}{{block.super}} {% if embed %}embed{% endif %}{% endblock %}
+{% block body_style %}{{block.super}} {% if embed.background_color %}background-color: {{embed.background_color}};{% endif %}{% endblock %}
+
+{% block inner_content %}
+	{% include 'about/thanks.html' with thanks_title='Thanks for Signing Up!' signup=True %}
+{% endblock %}

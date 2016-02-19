@@ -1,0 +1,14 @@
+<div class="healing_history_block"
+	data-day="{{ obj.created.day }}"
+	data-month="{{ obj.created.month }}"
+	data-year="{{ obj.created.year }}">
+	<div class="pic">
+		<img src="{{ obj.avatar }}" data-external />
+	</div>
+	<div class="name">
+		{{ obj.full_name }}
+	</div>
+	<div class="time">
+		{{ obj.healing_sent }}
+	</div>
+</div>

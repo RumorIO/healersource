@@ -1,0 +1,11 @@
+{% load endless %}
+
+{% if not no_paginate %}
+	{% lazy_paginate recent_requests using 'recent_requests_page' %}
+{% endif %}
+
+{% for req in recent_requests %}
+	{% include 'healing_requests/healing_request_block.html' with healing_request=req %}
+{% endfor %}
+
+{% show_more 'Load more &raquo;' %}

@@ -1,0 +1,33 @@
+{% load pagination_tags %}
+{% autopaginate videos 8 %}
+<script type="text/javascript">
+	$(function() {
+		$.ias({
+			history: false,
+			container: '#videos_list',
+			item: '.video_row',
+			pagination: '#video_pagination .pagination',
+			next: '#video_pagination .pagination .next',
+			loader: '<img src="{{ STATIC_URL }}infinite_scroll/images/loader.gif"/>'
+		});
+	});
+</script>
+
+{% if not client %}
+	<div style="text-align: center;">
+		<iframe width="{{ top_video_width }}" height="{{ top_video_height }}" src="//www.youtube.com/embed/lzQCYNlqgsQ" frameborder="0" allowfullscreen></iframe>
+	</div>
+	<hr style="margin: 20px auto 25px auto;" />
+{% endif %}
+
+<div id="videos_list">
+	{% for video in videos %}
+		<div class="video_row {{ forloop.counter|divisibleby:2|yesno:'video_float_right,video_float_left' }}">
+			{% include "clients/video_display_in_list.html" %}
+			{% if forloop.counter|divisibleby:2 %}<hr>{% endif %}
+		</div>
+		{% if forloop.last %}<div class="video_row clearfix"></div>{% endif %}
+	{% endfor %}
+	<div class="clearfix"></div>
+	<div id="video_pagination">{% paginate %}</div>
+</div>

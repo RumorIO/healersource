@@ -1,0 +1,50 @@
+{% if error %}
+	<p class="message">{{ error }}</p>
+{% endif %}
+
+<div class="blog_import_option" style="padding: 14px 0;">
+	<img src="{{ STATIC_URL }}healersource/img/icons/social/wordpress.png" style="height: 80px; padding: 11px 0 0 11px;" />
+	<h3>Wordpress</h3>
+
+	<p>1. Export Your Wordpress Blog to an XML File by following these directions: <a href="http://en.support.wordpress.com/export/" target="_blank"><b>Wordpress Export</b></a></p>
+	<form action="{% if setup %}{% url 'provider_setup' 8 %}?import_type=wordpress{% else %}{% url 'blog_import' 'wordpress' %}{% endif %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+		{{ wordpress_form.as_p }}
+		<p>3. <input type="submit" value="Click Here"/></p>
+	</form>
+</div>
+
+<div class="blog_import_option">
+	<img src="{{ STATIC_URL }}healersource/img/icons/social/blogger.png" />
+	<h3>Blogger</h3>
+
+	<form action="{% if setup %}{% url 'provider_setup' 8 %}?import_type=blogger{% else %}{% url 'blog_import' 'blogger' %}{% endif %}" method="post">{% csrf_token %}
+		{{ blogger_form.as_p }}
+		<input type="submit"/>
+	</form>
+</div>
+
+<div class="blog_import_option">
+	<img src="{{ STATIC_URL }}healersource/img/icons/social/tumblr.png" style="height: 85px; padding-left: 8px;" />
+	<h3>Tumblr</h3>
+
+	<form action="{% if setup %}{% url 'provider_setup' 8 %}?import_type=tumblr{% else %}{% url 'blog_import' 'tumblr' %}{% endif %}" method="post">{% csrf_token %}
+		{{ tumblr_form.as_p }}
+		<input type="submit"/>
+	</form>
+</div>
+
+<div class="blog_import_option" style="border-bottom: none;">
+	<img src="{{ STATIC_URL }}healersource/img/icons/social/rss.png" style="height: 77px; padding-left: 11px;" />
+	<h3>Your Own Site (RSS)</h3>
+	<p>Copy and Paste the link to your site in the box below. Then click 'Submit'</p>
+
+	<form action="{% if setup %}{% url 'provider_setup' 8 %}?import_type=rss{% else %}{% url 'blog_import' 'rss' %}{% endif %}" method="post">{% csrf_token %}
+		{{ rss_form.url.label }}: {{ rss_form.url }}
+		<input type="submit"/>
+
+		<p style="color: gray; font-style: italic;">
+			RSS import is currently experimental. Please check all your imported blog posts.
+		</p>
+	</form>
+
+</div>

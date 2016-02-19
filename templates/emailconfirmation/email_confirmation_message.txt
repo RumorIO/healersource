@@ -1,0 +1,12 @@
+Hi {{ user.first_name }},
+{% if user.is_active %}
+The email address {{ recipient_email }} has been added to your account.
+
+To confirm this email address, please {% with activate_url as link %}{% include "email_link.html" %}{% endwith %}
+{% else %}
+Thanks for signing up with www.HealerSource.com!
+
+Please confirm your email address so you can sign in to your account.
+
+To confirm your email, please {% with activate_url as link %}{% include "email_link.html" %}{% endwith %}
+{% endif %}

@@ -1,0 +1,8 @@
+{% autoescape off %}{% load i18n %}{% load account_tags %}{% with user.client as user_name %}
+{{ message }}
+
+To accept this invitation, {% with accept_url as link %}{% include "email_link.html" %}{% endwith %}
+
+To see {{ user_name }}'s profile, {% with user.client.healer.get_full_url as link %}{% include "email_link.html" %}{% endwith %}{% endwith %}
+
+{% endautoescape %}

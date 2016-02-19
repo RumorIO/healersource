@@ -1,0 +1,39 @@
+{% extends "payments/base.html" %}
+
+{% block head_title %}Payment History{% endblock %}
+
+{% block page_title %}<h1>Payment History</h1>{% endblock %}
+
+{% block body %}
+
+	{% if request.user.customer.invoices.all %}
+		<table class="table client_list">
+			<thead>
+			<tr>
+				<th>Date</th>
+				<th>Amount</th>
+				<th>Transaction ID</th>
+			</tr>
+			</thead>
+			{% for invoice in request.user.customer.invoices.all %}
+				<tr>
+					<td>{{ invoice.date|date:"M d, Y" }}</td>
+					<td>
+						{% if invoice.paid and invoice.total > 0 %}
+							Paid ${{ invoice.total|floatformat:"2" }}
+						{% endif %}
+
+						{% if invoice.paid and invoice.total < 0 %}
+							Credit ${{ invoice.total|floatformat:"2" }}
+						{% endif %}
+					</td>
+					<td class="fixed">{{ invoice.id }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		<p class="message">You have not made any payments yet.</p>
+	{% endif %}
+
+	<p><a href="{% url 'account' %}">&laquo; Back to Account Settings</a></p>
+{% endblock %}

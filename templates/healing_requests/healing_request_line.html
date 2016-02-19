@@ -1,0 +1,19 @@
+{% load strip_tags %}
+
+{% strip '&middot;' %}
+	{% if obj.near_my_location %}
+		Near my location &middot;
+	{% elif obj.location %}
+		{{ obj.location.city|lower|capfirst }}, {{ obj.location.state }} &middot;
+	{% endif %}
+	{% if obj.remote_healing %}
+		Remote Healing &middot;
+	{% endif %}
+	{% if obj.cost_per_session %}
+		Can pay $ {{ obj.cost_per_session }} per session &middot;
+	{% endif %}
+	{% if obj.trade_for_services %}
+		Trade for Services &middot;
+	{% endif %}
+
+{% endstrip %}

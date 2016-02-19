@@ -1,0 +1,71 @@
+{% extends "healers/settings/settings_base.html" %}
+
+{% load uni_form_tags healer_tags %}
+
+{% block head_title %}Edit Treatment Type: {{ treatment }}{% endblock %}
+{% block title %}Edit Treatment Type: {{ treatment }}{% endblock %}
+
+{% block extra_head %}
+	{{ block.super }}
+	{{ treatment_form.media }}
+	{{ treatment_length_form.media }}
+{% endblock %}
+
+{% block settings_content %}
+	<div id="tabs_treatment_types">
+
+		{% with treatment_form as form %}{% include "form_errors.html" %}{% endwith %}
+		{% if not treatment_form.errors %}{% with treatment_length_form as form %}{% include "form_errors.html" %}{% endwith %}{% endif %}
+		<form action="{% url 'treatment_type_edit' treatment.id %}" method="post" id="treatment_edit_form">{% csrf_token %}
+			<table class="no_wrap no_wrap1  ">
+				{{ treatment_form.as_table }}
+			</table>
+			</form>
+			<table class="no_wrap no_wrap1 length_table">
+				<tr>
+					<th>Length: </th>
+					<td>
+						{% for length in treatment_lengths %}
+							<div>
+								{{ length }}&nbsp;&nbsp;
+								{% if treatment_lengths|length > 1 %}
+									&nbsp;|&nbsp;<a href="{% url 'treatment_length_delete' length.id  %}">delete</a>
+{#									| {% if length.is_default %}#}
+{#										default#}
+{#									{% else %}#}
+{#										<a href="{% url treatment_length_default length.id %}">set as default</a>#}
+{#									{% endif %}#}
+								{% endif %}
+								{% invalid_tlength_error user length %}
+							</div>
+						{% endfor %}
+					<hr />
+					<div class="single_button" style="display: inline-block;">
+						<form action="{% url 'treatment_length_add' treatment.id %}" method="post">{% csrf_token %}
+							<strong>+ Add Length:</strong> {{ treatment_length_form.length }}
+							| Rate $ {{ treatment_length_form.cost }}
+							<input type="submit" name="add_length" value="Add &raquo;" />
+						</form>
+					</div>
+				</td>
+			</tr>
+		</table>
+		<p><input type="submit" value="Save Treatment Type" onclick="$('#treatment_edit_form').submit();" /></p>
+		<p><a href="{% url 'treatment_types' %}">&laquo; Back to Treatment Types</a></p>
+
+{#		{% if treatment_form.errors or treatment_length_form.errors  %}#}
+{#			<div style="color:red">#}
+{#				<p>Please Correct The Following Errors:</p>#}
+{#				<ul>#}
+{#					{% with treatment_form as form %}#}
+{#						{% include 'form_errors_list.html' %}#}
+{#					{% endwith %}#}
+{#					{% with treatment_length_form as form %}#}
+{#						{% include 'form_errors_list.html' %}#}
+{#					{% endwith %}#}
+{#				</ul>#}
+{#			</div>#}
+{#		{% endif %}#}
+
+	</div>
+{% endblock %}

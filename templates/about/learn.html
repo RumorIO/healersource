@@ -1,0 +1,74 @@
+{% extends "base_new.html" %}
+
+{% load client_tags pagination_tags %}
+
+{% block head_title %}Learn{% endblock %}
+
+{% block extra_head_last %}
+	{{ block.super }}
+	<script type="text/javascript" src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+
+	<script>
+		var BlogInfiniteUrl = "{% url 'learn_blog_infinite' %}";
+	</script>
+
+	<script src="{{ STATIC_URL }}healersource/js/learn.js"></script>
+{% endblock %}
+
+{% block inner_content %}
+	{% autopaginate posts 10 %}
+
+	<div class="panel solo_panel big_panel">
+		<div class="panel_title videos_panel">Videos</div>
+		<div class="content hide_last_grid_box_mobile_container">
+			{% for client in clients_for_videos_list %}
+				<div class="grid_box centers_homepage">
+					<div class="friend_box">
+						<a href="{% url 'videos_list_user' client.client.username %}">
+							<div class="avatar">{% avatar client.client.user 140 %}</div>
+							<u>{{ client.client.user.client }}</u>
+						</a><br>
+						<span class="italic">{{ client.number_of_videos }} Videos</span>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+
+
+	<div class="panel solo_panel big_panel" id="articles_page_title">
+		<div class="panel_title articles_panel">Articles</div>
+		<div class="content">
+			<div class="hide_last_grid_box_mobile_container">
+				{% for blogger in top_bloggers %}
+					<div class="grid_box centers_homepage">
+						<div class="friend_box">
+							<a href="{% url 'blog_list_user' blogger.user.username %}">
+								<div class="avatar">{% avatar blogger.user 140 %}</div>
+								<u>{{ blogger.user.client }}</u>
+							</a><br>
+							<span class="italic">{{ blogger.number_of_articles }} Articles</span>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+
+			<div class="blog_post_list">
+				<div>
+					{% with 1 as in_posts_list %}
+						{% for blog_post in posts %}
+							{% include "blog/blog_item.html" %}
+						{% endfor %}
+					{% endwith %}
+					<div class="blog_pagination">
+						{% paginate %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="footer">
+		{% include "base_content_footer.html" %}
+	</div>
+{% endblock %}

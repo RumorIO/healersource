@@ -1,0 +1,14 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+	{{ form.media }}
+	<p style="font-style: italic;">Write a bit about your practice, your education, and any extra info for new clients</p>
+	<form method="POST" action="">
+		{% csrf_token %}
+		{{ form.about }}
+		<p><input type="submit" value="Save"></p>
+	</form>
+
+	{% include "healers/setup/setup_controls.html" with save_form=1 %}
+
+{% endblock %}

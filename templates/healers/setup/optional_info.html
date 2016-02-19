@@ -1,0 +1,18 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+{#	{{ form.media }}#}
+	<form method="POST" action="">
+		{% csrf_token %}
+{#		<input type="hidden" name="first_name" value="{{ form.first_name.value }}" />#}
+{#		<input type="hidden" name="last_name" value="{{ form.last_name.value }}" />#}
+		<div style="display: none;">{{ form.first_name }}{{ form.last_name }}</div>
+		<table>
+			{% include "healers/settings/edit_profile_content_optional_info.html" %}
+			{% include "healers/settings/edit_profile_content_links.html" %}
+		</table>
+	</form>
+
+	{% include "healers/setup/setup_controls.html" with save_form=1 %}
+
+{% endblock %}

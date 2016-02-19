@@ -1,0 +1,21 @@
+{% extends "base_new.html" %}
+
+{% load i18n %}
+
+{% block head_title %}Login{% endblock %}
+
+{% block inner_content %}
+	{% if user.is_authenticated %}
+		{% if user.is_active %}
+			<p class="panel single_button message">{% trans "You are already logged in as " %}{{ user.client }}
+				<span style="display:inline; font-style: normal;">&nbsp;|&nbsp;<a href="{% url 'logout_page' %}">logout</a></span>
+			</p>
+		{% else %}
+			{% include 'account/email_confirmation_required.html' %}
+		{% endif %}
+	{% endif %}
+
+	{% with form as login_form %}
+		{% include 'about/homepage_login.html' with show_signup=True %}
+	{% endwith %}
+{% endblock %}

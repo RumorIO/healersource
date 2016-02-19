@@ -1,0 +1,25 @@
+<tr>
+	{% if contact.name %}<td>{{ contact.name|slice:":50" }}</td><td>{% else %}<td colspan="2">{% endif %}
+
+{#	<td>{% if contact.name %}{{ contact.name }}{% else %}No name{% endif %}</td>#}
+{#	<td>#}
+
+		{% if contact.email %}
+			<a href="mailto:{{ contact.email }}">{{ contact.email|slice:":50" }}</a>
+		{% endif %}
+	</td>
+	<td id="id_contact_{{ contact.id }}" style="text-align: right;">
+{#		{% if contact.invited %}#}
+{#			<span style="color: gray;"><em>Invitation Sent</em> | </span><a href="#" onclick="inviteDialog('{{ contact.email }}', 0, {{ contact.id }})">Resend</a>#}
+{#		{% else %}#}
+			{% if contact.email %}
+				{% if not hide_add_to_clients %}<a href="#" onclick="inviteDialog('{{ contact.email }}', 0, {{ contact.id }})" class="icon_users_add">Add To Clients</a>&nbsp;|&nbsp;{% endif %}<a
+							href="#" onclick="inviteDialog('{{ contact.email }}', 1, {{ contact.id }})" class="icon_recommend">Refer To</a>
+			{% else %}
+				{% if contact.facebook_id %}
+					<a href="#" class="facebook_icon_small" onclick="sendFacebookInvite({{ contact.id }}, {{ contact.facebook_id }}, '{{ user.client }}'{% if friend_type == 'referrals' %}, 'Refer To You'{% endif %});">Send {% if friend_type == 'referrals' %}Referral{% else %}Client Invitation{% endif %}</a>
+				{% endif %}
+			{% endif %}
+	</td>
+	{% if not hide_delete_contact %}<td><a class="contact_x" href="{% url 'delete_contact' contact.id friend_type %}">x</a></td>{% endif %}
+</tr>

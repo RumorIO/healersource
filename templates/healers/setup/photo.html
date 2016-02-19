@@ -1,0 +1,8 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+	{% with account_setup=True %}
+		{% include "healers/settings/photo_edit_content.html" %}
+	{% endwith %}
+	{% include "healers/setup/setup_controls.html" with save_form=True %}
+{% endblock %}

@@ -1,0 +1,43 @@
+{% with user.client as client %}
+	<tr>
+		<td><a href='{% url 'client_detail' user.username %}' class="client_detail floatbox" data-fb-options="type:ajax">{{ client|slice:":20" }}</a></td>
+		<td>
+			{% if user.email %}
+				<a class="icon_email" href="mailto:{{ user.email }}" title="{{ user.email }}"></a>
+			{% else %}
+				{% if user.contact_email %}
+					<a class="icon_email" href="mailto:{{ user.contact_email }}" title="{{ user.contact_email }}"></a>
+				{% endif %}
+			{% endif %}
+		</td>
+		<td>
+			{% with client.first_phone as phone %}
+				{% if phone %}
+					{{ phone }}
+				{% else %}
+					{{ user.contact_phone }}
+				{% endif %}
+			{% endwith %}
+		</td>
+		<td style="text-align: right;">
+
+			{% if accept_buttons %}
+
+				&nbsp;&nbsp;&nbsp;<a href="{% url 'friend_accept' friend_type user.id  %}">Accept</a>&nbsp;|&nbsp;<a href="{% url 'friend_decline' friend_type user.id  %}">Decline</a>
+				{% if remove_button %}
+					&nbsp;|&nbsp;
+				{% endif %}
+
+			{% else %}
+
+				{% if remove_button %}
+					{% if client.healer %}
+						<span class="icon_recommend"><a href="{% url 'friend_add' 'referrals' user.id  %}">Add Referral</a>&nbsp;|&nbsp;</span>
+					{% endif %}
+					<a href="#" onclick="confirmDialog('{% url 'friend_remove' friend_type user.id %}', 'Remove Client')">Remove</a>&nbsp;|&nbsp;
+				{% endif %}
+				<a class="floatbox" href="{% url 'referral_dlg' user.username 'healer' %}" data-fb-options="width:470 ">Refer To &raquo;</a>
+			{% endif %}
+		</td>
+	</tr>
+{% endwith %}

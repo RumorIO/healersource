@@ -1,0 +1,691 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load account_tags %}
+{% load healer_tags %}
+{% load compress %}
+{% load client_tags %}
+
+{#{% load dajaxice_templatetags %}#}
+
+{% block head_title %}
+	Schedule
+{% endblock %}
+
+{% block extra_head %}
+	{% include 'healers/timepicker_includes.html' %}
+	{#	<script type="text/javascript" src="{{ STATIC_URL }}pinax/js/avatar.js"></script>#}
+	{#	<script type="text/javascript" src="{{ STATIC_URL }}floatbox/floatbox_6.js"></script>#}
+	{#	<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}floatbox/floatbox.css" />#}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/date.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.weekcalendar.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/weekcalendar-common.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/weekcalendar-schedule.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.tipsy.js"></script>
+	{% endcompress %}
+
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.ba-serializeobject.min.js"></script>
+
+	{% if request.is_mobile %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/mobiscroll-2.0.custom.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/mobiscroll-2.0.custom.min.css" />
+	{% endif %}
+
+	{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/jquery.weekcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/tipsy.css" />
+	{% endcompress %}
+	{#	<style type="text/css">#fbContent { overflow: scroll; }</style>#}
+
+	{% if not healer.seen_appointments_help %}
+		{% compress js %}
+			<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/schedule_tour.js"></script>
+		{% endcompress %}
+	{% endif %}
+
+	<script>
+		var schedule_username = '{{ username }}';
+		var selected_username = schedule_username;
+		{% if user.client.healer.schedule_full_width %}
+			schedule_full_width = true;
+		{% else %}
+			schedule_full_width = false;
+		{% endif %}
+
+		var provider_dropdown = {{ is_wellness_center.schedule_dropdown_provider_list|yesno:'true, false' }};
+
+		{% if is_wellness_center.schedule_side_by_side_setting %}
+			var wcenter_overlapEventsSeparate = true;
+			overlapEventsSeparate = true;
+		{% else %}
+			var wcenter_overlapEventsSeparate = false;
+		{% endif %}
+
+		start_from_sunday = {{ user.client.healer.schedule_start_from_sunday_setting|yesno:'true, false' }};
+		{% if location_id %}
+			location_id = '{{ location_id }}';
+		{% endif %}
+		var url_error_report = "{% url 'error_report' %}";
+		var url_send_intake_form = "{% url 'send_intake_form' %}";
+		var url_intake_forms_list = "{% url 'intake_forms_list' %}";
+		var url_intake_form_answer = "{% url 'view_intake_form_answer' %}";
+		var url_create_note = "{% url 'notes_create_note_page' %}";
+		var url_view_notes = "{% url 'notes_view_notes_page' %}";
+		center_common_availability = {{ is_wellness_center.common_availability|yesno:'true, false' }};
+	</script>
+
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_schedule">Schedule</h1>{% endblock %}
+
+{% block body %}
+
+	{% if prev_step %}<div id="setup_body"><h2>{{ request.step_name }}</h2></div>{% endif %}
+
+	{% if is_wellness_center and providers and perms.healers.can_use_wcenter_schedule %}
+			<div id="provider_menu">
+				<div id="selected_provider" class="grey_box"><span></span> ∨</div>
+				<div class="schedule-provider-select">
+					<div id="schedule_provider_item_{{ user.username }}" class="grey_box schedule_provider_item avatar" data-color-selected="#FDF03A" onclick="schedule_switch('{{ user.username }}')">
+						{% avatar user 50 %}<br>
+						All
+					</div>
+					{% for provider in providers %}
+						<div id="schedule_provider_item_{{ provider.username }}" class="grey_box schedule_provider_item schedule_provider_item_healer avatar" data-color-selected="{{ provider.color }}" onclick="schedule_switch('{{ provider.username }}')">
+							{% avatar provider.healer.user 50 %}<br>
+							{{ provider.name }}
+						</div>
+					{% endfor %}
+					{% for provider in providers_not_paid %}
+						<div id="schedule_provider_item_{{ provider.username }}" class="grey_box schedule_provider_item schedule_provider_item_healer avatar unpaid_provider" data-color-selected="#fff" data-first-name="{{ provider.first_name }}" data-name="{{ provider.name }}" data-url="{{ provider.profile_url }}" onclick="show_schedule_error(this, '{{ provider.username }}')">
+							{% avatar provider.healer.user 50 %}<br>
+							{{ provider.name }}
+						</div>
+					{% endfor %}
+					<div id="switch_provider_dropdown"></div>
+				</div>
+			</div>
+		<hr />
+	{% endif %}
+	{% if is_healers_schedule_not_paid %}
+		{% with error_message=is_healers_schedule_not_paid show_billing_link=True %}
+			{% include "healers/error.html" %}
+		{% endwith %}
+	{% endif %}
+
+	{% if is_wellness_center and not perms.healers.can_use_wcenter_schedule %}
+		{% if not is_wellness_center.schedule_trial_started_date %}
+			<div class="single_button trial_notice">Scheduling for Wellness Centers is a premium feature of HealerSource. You can try it completely free for {{ schedule_trial_number_of_days }} days. After that, we kindly ask for a donation of ${{ payment }} a month per provider.<br><br><div class="trial_notice_button"><a href="{% url 'enable_schedule_free_trial' %}">Lets Get Started!</a></div></div>
+		{% else %}
+			{% with error_message='Your schedule has been disabled because your account has not been paid.' show_billing_link=True %}
+				{% include "healers/error.html" %}
+			{% endwith %}
+		{% endif %}
+	{% elif not has_treatments %}
+		<div class="message">
+			<p>You must add at least one Treatment Type before you can set your Availability.</p>
+			<p><a href="{% url 'treatment_types' %}">Go To Treatment Types &raquo;</a></p>
+		</div>
+		<a href="#" class="floatbox" data-fb-options="source:#no_treatment_types_dialog autoStart:true"></a>
+		<div id="no_treatment_types_dialog" style="display: none; font-style: italic;">
+			<p class="message">You must add at least one Treatment Type before you can use your Schedule</p>
+			{% with 'schedule' as redirect %}{% include "healers/settings/treatment_types_add_form.html" %}{% endwith %}
+		</div>
+		<style type="text/css"> .content_frame > div {overflow: visible;}</style>
+		<script>schedule_available = false;</script>
+	{% elif is_wellness_center and not wcenter_healer_has_treatment_types and user.username != healer.username %}
+		<div class="message">
+			<p>You must add at least one Treatment Type for {{ healer.user.get_full_name }} before you can use his or her Schedule.</p>
+			<p><a href="{% url 'treatment_types' healer.user.username %}">Go To {{ healer.user.first_name }}'s Treatment Types &raquo;</a></p>
+		</div>
+		<style type="text/css"> .content_frame > div {overflow: visible;}</style>
+		<script>schedule_available = false;</script>
+	{% elif not user_has_locations %}
+		<div class="message">
+			<p>You must add at least one Location before you can use your Schedule.</p>
+			<p><a href="{% url 'location' %}">Go To Locations &raquo;</a></p>
+		</div>
+		<style type="text/css"> .content_frame > div {overflow: visible;}</style>
+		<script>schedule_available = false;</script>
+	{% else %}
+		{% include "facebook_init.html" %}
+
+		{% user_display healer.user as other_user_display %}
+
+		{% if is_wellness_center %}
+			{% for provider in providers %}
+				<div id="provider_visibility_{{ provider.username }}" class="provider_visibility">
+					{% if provider.healer.scheduleVisibility == provider.healer.VISIBLE_DISABLED %}
+						<div id="schedule_disabled_box">
+							{% with dont_show_visibility_option=1 help_text=1 healer=provider.healer username=provider.healer.user.username %}{% include "healers/schedule_visibility_bar.html" %}{% endwith %}
+						</div>
+						<hr />
+						<div class="clearfix"></div>
+					{% endif %}
+				</div>
+			{% endfor %}
+		{% endif %}
+		<div id="provider_visibility_{{ user.username }}" class="provider_visibility">
+			{% with healer=user.client.healer %}
+				{% if healer.scheduleVisibility == healer.VISIBLE_DISABLED %}
+					<div id="schedule_disabled_box">
+						{% with dont_show_visibility_option=1 help_text=1 is_wellness_center=False %}
+							{% include "healers/schedule_visibility_bar.html" %}
+						{% endwith %}
+					</div>
+					<hr />
+					<div class="clearfix"></div>
+				{% endif %}
+			{% endwith %}
+		</div>
+
+		{#	<h1 style="padding-left: 28px; background-repeat: no-repeat; background-position: 0pt 6px;" id="nav_schedule">Schedule</h1>#}
+		{#	{% if healer.scheduleVisibility == healer.VISIBLE_DISABLED %}#}
+		{##}
+		{#		<a style="float: right;" href="{% url receiving_appointments %}">Sessions I'm Receiving &raquo;</a>#}
+		{#		Online Bookings Disabled | <a href="{% url schedule_enable %}">Enable Online Bookings Now &raquo;</a>#}
+		{##}
+		{#	{% else %}#}
+
+		{% include "healers/unconfirmed_appointments_content.html" %}
+		<div id="schedule_content">
+		<table style='width:100%; margin-bottom: 7px;'><tr>
+
+			<td id="edit_availability_selector" style="width: 0;">
+				<span class="bold">Mode: </span>
+				<span class="highlight_container button_container combined_button_container">
+					<span class="{{ edit_availaibility|yesno:",selected" }} tour_appointments">
+						<a href="#" class="icon_appointment"
+						   onclick="set_schedule_mode('appointments');">Appointments</a>
+					</span><span
+						class="{{ edit_availaibility|yesno:"selected," }} tour_availability">
+					<a href="#" class="icon_availability"
+					   onclick="set_schedule_mode('availability');">Edit Availaibility</a>
+					</span>
+				</span>
+
+			</td>
+
+			<td style="width: 50%; text-align: center;">
+				<span id="appointments_view_selector">
+					<span class="highlight_container  button_container combined_button_container"> {# style="display: {{ edit_availaibility|yesno:"none,block" }};" #}
+						<span class="selected" onclick="show_appointments_view_7_days()"
+						      id="appointments_view_7_days_button"><a href="#">7 days</a>
+						</span><span onclick="show_appointments_view_list()"
+						             id="appointments_view_list_button"><a href="#">List</a>
+						</span>
+					</span>
+				</span>
+			</td>
+
+			<td id="location_selector" style="width: 50%;">
+				{#			<div id="location_selector">#}
+				{% if locations|length == 0 %}
+					<span class="single_button"><a href="{% url 'location' %}" id="set_your_location">Set Your Location</a></span>
+
+				{% else %}
+					{% if locations|length > 1 %}
+						<div id="location_bar_edit">
+							<ul id="location_menu" class="menu">
+								<li><a href="#" class="grey_box" style="padding: 2px 6px;"><img src="{{ STATIC_URL }}healersource/img/rainbow_color_box.png" class="color_box" style="background-color:{{ locations.0.color }};">&nbsp;All Locations</a>
+									<ul><li class="individual_schedule_only"><a href="#" id="all"><img src="{{ STATIC_URL }}healersource/img/rainbow_color_box.png" class="color_box" style="background-color:{{ locations.0.color }};">&nbsp;All Locations</a></li>
+										{% for loc in locations %}
+											{% if not loc.is_deleted %}
+												<li><a href="#" id="{{ loc.id }}">
+													{% with color=loc.color color_classes='individual_schedule_only' %}
+														{% include "healers/color_box.html" %}
+													{% endwith %} {{ loc.text }}
+												</a></li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+								</li>
+							</ul>
+						</div>
+					{% else %}
+						<script>
+							location_id = '{{ locations.0.id }}';
+						</script>
+					{% endif %}
+				{% endif %}
+				{#			</div>#}
+			</td>
+
+		</tr></table>
+
+		<div class="clearfix" style="margin-bottom:2px;" ></div>
+
+		<div style="position: relative;">
+			<div id="calendar" class="wc-editable"></div>
+			<div id="not-available" class="editable">
+				<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+					<span>You Have No Availablity</span>
+					<hr/>
+					<span class="text">Click This Grid to Add Availability (<a href="javascript: $('#not-available').hide()">close</a>)</span>
+				</div>
+			</div>
+		</div>
+
+		<div id="appointments_view_list" style="display: none;">
+			{#		{% include "healers/unconfirmed_appointments_content.html" %}#}
+
+			<div>
+				<h3>Confirmed - This Week</h3>
+				<div id="confirmed_appts" style="display:none;">
+					<table width="610" id="confirmed_appts_list" cellspacing="0"></table>
+				</div>
+				<p style="text-align:right; margin: 10px 56px"><a id="confirmed_appts_more" href="{% url 'current_confirmed_appointments' %}">See All Appointments &raquo;</a></p>
+				{#				<p id="no_confirmed_appts" style="display:none;" class="empty_list_msg">No confirmed appointments.</p>#}
+			</div>
+
+		</div>
+
+		<div style="margin: 1.5em 0 0.5em 0; text-align: right;">
+			<div class="grey_box" style="float: left;">
+				<div class="inline">
+					<img src="{{ STATIC_URL }}healersource/img/1x1.gif" class="ui-icon ui-icon-wrench ui_icon_dark" />&nbsp;
+					{% if is_wellness_center %}
+						<a id="schedule_settings_link" href="{% url 'schedule_settings' username %}">Schedule Settings</a>
+					{% else %}
+						<a href="#schedule_settings" onclick="$('#schedule_settings').toggle();" id="schedule_settings_link">Schedule Settings</a>
+					{% endif %}
+					|
+				</div>
+				<a href="{% url 'treatment_types' username %}" id="treatment_types_link">Treatment Types</a>
+				<div class="schedule_center_functions inline">
+					| <a href="{% url 'location' %}" id="locations_link">Locations</a>
+				</div>
+				<div class="schedule_healer_functions inline">
+					| <a href="{% url 'vacation' username %}" id="time_off_link">Time Off</a>
+				</div>
+			</div>
+			<div class="inline">
+				<div class="highlight_button schedule_healer_functions" style="float: left; margin-top: 1px;" onclick="dlg_timeoff_new()">
+					+ Add Time Off
+				</div>
+				{% if not is_wellness_center %}
+					<a href="{% url 'receiving_appointments' %}" id="sessions_im_receiving">Sessions I'm Receiving &raquo;</a><br />
+				{% endif %}
+				<a href="{% url 'appointment_history' %}" id="appointment_history">Appointment History &raquo;</a><br />
+				{% if not is_wellness_center%}
+					<a href="{% url 'embed_preview' healer.user.username %}" style="float:right;" class="floatbox icon_eye" data-fb-options="width:750px height:100% className:naked" id="preview_schedule">Preview Schedule &raquo;</a>
+				{% endif %}
+				<div class="clearfix"></div>
+			</div>
+
+			<div style="text-align: right;">
+				<span class="highlight_container"><span id="help_mode"><a href="#" onclick="toggle_help_mode(); return false;">Help Mode <span id="help_mode_q">(?)</span><span id="help_mode_h">- Hover Over an Item to Get Help</span></a></span></span>
+				|&nbsp;
+				<a href="#" id="take_the_tour" onclick="tour_start();" original-title='<b>You Can Always Click Here To Start The Tour</b>'>Start the Tour &raquo;</a>
+			</div>
+			<div style="text-align: right;">
+				<div id="switch_schedule_width"></div>
+				<div id="switch_side_by_side"></div>
+				<div id="switch_first_week_day"></div>
+			</div>
+		</div>
+
+		{% if not is_wellness_center %}
+			<div id="schedule_settings" style="display: {{ form.errors|yesno:"block,none" }};" class="grey_box">
+				<h3>Schedule Settings</h3>
+				{% with 'schedule' as redirect %}{% include "healers/settings/schedule_content.html" %}{% endwith %}
+			</div>
+		{% endif %}
+		</div> <!-- end of #schedule content -->
+		<div id="schedule_error">
+			<p class="message">
+				<span class="name"></span>'s schedule is disabled because his or her account is currently unpaid.<br><br>
+				<span class="link"></span>
+			</p>
+		</div>
+
+
+		{% include "healers/schedule_dialogs.html" %}
+		{% include "healers/timeslot_dialogs.html" %}
+		{% include "healers/timeoff_dialogs.html" %}
+		{% include "healers/new_client_dialog.html" %}
+
+		<div id="schedule_tour_end">
+			<p><b>Thats it for the Tour!</b></p><p>We hope that you enjoy using your new schedule just as much as we've enjoyed building it. We'd love to hear your ideas and comments so feel free to be in touch using the Feedback box at the bottom of the page.</p>
+		</div>
+
+		{% if not seen_appointments_help %}
+			<div id="schedule_welcome">
+				<p><b>Welcome to Your Schedule!</b></p><p>We'd like to show you around a bit so you can get the most of this powerful and easy-to-use tool.</p>
+			</div>
+		{% endif %}
+
+	{% if prev_step %}{% include "healers/setup/setup_controls.html" %}{% endif %}
+	{% endif %} {# no treatment types check #}
+
+{% endblock %}
+
+{% block extra_body %}
+	<script>
+	var Edit_Availability = false;
+
+	var Is_Mobile = {{ request.is_mobile|lower }};
+
+	var defaultTimeslotWeekly = true;
+	var confirmedListEndDate = Date.parseExact('{{ confirmedListEndDate }}', "yyyy-MM-ddTHH:mm:ss");
+
+	var Healer_Name = "{{ healer.user.client }}";
+	var defaultTimeslotLength = '{{ healer.defaultTimeslotLength }}';
+	var bookAheadDays = {{ healer.bookAheadDays }};
+	var Office_Hours_Start = '{{ healer.office_hours_start|time:"H:i" }}';
+	var Office_Hours_End = '{{ healer.office_hours_end|time:"H:i" }}';
+	var repeatChoices = [];
+
+	{% for key,val in repeat_choices %}
+		repeatChoices['{{ key }}'] = '{{ val }}';
+	{% endfor %}
+
+	{#		initSlots = {{ slot_list|safe }};#}
+
+	var Names = $.parseJSON('{{ names|safe }}');
+	var Treatments = {};
+	var discount_codes = $.parseJSON('{{ discount_codes_json|safe }}');
+	var Location_Available_Treatments = $.parseJSON('{{ location_available_treatments|safe }}');
+	var Location_Treatments = {};
+	var Treatment_Types = {};
+	{% for id, treatment_lengths in treatment_lengths_locations.items %}
+		Location_Treatments[{{ id }}] = {};
+		{% for length in treatment_lengths %}
+			Location_Treatments[{{ id }}][{{ length.id }}] = {{ length.json_object|safe }};
+			Treatments[{{ length.id }}] = {{ length.json_object|safe }};
+			Treatment_Types[{{ length.id }}] = {{ length.treatment_type.id }};
+		{% endfor %}
+	{% endfor %}
+	var Location_Treatments_original = $.extend({}, Location_Treatments);
+
+	var user_username = '{{ user.username }}';
+	{% if is_wellness_center %}
+		is_wellness_center = true;
+		var url_confirmed_appointments = '{% url "current_confirmed_appointments" %}';
+		var Provider_Treatments = {};
+		var Provider_Treatments_Treatments = {};
+		{% for username, treatment_lengths in provider_treatments.items %}
+			Provider_Treatments['{{ username }}'] = {};
+			{% for length in treatment_lengths %}
+				Provider_Treatments['{{ username }}'][{{ length.id }}] = {{ length.json_object|safe }};
+				Treatments[{{ length.id }}] = {{ length.json_object|safe }};
+				Provider_Treatments_Treatments[{{ length.id }}] = {{ length.json_object|safe }};
+			{% endfor %}
+		{% endfor %}
+
+		var providers_colors = {}
+		var providers_colors_dark = {}
+		{% for provider in providers %}
+			providers_colors['{{ provider.username }}'] = '{{ provider.color }}';
+		{% endfor %}
+
+		for(id in providers_colors) {
+			providers_colors_dark[id] = make_dark_color(providers_colors[id], 0.16);
+		}
+
+		is_wellness_center = true;
+		if (schedule_username == user_username){
+			center_main_mode = true;
+		}
+
+		function switch_unconfirmed_appointments(){
+			$('#unconfirmed_appointments').show();
+			if (center_main_mode) {
+				$('.unconfirmed').show();
+			} else {
+				$('.unconfirmed').hide();
+				$('#unconfirmed_' + schedule_username).show();
+				if ($('.unconfirmed:visible').length === 0) {
+					$('#unconfirmed_appointments').hide();
+				}
+			}
+		}
+
+		function switch_provider_selected() {
+			function reset_colors() {
+				$('.schedule_provider_item').each(function(){
+					var color = $(this).attr('data-color-not-selected');
+					$(this).css('background-color', color);
+					$(this).attr('data-color', color);
+				});
+			}
+			reset_colors();
+			var current_provider = $('#schedule_provider_item_' + schedule_username);
+			var color = current_provider.attr('data-color-selected');
+			current_provider.css('background-color', color);
+			current_provider.attr('data-color', color);
+		}
+
+	{% endif %}
+
+	var Locations = {{ locations_json|safe }};
+	var All_Rooms = {{ all_rooms_json|safe }};
+	var Treatments_Locations = {{ treatments_locations_json|safe }};
+	var Treatments_Rooms = {{ treatments_rooms_json|safe }};
+	var SetupTimes = {{ setup_times_json|safe }};
+
+	{% include "healers/location_colors.js" %}
+
+	var location_menu;
+	var schedule_menu;
+
+	function show_hide_healer_center_functions(){
+		$('.schedule_healer_functions, .schedule_center_functions').hide();
+		if (center_main_mode) {
+			$('.schedule_center_functions').show();
+		} else {
+			$('.schedule_healer_functions').show();
+		}
+	}
+
+	function schedule_redirect(username, force_redirect) {
+		force_redirect = typeof force_redirect !== 'undefined' ? force_redirect : false;
+		if (!center_main_mode || force_redirect) {
+			if (Edit_Availability) {
+				var link = "{% url 'availability' %}" + username;
+			} else {
+				var link = "{% url 'schedule' %}" + username;
+			}
+			window.location.href = link;
+		}
+	}
+
+	function update_menu_name() {
+		var name;
+		if (center_main_mode) {
+			name = 'All';
+		} else {
+			name = Healer_Name;
+		}
+		$('#selected_provider').find('span').html(name);
+	}
+
+	function schedule_switch(username) {
+		function switch_bottom_links() {
+			function change_link(id, url){
+				$('#' + id).attr('href', '/provider/settings/' + username + '/' + url);
+			}
+			change_link('schedule_settings_link', 'schedule');
+			change_link('treatment_types_link', 'treatments');
+			change_link('time_off_link', 'time_off');
+		}
+
+		function load_healer_data(healer) {
+			Healer_Name = healer.Healer_Name;
+			defaultTimeslotLength = healer.defaultTimeslotLength;
+			bookAheadDays = healer.bookAheadDays;
+			Office_Hours_Start = healer.Office_Hours_Start;
+			Office_Hours_End = healer.Office_Hours_End;
+		}
+
+		$('#schedule_error').hide();
+		$('#schedule_content').show();
+
+		if (username != schedule_username) {
+			if (!schedule_available) {
+				schedule_redirect(username, true);
+			}
+			schedule_username = username;
+			current_username = false;
+			selected_username = username;
+			center_main_mode = username == user_username;
+			$('#schedule_for').html(Names[username]);
+			switch_provider_visibility();
+			switch_unconfirmed_appointments();
+			switch_provider_selected();
+			switch_bottom_links();
+			Dajaxice.healers.getCenterEditSchedule(function(data){
+				if (data.reload) {
+					schedule_redirect(username, true);
+				} else {
+					load_healer_data(data.healer);
+					update_menu_name();
+					Treatments = $.extend({}, data.Treatments, Provider_Treatments_Treatments);
+					Location_Treatments = data.Location_Treatments;
+					Treatment_Types = data.Treatment_Types;
+					Location_Treatments_original = $.extend({}, Location_Treatments);
+					show_hide_healer_center_functions();
+					if (wcenter_overlapEventsSeparate) {
+						set_side_by_side_setting(wcenter_overlapEventsSeparate, true);
+					} else {
+						if (overlapEventsSeparate) {
+							overlapEventsSeparate = false;
+							populateCalendar.firsttime = true;
+							populateCalendar([]);
+						}
+					}
+					fetchCalendar();
+				}
+			}, {'username': username});
+		}
+	}
+
+	$(function() {
+		{% if edit_availaibility %}
+			set_schedule_mode('availability');
+		{% endif %}
+
+		fetchCalendar();
+
+		{% if not healer.seen_appointments_help %}
+			hs_dialog('#schedule_welcome', {
+				title: 'Schedule Tour',
+				title_class: 'nav_tour',
+				autoOpen: true,
+				buttons: {
+					"Let's Go!" : function() {
+						hs_dialog("close");
+						tour_start();
+					},
+					"Later" : {
+						button_class: 'float_left',
+						click: function() {
+							hs_dialog("close");
+							$('#take_the_tour').tipsy('show');
+							Dajaxice.healers.seen_appointments_help(function(){});
+						}
+					}
+				}
+			});
+		{% endif %}
+		$('#take_the_tour').tipsy({
+			gravity:'se',
+			html: true
+		});
+		$('#help_mode').unbind('click');
+		location_menu = initSubmenu('location_menu');
+		show_hide_healer_center_functions();
+		{% if is_wellness_center %}
+			$('.individual_schedule_only').hide();
+			schedule_menu = initSubmenu('schedule_menu');
+
+			$('#appointment_provider').change(function(){
+				var provider_username = $(this).val();
+				selected_username = provider_username;
+				for (id in Location_Treatments) {
+					Location_Treatments[id] = Provider_Treatments[provider_username]
+				}
+				var dialog_form = $(this).parents('form');
+				//reset treatment length if custom treatment was selected.
+				var treatment_field = dialog_form.find('select[name="treatment_length"]');
+				updateTreatmentField(treatment_field);
+				dialog_form.find('select[name="location"]').trigger('change');
+			})
+			// select first location
+			try {
+				var element;
+				if ($('#location_bar_edit a').length == 0) {
+					show_calendar_with_location(location_id);
+				} else {
+					if (location_id) {
+						element = $('#location_bar_edit a[id=' + location_id + ']');
+					} else {
+						element = $($('#location_bar_edit a')[2]);
+					}
+					element.trigger('click');
+				}
+			} catch(e) {}
+			switch_unconfirmed_appointments();
+			switch_provider_selected();
+		{% endif %}
+	});
+
+	function fetch_tour(callback) {
+		if(typeof(Tour) == 'undefined') {
+			$.getScript("{{ STATIC_URL }}healersource/js/schedule_tour.js")
+					.done(function(script, textStatus) {
+						callback();
+					})
+					.fail(function(jqxhr, settings, exception) {
+						alert('Could not Load Help Mode or Tour. Please reload this page and try again.');
+					});
+
+			return false;
+		}
+
+		return true;
+	}
+
+	function tour_start() {
+		if(!fetch_tour(tour_start)) return;
+
+		if( $('#help_mode').hasClass('selected') )
+			toggle_help_mode();
+
+		if(Tour_Current != -1)
+			Tour_Current--;
+
+		tour_stop();
+		help_init(true);
+		tour_next();
+	}
+
+	function toggle_help_mode(stop) {
+		if((typeof stop == 'undefined') && !fetch_tour(toggle_help_mode)) return;
+
+		if(typeof tour_stop != 'undefined')
+			tour_stop();
+
+		if( $('#help_mode').hasClass('selected') || (typeof stop != 'undefined')) {
+			$('#help_mode').removeClass('selected');
+			$('#help_mode_q').show();
+			$('#help_mode_h').hide();
+		} else {
+			$('#help_mode').addClass('selected');
+			$('#help_mode_q').hide();
+			$('#help_mode_h').show();
+
+			help_init(false);
+		}
+	}
+
+	{#		var seen_availability_help = {{ healer.seen_availability_help|lower }};#}
+	var seen_appointments_help = {{ healer.seen_appointments_help|lower }};
+	var clients = {{ clients|safe }};
+
+	</script>
+{% endblock %}
+

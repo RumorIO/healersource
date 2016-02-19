@@ -1,0 +1,35 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load pagination_tags %}
+
+{% block head_title %}Search Results{% endblock %}
+{% block extra_head %}
+{% endblock %}
+
+{% block page_title %}<h1>Search {% if friend_type == "clients" %}Clients{% else %}Providers{% endif %}</h1>{% endblock %}
+
+{% block body %}
+
+	{% if message %}
+		<p class="message">{{ message }}</p>
+	{% endif %}
+
+	<form action="." method="get" style="margin: 1em 0px;">
+		{{ search_form.type }}
+		{{ search_form.query.label }}: {{ search_form.query }}
+		<input type="submit" value="Search"/>
+	</form>
+
+	{% autopaginate found_clients %}
+	<div class="friends">
+	{% for client in found_clients %}
+		{% with client.user as user %}
+			{% include "healers/friend_box.html" %}
+			{% include "healers/avatar_divider.html" %}
+		{% endwith %}
+	{% endfor %}
+	{% paginate %}
+	</div>
+{% endblock %}
+

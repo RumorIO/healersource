@@ -1,0 +1,22 @@
+{% include "healers/invite_dialog.html" %}
+<div class="single_button" style="padding:4px 8px;">
+	<span class="nav_icon nav_inbox">
+		{% if invite_type == 'Recommendation' %}Invite a Provider by Email{% else %}Send a Client Invitation{% endif %}
+	</span>
+	<input type="text" maxlength="75" class="ui-autocomplete-input" id="send_invitation_input" placeholder="Email Address" />
+	<input type="submit" value="Go" onclick="inviteDialog($('#send_invitation_input').val(), {{ is_to_healer|yesno:"1,0" }}); $('#send_invitation_input').val('');" />
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#send_invitation_input').keydown(function (e){
+			if(e.keyCode == 13) {
+				inviteDialog($('#send_invitation_input').val() {% if is_to_healer %}, 1{% endif %});
+				$('#send_invitation_input').val('');
+				return false;
+			}
+		});
+	});
+</script>
+
+

@@ -1,0 +1,3 @@
+{{ wellness_center }} has added you to their list of providers on HealerSource.
+
+To allow {{ wellness_center }} to edit your profile and schedule, {% with wcenter_permission_url as link %}{% include "email_link.html" %}{% endwith %}

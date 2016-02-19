@@ -1,0 +1,24 @@
+[
+	{
+		"pk": 1,
+		"model": "healers.treatmenttype",
+		"fields": {
+			"description": "",
+			"title": "Default",
+			"is_default": true,
+			"is_deleted": false,
+			"healer": 1
+		}
+	},
+	{
+		"pk": 1,
+		"model": "healers.treatmenttypelength",
+		"fields": {
+			"length": 90,
+			"cost": 10.0,
+			"is_default": true,
+			"is_deleted": false,
+			"treatment_type": 1
+		}
+	}
+]

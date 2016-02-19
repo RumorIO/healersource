@@ -1,0 +1,35 @@
+{% extends phonegap|yesno:'base_phonegap.html,site_base.html' %}
+
+{% block head_title %}Report Error{% endblock %}
+
+{% block extra_head %}
+<script>
+	var url_send_error_report = "{% url 'error_report' %}";
+	function send(){
+		rest_ajax_post_request(url_send_error_report, function(response) {
+			$('#report_form').hide();
+			$('#success_result').show();
+		}, {report: $('#report').val()});
+	}
+</script>
+{% endblock %}
+
+{% block header_content %}
+	Report Error
+{% endblock %}
+
+{% block page_title %}<h1>Report Error</h1>{% endblock %}
+
+{% block body %}
+
+<div id="report_form">
+	<p>Please describe what you were doing when the problem occurred. The more detail you can give, the better chance we’ll be able to track down the problem..</p>
+	<textarea id="report" style="width: 98%; height: 100px;"></textarea>
+	<div class="align-right"><a class="highlight_button" onclick="send();">Send</a></div>
+</div>
+<div id="success_result" style="display:none;">
+	<p><img width="100%" src="{{ STATIC_URL }}healersource/img/group-thumbs-up.jpg" alt="group thumbs up"></p>
+	<p>Thanks so much for sending us the feedback! We’ll get in touch with you as soon as humanly possible.</p>
+	<p><a href="javascript:history.back();">&laquo; Go Back</a></p>
+</div>
+{% endblock %}

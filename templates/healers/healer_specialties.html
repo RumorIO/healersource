@@ -1,0 +1,5 @@
+<h4 class="healer_modalities_list_header">Specialties</h4>
+<div id="healer_modalities_list">
+	{% include 'healers/healer_specialties_list.html' %}
+	{% if not modalities and is_me %}<a href="{% url 'healer_edit' %}#my_info" class="message" style="margin-left: 5px;">&laquo; set my specialties &raquo;</a>{% endif %}
+</div>

@@ -1,0 +1,12 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+	{% include "facebook_init.html" %}
+	{% if not is_wellness_center %}<p>Import your contacts so you can schedule appointments with them quickly and easily.</p>{% endif %}
+	<p>At HealerSource, we're serious about your privacy. We never share any of your contacts information with anyone, and we will never send out any promotional emails to your contacts.
+		</p>
+	<p>In other words, your contacts are <i><b>for your eyes only.</b></i></p>
+	<p>Click on the links below to get started:</p>
+	{% with 1 as hide_contact_import_header %}{% include "friends_app/import_contacts_bar.html" %}{% endwith %}
+	{% include "healers/setup/setup_controls.html" %}
+{% endblock %}

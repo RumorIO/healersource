@@ -1,0 +1,42 @@
+{% extends "blog/base.html" %}
+
+{% load i18n %}
+{% load compress %}
+{#{% load uni_form_tags %}#}
+
+{% block head_title %}{% blocktrans %}Editing Post{% endblocktrans %}{% endblock %}
+
+{% block extra_head %}
+	{{ blog_form.media }}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/blog.js"></script>
+	{% endcompress %}
+	<script>
+		var url_change_post_status = "{% url 'blog_change_post' %}";
+	</script>
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_blog">{{ post.title|truncatewords:7 }}</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "blog/blog_nav.html" %}
+
+	{% ifequal post.user request.user %}
+		{% with "Save Post" as submit_button_text %}{% with 'update' as blog_action %}
+			{% include "blog/new_or_edit_form.html" %}
+		{% endwith %}{% endwith %}
+	{% else %}
+		<p>{% trans "You are not the author of this post" %}</p>
+	{% endifequal %}
+{% endblock %}
+
+{#{% block extra_body %}#}
+{#	{% load jquery_validation %}#}
+{#	{% include_validation %}#}
+{#	<script type="text/javascript">#}
+{#		$(function(){#}
+{#			$('#blog_form').validate('{% url blog_form_validate %}', {type: 'table'});#}
+{#		});#}
+{#	</script>#}
+{#{% endblock %}#}

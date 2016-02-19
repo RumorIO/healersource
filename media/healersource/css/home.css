@@ -1,0 +1,81 @@
+/*@import url(http://fonts.googleapis.com/css?family=Overlock+SC);*/
+body { overflow-y: scroll; }
+div.providers { margin-top: 18px; }
+.provider {
+	text-align: left;
+}
+.provider img {
+	display: block;
+	max-width: 100%;
+	margin: auto;
+}
+.provider .panel {
+	width: 100%;
+	text-align: left;
+	font-size: 14px;
+	color: #00436F;
+}
+.provider .panel_title {
+	height: 36px;
+	line-height: 36px;
+	font-size: 14px;
+	font-weight: bold;
+	padding: 0 12px 0 6px;
+	overflow: hidden;
+}
+.provider .panel_title a {
+	text-decoration: none;
+	font-size: 1.2em;
+}
+.provider .panel_title .icon {
+	display: block;
+	width: 50px;
+	height: 100%;
+	background-repeat: no-repeat;
+	background-position: center right;
+}
+.provider .panel ul {
+	margin: 0 0 15px -10px;
+	padding: 0;
+	/*-moz-column-count: 2;*/
+	/*-moz-column-gap: 0;*/
+	/*-webkit-column-count: 2;*/
+	/*-webkit-column-gap: 0;*/
+	/*column-count: 2;*/
+	/*column-gap: 0;*/
+}
+.provider .panel ul li {
+	margin: 0 10px 3px 20px;
+}
+.provider .panel ul li a {
+	margin-right: 0;
+	display: inline;
+	text-decoration: none;
+	font-weight: bold;
+}
+.provider .panel ul li a:hover {
+	text-decoration: underline;
+}
+.provider .panel a {
+	display: inline-block;
+	margin-right: 20px;
+	text-decoration: underline;
+}
+.provider .panel .city {
+	float: right;
+	font-size: 1.1em;
+	font-style: italic;
+	margin-bottom: 5px;
+}
+
+@media screen and (min-width: 26.25em) {
+	#mobile_bottom_menu {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 36.25em) {
+	#left_menu {
+		display: none;
+	}
+}

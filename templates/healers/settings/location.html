@@ -1,0 +1,82 @@
+{% extends "healers/settings/settings_base.html" %}
+
+{% block head_title %}Locations{% endblock %}
+{% block title %}Locations{% endblock %}
+
+{% block extra_head %}
+	{{ block.super }}
+	{{ location_form.media }}
+	<script>
+		url_remote_session_toggle_on = "{% url 'remote_session_toggle_on' %}";
+		url_remote_session_toggle_off = "{% url 'remote_session_toggle_off' %}";
+	</script>
+	<script src="{{ STATIC_URL }}healersource/js/settings_location.js"></script>
+{% endblock %}
+
+{% block settings_content %}
+<div id="tabs_locations">
+	{% if location_list|length == 0 %}
+		<p class="message">No Locations Defined Yet. Add One Below.</p>
+	{% endif %}
+	{% for loc in location_list %}
+		<div class="location_row grey_box">
+			{% if not is_wellness_center %}{% with loc.color as color %}{% include "healers/color_box.html" %}{% endwith %}{% endif %}
+			<span>
+				<a href="{% url 'location_edit' loc.id  %}">edit</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{% url 'location_delete' loc.id  %}"
+				                            onclick="return confirm('Are you sure you want to delete this location?\n\n*** All Availability at this location will be deleted ***')">delete</a>
+				&nbsp;&nbsp;|&nbsp;&nbsp;
+				{% if loc.is_default %}
+					<b>default</b>
+				{% else %}
+					<a href="{% url 'location_set_default' loc.id  %}">set as default</a>
+				{% endif %}
+			</span>
+			<h3>{{ loc.title }}</h3>
+{#			{% if loc.rooms.all %}<hr>{% endif %}#}
+			{% for room in loc.rooms.all %}
+				<div><b>{{ room }}</b>
+					&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{% url 'room_edit' room.id  %}">edit</a>
+					{% if loc.rooms.all.count > 1 %}
+						&nbsp;&nbsp;|&nbsp;&nbsp;<a href="{% url 'room_delete' room.id  %}">delete</a>
+					{% endif %}
+				</div>
+			{% endfor %}
+			{% if is_wellness_center %}
+				<form action="{% url 'room_add' loc.id %}" method="post">
+					{% csrf_token %}
+					<div class="add_room">
+						<span class="look_like_link" style="font-style: italic;">+ Add New Room</span>
+						<div style="display: none;">
+							<div>Room Name:&nbsp;&nbsp;{{ room_form.name }}</div>
+							<input type="submit" value="Add" />
+						</div>
+					</div>
+				</form>
+			{% endif %}
+		</div>
+		<br>
+	{% endfor %}
+
+	<div class="grey_box remote_sessions_option">
+		{% include "healers/settings/remote_sessions_option.html" with form=remote_sessions_form bold_label=True %}
+	</div>
+	<div class="add_box">
+		<h3>+ Create a New Location</h3>
+		{% with location_form as form %}
+			{% include "form_errors.html" %}
+		{% endwith %}
+		<form action="{% url 'location' %}" method="post" class="location_settings">
+			{% csrf_token %}
+			<table class="no_wrap no_wrap1" id="edit_location">
+				{{ location_form.as_table }}
+			</table>
+			<input type="button" value="Add Location" onclick="add_location()" />
+		</form>
+		{% include 'healers/settings/location_postal_code_warning.html' %}
+	</div>
+	<div style="display: none;" id='dialog_check_address'>
+		{% include "healers/settings/location_check.html" %}
+	</div>
+</div>
+{% endblock %}

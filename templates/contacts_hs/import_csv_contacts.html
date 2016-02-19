@@ -1,0 +1,23 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Import contacts from Spreadsheet{% endblock %}
+{% block page_title %}<h1 class="nav_icon nav_clients">Import contacts from Spreadsheet</h1>{% endblock %}
+
+{% block body %}
+
+	{% if error %}
+		<div class="error_list"> {{ error }}</div>
+	{% endif %}
+
+	<form enctype="multipart/form-data" method="POST">
+		{% csrf_token %}
+		<p>Please select a CSV file. It should have 3 columns: 1. First Name 2. Last Name 3. Email Address. </p>
+		<p>You can also have an optional column 4. Phone Number.</p>
+		<p><a href="{{ STATIC_URL }}healersource/HealerSource%20Contact%20Import%20Template.csv">Click Here to download a sample template of what it should look like.</a></p>
+		<p>If you have an Excel Spreadsheet, please use Excel to 'Save As' and choose <b>Format: 'Comma Separated Values (.csv)'</b></p>
+		<p><i>Please be patient, this process may take a few minutes!</i></p>
+		<p>1. <input type="file" name="csv" /></p>
+		<p>2. <input type="submit" value="Import" /></p>
+	</form>
+
+{% endblock %}

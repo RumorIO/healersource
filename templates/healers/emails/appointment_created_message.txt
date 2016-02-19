@@ -1,0 +1,11 @@
+Hi {{ to_user_name }},
+
+{% if to_client %}You have been booked{% else %}Appointment created{% endif %} for {% if appointment.treatment_length.treatment_type %}{{ appointment.treatment_length.treatment_type }}{% else %}Custom Treatment{% endif %} on {{ appointment.date_range_text }}.
+
+Provider: {{ appointment.healer.user.client }}
+Date: {{ appointment.plain_text }}
+
+{% if client_info %}Client Information:
+{{ from_user_name }}
+{{ client_info }}{% endif %}
+{% include "healers/emails/appointment_footer.txt" %}

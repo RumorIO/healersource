@@ -1,0 +1,1 @@
+{{ healer }} has added the following Treatment Types to your Center

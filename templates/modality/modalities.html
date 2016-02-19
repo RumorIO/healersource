@@ -1,0 +1,88 @@
+{% extends base_template %}
+
+{% block head_title %}All Specialties{% endblock %}
+{% block extra_head %}
+	<script>
+		url_get_modalities = "{% url 'modality_get' %}";
+		url_add_category = "{% url 'modality_add_category' %}";
+		url_remove_category = "{% url 'modality_remove_category' %}";
+	</script>
+{% endblock %}
+{% block page_title %}<h1 class="small_margin_bottom">All Specialties</h1>{% endblock %}
+
+{% block body %}
+
+	<table style='width:100%;' id="category_table">
+		<tr>
+			<td width="22%">
+				<h3>Category</h3>
+				<div class="highlight_container " id="category_list">
+					<span class="selected"><a id="category_all">All</a></span><br />
+					{% for category in categories %}
+						<span><a id="category_{{ category.id }}">{{ category.title }}</a></span><br />
+					{% endfor %}
+					<span><a id="category_other">Other</a></span>
+				</div>
+			</td>
+			<td width="78%">
+				{% if unapproved_modalities %}
+					<h3>Unapproved specialities</h3>
+					<div class="highlight_container modality_list unapproved_modality_list">
+						{% with unapproved_modalities as modalities %}
+							{% include "modality/modality_list.html" %}
+						{% endwith %}
+					</div>
+				{% endif %}
+				<h3>Specialties</h3>
+				<div class="highlight_container modality_list approved_modality_list">
+					{% include "modality/modality_list.html" %}
+				</div>
+
+                {% if rejected_modalities %}
+					<h3>Rejected specialities</h3>
+					<div class="highlight_container modality_list unapproved_modality_list">
+						{% with rejected_modalities as modalities %}
+							{% include "modality/modality_list.html" %}
+						{% endwith %}
+					</div>
+				{% endif %}
+			</td>
+		</tr>
+	</table>
+{% endblock %}
+
+{% block extra_body %}
+	<script type="text/javascript">
+		$(function() {
+			function getModalitiesCallback(html) {
+				$('.approved_modality_list').html(html);
+			}
+
+			$('#category_list a').click(function() {
+				var category_id = $(this).get(0).id.split("_")[1];
+				rest_ajax_get_request_no_timeout(
+					[url_get_modalities, category_id],
+					getModalitiesCallback);
+			});
+		});
+
+
+		function removeCategoryFromModality(element, modality_id, category_id) {
+			element = $(element).parent();
+			rest_ajax_post_request_no_timeout([url_remove_category, modality_id, category_id],
+				function(){
+					element.hide();
+			});
+		}
+
+		function addCategoryToModality(title, modality_id, category_id) {
+			rest_ajax_post_request_no_timeout([url_add_category, modality_id, category_id],
+				function(){
+					var html = '<div>' + title + ' | <a href="javascript:void(0)" onclick="removeCategoryFromModality(this, ' + modality_id + ',' + category_id + ')" >remove</a></div>';
+					$('#categories_list').append(html);
+			});
+		}
+
+	</script>
+
+{% endblock %}

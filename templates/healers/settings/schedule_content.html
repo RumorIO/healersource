@@ -1,0 +1,70 @@
+<script>
+	{% if is_wellness_center and user.username == username %}
+		var original_common_availability = {{ is_wellness_center.common_availability|yesno:'true, false' }};
+		var common_availability_change_check = true;
+	{% endif %}
+	var common_availability_change_check = false;
+</script>
+{% include 'healers/timepicker_includes.html' %}
+<script src="{{ STATIC_URL }}healersource/js/settings_schedule.js"></script>
+
+<div id="tabs_schedule_settings">
+	<form action="{% if not save_to_current %}{% url 'schedule_settings' username %}{% endif %}" method="post" id="schedule_settings_form">
+		{% csrf_token %}
+
+		{% include "form_errors.html" %}
+
+		{% if not dont_show_visibility_option %}{% include "healers/schedule_visibility_bar.html" %}{% endif %}
+			<hr />
+			<p>Hours To Display: <span class="office_hours_inputs">Start {{ form.office_hours_start }}</span><span class="office_hours_inputs">End {{ form.office_hours_end }}</span></p>
+			{% if is_wellness_center and user.username == username %}
+				<p>{{ form.common_availability }}</p>
+			{% endif %}
+
+			<div
+				{% if user.username != username or not is_wellness_center %}
+				{% else %}
+					style="display: none;"
+				{% endif %}>
+				<p>{{ form.leadTime.label }}:&nbsp;{{ form.leadTime }} Hours</p>
+				<p>{{ form.setup_time.label }}:&nbsp;{{ form.setup_time }} Minutes</p>
+				<p>{{ form.bookAheadDays.label }}:&nbsp;{{ form.bookAheadDays }} Days</p>
+				<p><label>Send me a txt message to my phone {{ healer.first_phone }} when someone requests an appointment&nbsp;{{ form.send_sms_appt_request }}</label></p>
+				<p>{{ form.phone.label }}:&nbsp;{{ form.phone }}</p>
+
+				<p>{{ form.manualAppointmentConfirmation.label }}:&nbsp;{{ form.manualAppointmentConfirmation }}</p>
+				<p>{{ form.intakeFormBooking.label }}:&nbsp;{{ form.intakeFormBooking }}</p>
+				<p>{{ form.booking_optional_message_allowed.label }}:&nbsp;{{ form.booking_optional_message_allowed }}</p>
+
+				<p>{{ form.cancellation_policy.label }}:<br />{{ form.cancellation_policy }}</p>
+				<p>{{ form.additional_text_for_email.label }}:<br />{{ form.additional_text_for_email }}</p>
+			</div>
+		{% if redirect %}<input type="hidden" name="redirect" value="{{ redirect }}" />{% endif %}
+
+		{% if not dont_show_footer_and_save_button %}
+			<p><input type="button" value="Save Schedule Settings" onclick="save_schedule_setting();" /></p>
+		{% endif %}
+			</form>
+		{% if not dont_show_footer_and_save_button %}
+			{% if user.username == username %}
+				<hr />
+				<div class="grey_box">
+					<p>
+						{% if healer.google_email %}
+							<span class="google_icon">Google Calendar Sync</span> - {{ healer.google_email }} |
+							<a href="{% url 'google_calendar_instruction' %}">change settings</a>
+						{% else %}
+							<a href="{% url 'google_calendar_instruction' %}" class="google_icon">Sync your Schedule with Google Calendar &raquo;</a>
+						{% endif %}
+					</p>
+					<p>
+						<a href="{% url 'manage_discount_codes' %}">Manage Discount Codes &raquo;</a>
+					</p>
+				</div>
+				{% include 'healers/settings/embed_directions.html' %}
+				<br>
+			{% endif %}
+		{% else %}
+			</form>
+		{% endif %}
+</div>

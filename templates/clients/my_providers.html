@@ -1,0 +1,48 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}My Providers{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_my_providers">My Providers</h1>{% endblock %}
+
+{% block body %}
+
+	{% if user.healing_requests.exists and not user.avatar_set.exists %}
+		{% url 'avatar_change' as link %}
+		{% with error_message='Add a photo to improve the appearance of your Healing Request'%}
+			{% include 'healers/error.html' %}
+		{% endwith %}
+	{% endif %}
+
+	<div id="clients_providers">
+		{% with full_profile=1 message='Providers' %}
+			{% include "clients/friend_loop.html" %}
+		{% endwith %}
+	</div>
+	{% if incomplete_intake_form_answers %}
+		<div class="single_button">
+			<h3>Incomplete Intake Forms</h3>
+			{% for history in incomplete_intake_form_answers %}
+				<a href="{% url 'intake_form_answer' history.healer.username %}">{{ history.healer }}</a>
+			{% endfor %}
+		</div>
+	{% endif %}
+
+{#	<div class="single_button" style="font-style: italic; color: #00008b;">#}
+{#		<b>Tip: </b>HealerSource tracks the number of referrals you make. Ask your providers if they offer rewards for referring your friends.#}
+{#	</div>#}
+
+	{% if recommended_providers %}
+		<hr style="margin-top: 12px;" />
+		<div class="grey_box" style="overflow: hidden; margin-top: 10px;">
+			<h3 class='nav_icon nav_recommend'>You may also enjoy these other providers</h3>
+			{% for provider in recommended_providers %}
+				{% with full_profile=1 location=provider.clientlocation_set.all.0.location modalities=provider.modality_set.all user=provider.user %}
+					{% include "healers/friend_box.html" %}
+					{% include "healers/avatar_divider.html" %}
+				{% endwith %}
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}

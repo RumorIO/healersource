@@ -1,0 +1,9 @@
+Hi {{ client.user.first_name }}
+
+{{ healer.full_name }} has requested that you fill out their Intake Form before your appointment.
+
+To do that, {% with url as link %}{% include "email_link.html" %}{% endwith %}
+
+Thanks!
+
+The HealerSource Team

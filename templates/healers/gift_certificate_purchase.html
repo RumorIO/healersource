@@ -1,0 +1,37 @@
+{% extends "base_common.html" %}
+
+{% load compress %}
+
+{% block head_title %}Buy a Gift Certificate{% endblock %}
+
+{% block panel_class %}gift_certificate_panel{% endblock %}
+{% block content_title %}Buy a Gift Certificate{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/gift_certificates.css" />
+	{% include "payments/checkout.html" %}
+	<script>
+		var is_authenticated = {{ user.is_authenticated|yesno:'true, false' }};
+		var has_card = $.parseJSON('{{ has_card }}');
+	</script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/gift_certificate_purchase.js"></script>
+{% endblock %}
+
+{% block body %}
+	{% if form %}
+		{% if error %}
+			<div class="error_message">{{ error }}</div>
+		{% endif %}
+
+		<div class="grey_box" style="padding: 10px 12px;">
+			{% include "healers/gift_certificate.html" with purchase=True %}
+		</div>
+		<br>
+		<b>Services offered by {{ healer }}:</b>
+		<br>
+		{{ healer.services|safe }}
+	{% else %}
+		<p>You have successfully purchased a gift certificate. Please check your email for further instructions and a PDF of your certificate.</p>
+		{% include "healers/gift_certificate.html" %}
+	{% endif %}
+{% endblock %}

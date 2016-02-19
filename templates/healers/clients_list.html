@@ -1,0 +1,20 @@
+{% extends "base_floatbox.html" %}
+
+{% block body %}
+	<div class="grey_box">
+		<h3>Refer a Client</h3>
+		{% if friends %}
+			<table class="client_list">
+				{% for user in friends %}
+					{% if user.recommended %}
+						{% with 0 as remove_button %}{% include "healers/friend_row.html" %}{% endwith %}
+					{% else %}
+						{% with 1 as remove_button %}{% include "healers/friend_row.html" %}{% endwith %}
+					{% endif %}
+				{% endfor %}
+			</table>
+		{% else %}
+			<p class="message">No Clients Yet. You can Send an Invitation by Email Above or Import Your Contacts from Facebook or Gmail Below.</p>
+		{% endif %}
+	</div>
+{% endblock body %}

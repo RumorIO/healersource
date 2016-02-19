@@ -1,0 +1,30 @@
+{% load client_tags %}
+{% load i18n %}
+{% include "account/facebook_init.html" %}
+
+{% if account_setup %}
+	<div class="avatar_preview">
+		{% avatar user 148 %}
+		{% if photo_id %}
+			<br>
+			Rotate: <a href="{% url 'gallery_rotate' photo_id 'left' %}">left</a> | <a href="{% url 'gallery_rotate' photo_id 'right' %}">right</a>
+		{% endif %}
+	</div>
+{% endif %}
+
+<div style="margin-right: 200px;">
+	<form enctype="multipart/form-data" method="POST"
+		action="{% url 'avatar_change' username %}">
+		{% csrf_token %}
+{#		<h4 style="margin: 0;">{% trans "Upload a New Photo:" %}</h4>#}
+		<p>1. Select Photo: <input type="file" name="avatar" value="{% trans "Profile Photo" %}" /></p>
+		<p>2. <input type="submit" value="{% trans "Upload the File" %}" /></p>
+		{% if next %}<input type="hidden" name="next" value="{{ next }}" />{% endif %}
+		{% if account_setup %}<input type="hidden" name="account_setup" value="" />{% endif %}
+	</form>
+	<br />
+	<hr />
+	{#		<p>Your photo will not show up unless you have a <a href="{% url edit_email %}">verified email address</a></p>#}
+	<strong>OR</strong>&nbsp;&nbsp;&nbsp;<fb:login-button size="large" onlogin="on_login()" data-scope="{{ facebook_scopes }}">Get photo from Facebook</fb:login-button>
+</div>
+<div class="clearfix"></div>

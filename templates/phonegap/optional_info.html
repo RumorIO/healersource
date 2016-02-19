@@ -1,0 +1,64 @@
+{% extends 'base_phonegap.html' %}
+{% load compress %}
+{% block extra_head %}
+<script>
+	var url_optional_info = "{% url 'optional_info_ajax' %}";
+	$(function() {
+		changeBackButton(function(){
+			document.location.href = "specialties.html";
+		});
+		data = {};
+		if(!access_token) {
+			data.email = localStorage.getItem('email');
+			data.password = localStorage.getItem('password');
+		}
+		rest_ajax_get_request(url_optional_info, function(response) {
+			$('#id_first_name').val(response.first_name);
+			$('#id_last_name').val(response.last_name);
+			$('#id_phone').val(response.phone);
+			$('#id_years_in_practice').val(response.years_in_practice);
+			$('#id_website').val(response.website);
+			$('#id_facebook').val(response.facebook);
+			$('#id_twitter').val(response.twitter);
+			$('#id_google_plus').val(response.google_plus);
+			$('#id_linkedin').val(response.linkedin);
+			$('#id_yelp').val(response.yelp);
+		}, data);
+
+		$('form').submit(function(e) {
+            e.preventDefault();
+            data.data = $('form').serialize(true);
+			rest_ajax_post_request(url_optional_info, function(response) {
+				document.location.href = 'write_a_bit.html';
+			}, data);
+		});
+	});
+</script>
+{% endblock %}
+
+{% block body %}
+	<div class="application2_container">
+        <div id="menu">
+        <h2>Optional Information</h2>
+		<form method="POST" action="">
+			{% csrf_token %}
+			<div style="display: none;">{{ form.first_name }}{{ form.last_name }}</div>
+			<table>
+				{% include "healers/settings/edit_profile_content_optional_info.html" %}
+				{% include "healers/settings/edit_profile_content_links.html" %}
+			</table>
+		</form>
+
+		</div>
+		<br>
+		<div id="setup_controls">
+			<a class="highlight_button" href="specialties.html">« Back</a>
+			<a class="highlight_button" href="#" onclick="$('form').submit();">Next »</a>
+		</div>
+
+        </div>
+	</div>
+{% endblock %}
+
+
+

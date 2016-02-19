@@ -1,0 +1,16 @@
+{% extends 'email_html_base.html' %}
+{% load compress %}
+
+{% block head %}
+	{% compress css %}	
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+	{% endcompress %}
+	<base href="https://www.healersource.com/">
+{% endblock %}
+
+{% block body %}
+	<p>{{ mail_message }}</p>
+	{% with 1 as in_email %}
+	{% include 'healers/healer_sidebars.html' %}
+	{% endwith %}
+{% endblock %}

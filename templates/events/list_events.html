@@ -1,0 +1,91 @@
+{% extends "site_base.html" %}
+
+{% load i18n healer_tags compress %}
+
+{% block head_title %}Events{% endblock %}
+{% block extra_head %}
+	{{ event_form.media }}
+	{{ event_location_date_form.media }}
+	{% include 'healers/timepicker_includes.html' %}
+	{% include 'events/event_common_includes.html' %}
+	<script src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+	<script src="{{ STATIC_URL }}healersource/js/new_client.js"></script>
+	<!-- used for client form styles -->
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+	<script src="{{ STATIC_URL }}healersource/js/event_create.js"></script>
+	<script src="{{ STATIC_URL }}healersource/js/list_events.js"></script>
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/list_events.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/events.css" />
+	<style>
+		{% if history %}
+			.attendee_remove {
+				display: none !important;
+			}
+		{% else %}
+			.history {
+				display: none;
+			}
+		{% endif %}
+	</style>
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_events">{% if history %}Event History{% else %}Events{% endif %}</h1>{% endblock %}
+
+{% block body %}
+
+	{% if events %}
+		<table class="client_list responsive_table">
+			{% for event in events %}
+				<tr>
+					<td>{{ event }}</td>
+					<td class="align-right">
+						| <a href="javascript:void(0);" onclick="show_attendees({{event.pk }})">Show Guests</a>
+						| <a href="{% url 'event_edit' event.pk %}">Edit</a>
+						{% if not history %}
+							| <a href="javascript:void(0);" onclick="confirmDialog('{% url 'event_remove' event.pk %}', 'Delete Event')">Delete</a>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		{% if history %}
+			<p class="message">No Past Events.</p>
+		{% else %}
+			<p class="message">No Events Yet.</p>
+		{% endif %}
+	{% endif %}
+	{% if not history %}
+		<hr>
+		<div class="add_box event_form_box">
+			<h3>+ Create Event</h3>
+			{% include 'events/create_form.html' %}
+		</div>
+		<div class="clearfix"></div>
+		<br>
+	{% endif %}
+	<p>
+		{% if history %}
+			<a href="{% url 'list_events' %}">Current Events &raquo;</a>
+		{% else %}
+			<a href="{% url 'events_history' %}">Past Events &raquo;</a>
+		{% endif %}
+	</p>
+	<div id="attendees_dlg" class="attendees">
+		<h3 class="nav_icon nav_events">Guests</h3>
+		<div class="loading"></div>
+		<table id="attendees" class="client_list responsive_table">
+		</table>
+		{% if not history %}
+			<span><i>Add Guest:</i>&nbsp;</span>
+			<input placeholder="Name or Last Name"
+			       id="add_attendee"
+			       class="ui-autocomplete-input ui-autocomplete-loading"
+			       maxlength="75"
+			       type="text"
+			       autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+	       <a href="#" onclick="dlg_new_client();" class="new_client_link">+ New Guest</a>
+		{% endif %}
+	</div>
+	{% include "healers/new_client_dialog.html" %}
+{% endblock %}

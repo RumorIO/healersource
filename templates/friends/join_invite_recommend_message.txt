@@ -1,0 +1,3 @@
+{% extends "friends/join_invite_message.txt" %}
+
+{% block accept %}Referral{% endblock %}

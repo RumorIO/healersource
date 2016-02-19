@@ -1,0 +1,39 @@
+<div class="field field_zipcode_modality">
+	<div class="fields">
+		<div>
+			{{ search_form.zipcode }}
+			{{ search_form.city }}
+			{{ search_form.state }}
+			{{ search_form.modality_id }}
+			{{ search_form.modality_category_id }}
+			{{ search_form.search_city_or_zipcode }}
+			{{ search_form.modality3 }}
+		</div>
+	</div>
+	{% if embed and not request.user.is_authenticated %}
+		<div class="signup_button">
+			<a href="{% url 'ambassador:signup_plugin' embed.username %}" class="homepage_button">Sign Up</a>
+		</div>
+	{% endif %}
+</div>
+	<div class="modality_field">
+		<div style="display:none; float:left; line-height: 32px; width: 24px;">
+			<div class="red_bubble modality_input_btn" style="display: inline-block;">v</div>
+		</div>
+		<div style="margin-left: 24px;">
+			{{ search_form.modality }}
+		</div>
+	</div>
+{#	{% if search_display_button %}#}
+{#	<div class="highlight_container button_container combined_button_container" style="display: inline-block; box-shadow: none;">#}
+{#		<span class="{% if search_display_type == 'list' %}selected{% endif %}">#}
+{#			<a href="#" onclick="changeDisplayType('list')">L</a>#}
+{#		</span><span class="{% if search_display_type == 'grid' %}selected{% endif %}">#}
+{#			<a href="#" onclick="changeDisplayType('grid')">G</a>#}
+{#		</span>#}
+{#	</div>#}
+{#	{% endif %}#}
+<div id="modality_search" style="display: none;">
+	<input type="text" class="modality_input_fb box_sizing" placeholder="Search Specialties"/>
+	<p><a href="#" onclick="fb.end(); $('#search_form .modality_input').val('Any Specialty'); return false;">Any Specialty</a></p>
+</div>

@@ -1,0 +1,26 @@
+{% if fill_warning_links %}
+	<div class="warning_button" style="margin-right: 12px;">
+		<img src="{{ STATIC_URL }}healersource/img/icons/eye_crossed_out.png" class="what_next_icon1" style="float: left;" />
+		<div style="margin-left: 76px;">
+			<u><b>{% if not editing_self %}{{ healer.user.first_name }}'s{% else %}Your{% endif %} Profile is not yet visible in Search Results</b></u><br />
+			<div style="color: #333">We want your profile to look great! So here's what you can do:</div>
+			<ol class="warning_message">
+				{% for link in fill_warning_links.values %}
+					<li><a href="{{ link.href }}" {{ link.attrs|safe }}>{{ link.text|capfirst }} &raquo;</a></li>
+				{% endfor %}
+			</ol>
+		</div>
+	</div>
+	<br />
+{% endif %}
+
+<script type="text/javascript">
+	function addRedBorder(selector) {
+		if($(selector).length > 0) {
+			$(selector).addClass('red_border');
+			return false;
+		}
+
+		return true;
+	}
+</script>

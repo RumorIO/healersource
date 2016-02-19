@@ -1,0 +1,11 @@
+<p>We just sent an email to <span class="email"></span> to verify your address.</p>
+<p class="bold italic">Please click on the link in that email to finalize the signup process.</p>
+<p>If you don't receive an email within a few minutes, please check your <b>SPAM</b> folder. Still can't find it? Just contact us at <a class="contact"></a>.</p>
+{% if not embed %}
+	<p><b>AFTER YOU CLICK THE LINK IN YOUR EMAIL,</b> you can <a href="javascript:void(0)" onclick="login_redirect();">Log In</a></p>
+{% endif %}
+{% include 'healing_requests/email_not_confirmed_message.html' %}
+{# {% include 'about/how_did_you_find_us.html' %} #}
+{% if not phonegap %}
+	{% include 'about/fb_twitter_share.html' %}
+{% endif %}

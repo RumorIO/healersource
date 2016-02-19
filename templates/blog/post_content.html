@@ -1,0 +1,27 @@
+{% load i18n %}
+{% load blog_tags %}
+{% load comment_tags %}
+
+<h1 class="nav_icon nav_blog">{{ post.title|truncatewords:7 }}</h1>
+{% if post.user == request.user %}
+    <div style="float: right; margin-top: -4px;">
+        {% include 'blog/post_status_button.html' %}
+    </div>
+    <div class="button_container highlight_container">
+        <span><a href="{% url 'blog_list_yours' %}">{% trans "&laquo; All Posts" %}</a></span>
+        <span><a href="{% url 'blog_edit' post.id %}">Edit This Post &raquo;</a></span>
+    </div>
+    <hr/>
+{% endif %}
+
+<div class="blog-post">
+    {% show_blog_post post %}
+
+{#    {% ifequal post.author request.user %}#}
+{#        <span class="highlight_button" style='margin: 0;'><a href="{% url 'blog_edit' post.id %}">&raquo; Edit This Post</a></span>#}
+{#    {% endifequal %}#}
+</div>
+
+{% if post.allow_comments %}
+    {% comments_for post %}
+{% endif %}

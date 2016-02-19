@@ -1,0 +1,15 @@
+<div id="location_map" style="display: none">
+	{% include "healers/settings/location_check.html" with no_message=True %}
+</div>
+<script>
+function show_map(location_id) {
+	rest_ajax_get_request(rest_url("{% url 'location_map' %}", location_id), function(location){
+		hs_dialog($('#location_map'), {
+			fixed_width: 420,
+			open: function () {
+				initialize_gmap("map_canvas", location.y, location.x, location.title);
+			},
+		});
+	})
+}
+</script>

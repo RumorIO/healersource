@@ -1,0 +1,14 @@
+{% load client_tags %}
+<div id="received">
+{% for received_healing_list in received %}
+	<div class="float_left">{{ received_healing_list.title }}</div>
+	<div class="float_right">{{ received_healing_list.list.count }}</div>
+	<div class="clearfix"></div>
+	{% for received_healing in received_healing_list.list %}
+		<div class="float_left"><a onclick="send_healing_to({{ received_healing.sent_by.pk }});">{% avatar received_healing.sent_by.user 100 True %}</a></div>
+		<div class="sent_by">{{ received_healing.sent_by }}</div>
+		<div class="clearfix"></div>
+	{% endfor %}
+	<div class="clearfix"></div>
+{% endfor %}
+</div>

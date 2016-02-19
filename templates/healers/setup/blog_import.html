@@ -1,0 +1,10 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+	<p>HealerSource lets you post articles and videos right to your profile so you can promote yourself better. To get started quickly, just import your existing posts and videos from any of the sources below. </p>
+	<p>If you're not sure, try putting the address of your website in the RSS section below.</p>
+	<p>Also - you can import your videos from YouTube by <a href="{% url 'videos_import' %}">Clicking Here</a>.</p>
+	{% include 'blog/blog_import_contents.html' %}
+
+	{% include "healers/setup/setup_controls.html" %}
+{% endblock %}

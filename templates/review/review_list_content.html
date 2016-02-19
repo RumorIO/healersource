@@ -1,0 +1,47 @@
+{% load healer_tags %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/settings.css" />
+
+{% if not is_not_popup %}<h1 class="nav_icon nav_reviews">Reviews for {{ healer.user.client|capfirst }}</h1>{% endif %}
+{% if not is_not_popup and is_review_permission and request.user != healer.user %}
+	<div class="icon_star icon_star_single icon_star_gold single_button orange_button review_button">
+		{% if request.user.is_authenticated %}
+			<a href="{% url 'review_form' healer.user.username %}?fb=1" class="floatbox" data-fb-options="width:500 height:400">
+				{% if review_exist %}Edit My Review{% else %}Write a Review{% endif %}
+			</a>
+		{% else %}
+			<a href="{% url 'review_signup' healer.user.username %}">Write a Review</a>
+		{% endif %}
+	</div>
+{% endif %}
+{% if request.user == healer.user %}
+	{% with 'Invite Your Clients to Review You' as send_invite_button_text %}{% with 'right' as send_invite_button_float %}
+		{% url 'invite_postcard_review' as invite_button_url %}
+		{% include 'healers/send_invite_button.html' %}
+	{% endwith %}{% endwith %}
+{% endif %}
+
+<p style="font-size: 1.4em; font-weight: bold; margin-left: 10px;">Overall Rating: <span class="icon_star {% rating_star_css_class healer.ratings_average %}" style="margin-left: 2px; background-position: 0 8px;" >{{ healer.ratings_average }}</span>
+</p>
+
+{% if request.user == healer.user %}{% include 'healers/review_permission_bar.html' %}{% endif %}
+
+<div id="tabs_reviews">
+	{% for star,reviews_list in reviews.items %}
+		{% if reviews_list|length %}
+			<div class="grey_box">
+				<h3><img src="{{ STATIC_URL }}healersource/img/icons/stars/icon_star_{{ star }}.png"/> {{ star }} Star Reviews ({{ reviews_list|length }})</h3>
+				{% for review in reviews_list %}
+					<div id="review_{{ review.id }}" class="review">
+						<p>
+							<strong>{{ review.title }}</strong>
+							<img src="{{ STATIC_URL }}healersource/img/icons/stars/icon_star_{{ star }}.png" style="float: right;"/>
+						</p>
+						{{ review.review|linebreaks }}
+						<div class="reviewer">- {{ review.reviewer.user.client|capfirst }} {{ review.date|date:"m/d/y" }}</div>
+					</div>
+				{% endfor %}
+			</div>
+			<hr/>
+		{% endif %}
+	{% endfor %}
+</div>

@@ -1,0 +1,87 @@
+{% extends 'base_phonegap2.html' %}
+{% load compress %}
+{% block extra_head %}
+	<script>
+		var url_update_profile = "{% url 'update_profile_ajax' %}";
+		var url_autocomplete_geoname = "{% url 'autocomplete_geoname' %}";
+
+		$(function() {
+			$('form').submit(function(e) {
+				e.preventDefault();
+
+				$('#firstname_error').hide();
+				if(!$('#id_first_name').val()) {
+					$('#firstname_error').show();
+					return false;
+				}
+
+				var data = {
+					first_name: $('#id_first_name').val(),
+					location: $('#id_location').val(),
+					about: $('#id_about').val()
+				};
+				updateDataWithAuth(data);
+
+				rest_ajax_post_request(url_update_profile, function(response) {
+					document.location.href = 'upload_photo.html';
+				}, data);
+
+			});
+			$("#id_location").autocomplete({
+				source: url_autocomplete_geoname,
+				minLength: 2,
+				html: true,
+				autoFocus: true,
+				select: function(event, ui) {
+					event.preventDefault();
+					$("#id_location").val(ui.item.label);
+					$("#id_geoname").val(ui.item.value);
+				}
+			});
+
+			$('#save_btn').click(function() {
+				$('form').submit();
+			})
+			changeBackButton(function(){
+				document.location.href = "signup0.html";
+			});
+		});
+	</script>
+
+	<link rel="stylesheet" href="css/jquery-ui.min.css" />
+	{% compress css %}
+		<link rel="stylesheet" href="css/login.css" />
+	{% endcompress %}
+{% endblock %}
+
+
+{% block body %}
+	<div class="application2_container">
+		<div id="menu">
+			<a class="back_arrow_container" href="signup0.html"><div class="back_arrow"></div></a>
+			<div class="header_title">My Info</div>
+			<div class="header_logo_container"><a href="https://www.healersource.com" target="_blank"><div class="header_logo"></div></a></div>
+			<hr class="clearfix">
+			<form method="post" action="" style="font-weight: bold;">
+				<p>Help us get to know you a little better&#8230;</p>
+				<div class="form-errors ui-helper-hidden"></div>
+				1. <input id="id_first_name" maxlength="30" name="first_name" placeholder="What's Your Name?" type="text" /><br/>
+				<div class="single_button error_button" style="display: none;" id="firstname_error">Please give your name so people will know where to send all the good wishes</div>
+				<input id="id_geoname" name="geoname_id" type="hidden" />
+				2. <input id="id_location"
+				          maxlength="30" name="location" placeholder="Where in the world are you?" type="text"
+				          class="ui-autocomplete-input ui-autocomplete-loading" autocomplete="off"/>
+				<br/>
+				3. <span class="bold">Tell us a bit about yourself..</span><br>
+				<textarea id="id_about" name="about" rows="5"></textarea>
+				<div class="italic" style="font-weight: normal;">Profiles with details get 3x more response than those without. If you have a specific issue you want to resolve, this is a great place to let the community know about it!</div>
+				<br/>
+				<div class="align-right"><button id="save_btn" type="button" class="btn">Save My Info</button></div>
+				<input type="submit" class="hidden-submit">
+			</form>
+		</div>
+	</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,13 @@
+[
+    {
+        "pk": 1, 
+        "model": "oauth_access.userassociation", 
+        "fields": {
+            "token": "oauth_token_secret=%2FQefzOd8L0nMKTdUFRfWMuCG&oauth_token=1%2Fai_VcyEROSURCt6OdiANrPyv6Avm02eqcL7iLxbxAPs",
+            "identifier": "", 
+            "expires": null, 
+            "user": 6,
+            "service": "google"
+        }
+    }
+]

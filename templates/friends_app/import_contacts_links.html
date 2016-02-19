@@ -1,0 +1,9 @@
+&raquo; Import contacts from <a {% if google_oauth %}onclick="authGoogle()"{% else %}href="{% url 'import_google_contacts' %}?fb={{ is_floatbox }}"{% endif %}>Gmail</a> or <a href="{% url 'import_csv_contacts'%}">Spreadsheet (Excel, CSV)</a>
+<script type="text/javascript">
+	function authGoogle() {
+		var win = window.open('{% url 'oauth2_google_login' %}?next={% url 'oauth_window_close' %}', "authGoogle", 'width=880, height=600');
+	}
+	function authFacebook() {
+		var win = window.open('{% url 'oauth_access_login' "facebook" %}?next={% url 'oauth_window_close' %}', "authFacebook", 'width=880, height=600');
+	}
+</script>

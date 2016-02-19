@@ -1,0 +1,6 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+	{% include 'healers/providers_content.html' with setup=True %}
+	{% include "healers/setup/setup_controls.html" %}
+{% endblock %}

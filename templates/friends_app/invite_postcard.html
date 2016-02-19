@@ -1,0 +1,24 @@
+{% extends 'base_floatbox.html' %}
+{% block body %}
+	{% if invitation_sent_to or client_requests or provider_requests %}
+	<div class="single_button">
+		{% if client_requests %}
+			Persons with these emails ({{ client_requests|join:", " }}) are already a members of HealerSource. <br />
+			We've added them to your Clients.
+		{% endif %}
+		{% if provider_requests %}
+			Persons with these emails ({{ provider_requests|join:", " }}) are already a members of HealerSource. <br />
+			We've added them to your Referrals.
+		{% endif %}
+		{% if  invitation_sent_to %}
+			Your invitation has been sent to {{ invitation_sent_to|join:", " }}.<br />
+		{% endif %}
+	</div>
+	<div class="message">Send another one!</div>
+	{% else %}
+		{% include "facebook_init.html" %}
+		{% with invite_postcard_css_id="invite_postcard" %}
+			{% include "friends_app/invite_postcard_form.html" %}
+		{% endwith %}
+	{% endif %}
+{% endblock %}

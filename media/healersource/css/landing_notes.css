@@ -1,0 +1,446 @@
+.start_using_notes_btn_arrow {
+	background-image: url('../img/landing/arrow.png');
+	background-repeat: no-repeat;
+	width: 64px;
+	height: 58px;
+	position: absolute;
+	right: 5px;
+	display: none;
+}
+
+.header2 {
+	background-color: #d9e8f9;
+	height: 295px;
+	box-shadow: 0 0 12px;
+	position: relative;
+	z-index: 5;
+	padding: 10px;
+}
+
+.testimonials {
+	background-color: #f9f6d9;
+	float: left;
+	box-shadow: 0 0 12px;
+	position: relative;
+	z-index: 4;
+	color: #18210b;
+	font-style: italic;
+	padding: 20px 10px;
+	min-height: 226px;
+}
+
+.testimonials li {
+	list-style-type: none;
+	width: auto;
+	font-size: 22px;
+	margin-bottom: 20px;
+	float: left;
+}
+
+.testimonials ul {
+	padding: 0 20px;
+}
+
+.testimonials li:first-child {
+	clear: both;
+}
+
+.testimonials li img {
+	border-radius: 99px;
+	border: 3px solid #a2a08d;
+	float: left;
+	margin-right: 10px;
+	width: 78px;
+	height: 78px;
+}
+
+.partners {
+	background-color: #f9f6d9;
+	box-shadow: 0 0 12px;
+	position: relative;
+	z-index: 4;
+	padding: 0px 20px 20px;
+	clear: both;
+}
+
+.partners > div {
+	text-align: center;
+	color: #777;
+	text-decoration: underline;
+	padding-top: 15px;
+}
+
+.partners li {
+	float: left;
+	list-style-type: none;
+	min-width: 135px;
+	text-align: center;
+	line-height: 140px;
+	width: 50%;
+}
+
+.partners li img {
+	vertical-align: middle;
+}
+
+.footer {
+	background-color: #f5dcd3;
+	box-shadow: 0 0 12px;
+	position: relative;
+	z-index: 5;
+	padding: 20px 10px;
+	font-weight: bold;
+}
+
+#bottom_links {
+	display: none;
+	text-align: center;
+	color: #999;
+	margin: 7px;
+}
+
+#bottom_links, #bottom_links a {
+	color: #999;
+}
+
+.header_left_block {
+	float: left;
+	width: 100%;
+}
+
+.header_right_block {
+	float: left;
+	width: 100%;
+}
+
+.header2 {
+	font-weight: bold;
+	float: left;
+	height: auto;
+}
+
+.header_header_title {
+	text-decoration: underline;
+}
+
+.header_title {
+	color: #242e33;
+	font-size: 28px;
+	text-shadow: #989898 3px 3px 12px;
+	display: none;
+}
+
+.mobile_header_title {
+	display: block;
+}
+
+.header_description {
+	color: #242e33;
+	font-size: 15px;
+	font-style: italic;
+	text-decoration: none;
+	text-shadow: 0 0;
+}
+
+#benefits {
+	color: #343f52;
+	font-size: 18px;
+	line-height: normal;
+	margin-top: 15px;
+}
+
+.header_content_bottom {
+	text-align: center;
+	color: #000;
+	font-size: 18px;
+	font-weight: normal;
+	margin-top: 10px;
+	font-style: italic;
+}
+
+.header_left_block img {
+	max-width: 100%;
+}
+
+.start_using_notes_full_btn_container {
+	margin: 30px auto 0;
+	position: relative;
+	max-width: 600px;
+	font-size: 18px;
+	display: none;
+}
+
+.start_using_notes_btn_container {
+	cursor: pointer;
+}
+
+.start_using_notes_btn {
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 42px;
+	border: 1px solid #000;
+	border-radius: 10px;
+	background: linear-gradient(#ddedc6, #73b415);
+	height: 45px;
+	padding: 5px 10px;
+	text-align: center;
+	color: #18210b;
+	box-shadow: 0 0 15px grey;
+	width: 90%;
+}
+
+.features {
+	background-color: #f2f3f3;
+	box-shadow: 0 0 12px;
+	position: relative;
+	z-index: 3;
+	padding: 10px;
+	color: #18210b;
+	font-size: 22px;
+	float: left;
+}
+
+.features ul, .partners ul {
+	display: inline-block;
+	padding: 0;
+	margin: 0;
+}
+
+.partners ul {
+	width: 100%;
+}
+
+.title {
+	font-weight: bold;
+	border-bottom: 1px solid;
+	width: 90%;
+	text-align: center;
+	margin: auto;
+}
+
+.feature {
+	float: left;
+	width: 100%;
+	list-style-type: none;
+	margin: 15px 0;
+}
+
+.feature_content {
+	width: 78%;
+	margin: auto;
+}
+
+.feature_image {
+	line-height: 132px;
+}
+
+.feature_image img {
+	vertical-align: middle;
+	max-width: 100%;
+}
+
+#dedicated_apps_dlg {
+	display: none;
+}
+
+
+.app_links {
+	margin-top: 10px;
+	text-align: center;
+}
+
+.app_link {
+	display: inline-block;
+	width: 49%;
+}
+
+.app_link img {
+	max-width: 100% !important;
+}
+
+.app_links_title {
+	display: none;
+}
+
+.learn_more {
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+}
+
+.logo_title {
+	display: none;
+}
+
+.testimonials div {
+	text-align: right;
+	color: #385776;
+}
+
+#app_availability_dlg span {
+	color: grey;
+	font-style: italic;
+}
+
+.images {
+	cursor: pointer;
+}
+
+@media screen and (min-width: 460px) {
+	.partners li {
+		width: 33%;
+	}
+}
+
+@media screen and (min-width: 34em) {
+	.desktop_header_title, .app_links_title {
+		display: block;
+	}
+
+	.mobile_header_title, .learn_more {
+		display: none;
+	}
+
+	.start_using_notes_full_btn_container {
+		display: block;
+	}
+
+	.logo_title {
+		display: block;
+	}
+
+	.feature {
+		width: 33%;
+	}
+
+	.header_title {
+		font-size: 30px;
+	}
+
+	.header_description {
+		font-size: 15px;
+	}
+
+	#benefits {
+		font-size: 18px;
+	}
+
+	.header_content_bottom {
+		font-size: 18px;
+	}
+
+	.start_using_notes_btn {
+		font-size: 18px;
+	}
+
+	.header_left_block {
+		float: left;
+		width: 47%;
+		display: block;
+	}
+
+	.header_right_block {
+		float: right;
+		width: 53%;
+	}
+
+	.header2 {
+		height: 360px;
+		float: none;
+	}
+
+	.testimonials li {
+		width: 48%;
+		margin-right: 2%;
+	}
+}
+
+@media screen and (min-width: 40em) {
+	.start_using_notes_btn_arrow, .desktop_header_title {
+		display: block;
+	}
+	.mobile_header_title, .learn_more {
+		display: none;
+	}
+}
+
+@media screen and (min-width: 50em) {
+	.header2 {
+		height: 420px;
+	}
+	.app_links_title {
+		display: block;
+	}
+	.testimonials {
+		float: none;
+	}
+
+	.header_title {
+		font-size: 39px;
+	}
+
+	.header_description {
+		font-size: 20px;
+	}
+
+	#benefits {
+		font-size: 25px;
+	}
+
+	.header_content_bottom {
+		font-size: 25px;
+	}
+
+	.start_using_notes_btn {
+		font-size: 25px;
+	}
+	.start_using_notes_btn_arrow {
+		display: block;
+	}
+   #bottom_links {
+		display: block;
+   }
+}
+
+@media screen and (min-width: 58em) {
+	.partners {
+		padding: 0 20px 40px 20px;
+	}
+
+	.partners > div {
+		padding-bottom: 20px;
+		font-size: 1.2em;
+	}
+
+	.partners li {
+		width: 16%;
+		line-height: 200px;
+	}
+
+	.partners li:nth-child(even) img {
+		vertical-align: bottom;
+	}
+
+	.partners li:nth-child(odd) img {
+		vertical-align: top;
+	}
+}
+
+@media screen and (min-width: 63em) {
+	.header_title {
+		font-size: 48px;
+	}
+
+	.header_description {
+		font-size: 19px;
+	}
+
+	#benefits {
+		font-size: 30px;
+		line-height: 44px;
+	}
+
+	.header_content_bottom {
+		font-size: 25px;
+	}
+}

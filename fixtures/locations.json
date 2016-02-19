@@ -1,0 +1,50 @@
+[
+    {
+        "pk": 1,
+        "model": "healers.address",
+        "fields": {
+            "address_line2": "",
+            "city": "Brooklyn",
+			"point": "0101000020E61000005C8FC2F5287C52C052B81E85EB514440",
+            "address_line1": "318 Bedford Ave #2",
+            "state_province": "NY",
+            "postal_code": "11211",
+            "country": ""
+        }
+    },
+    {
+        "pk": 2,
+        "model": "healers.address",
+        "fields": {
+            "address_line2": "",
+            "city": "Atlantic City",
+            "point": "0101000020E61000007B14AE47E19A52C0AE47E17A14AE4340",
+            "address_line1": "300 Pacific Ave",
+            "state_province": "NJ",
+            "postal_code": "08401",
+            "country": ""
+        }
+    },
+    {
+        "pk": 1,
+        "model": "healers.location",
+        "fields": {
+            "title": "Test location"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "healers.location",
+        "fields": {
+            "title": "Test location2"
+        }
+    },
+	{
+		"pk": 1,
+		"model": "clients.clientlocation",
+		"fields": {
+			"client": 1,
+			"location": 1
+		}
+	}
+]

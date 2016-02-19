@@ -1,0 +1,8 @@
+{% load endless %}
+
+{% lazy_paginate history with url_history %}
+
+{% for obj in history %}
+	{% include 'send_healing/healing_sent_page_obj.html' %}
+{% endfor %}
+{% show_more 'Show more &raquo;' %}

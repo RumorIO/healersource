@@ -1,0 +1,24 @@
+{% extends 'dashboard/base.html' %}
+
+{% block head_title %}Admin Settings{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_settings">Settings</h1>{% endblock %}
+
+{% block body %}
+
+    <table class="messages">
+        <tbody>
+        {% for setting in settings %}
+            <tr>
+                <td>
+                    {{ setting.description }}
+                </td>
+                <td>
+                    | <a href="{% url 'dashboard:settings_edit' setting.key %}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

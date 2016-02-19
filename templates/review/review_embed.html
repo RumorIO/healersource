@@ -1,0 +1,18 @@
+{% load compress %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}">
+<head>
+	﻿<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>Reviews for {{ healer.user.client }}</title>
+   	{% include 'common_js_vars.html' %}
+  	{% compress css %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+ 	{% endcompress %}
+</head>
+{% block body %}
+	{% include "review/review_list_content.html" %}
+	<a href="{{ healer.healer_profile_url }}">Click Here to see {{ healer }}’s profile on HealerSource >></a>
+	{% include "healers/embed_logo.html" %}
+{% endblock %}

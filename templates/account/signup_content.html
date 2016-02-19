@@ -1,0 +1,122 @@
+<div class="panel" id="signup_panel">
+	<div class="panel_title" id="panel_title_signup">
+		{% if facebook_signup %}
+			Select Account Type
+		{% else %}
+			{% if embed.name %}
+				Sign Up for {{embed.name}}
+			{% else %}
+				Get Your Free Profile Today
+			{% endif %}
+		{% endif %}
+	</div>
+	<div class="content panel_content_signup">
+		{% if facebook_signup %}
+			<h3 class="inline">Welcome to HealerSource and Thanks for Signing Up!</h3>
+			<p class="message">Please Select your Account Type to complete the Signup Process</p>
+		{% endif %}
+		{% if not intake_form %}
+			<table class="signup_selection_table">
+				<tr>
+					<td>
+						<div class="client_signup_button highlight_button extra_padding_vert signup_type_selection_button" onclick="switch_signup_type('client')">
+							<img src="{{ STATIC_URL }}healersource/img/user.png" width="64" height="64" /><br />
+							I'm a<br />Client
+						</div>
+					</td>
+					<td>
+						<div class="provider_signup_button highlight_button extra_padding_vert signup_type_selection_button" onclick="switch_signup_type('healer')">
+							<img src="{{ STATIC_URL }}healersource/img/hand.png" width="64" height="64" /><br />
+							I'm a<br />Provider
+						</div>
+					</td>
+					<td>
+						<div class="wcenter_signup_button highlight_button extra_padding_vert signup_type_selection_button" onclick="switch_signup_type('wellness_center')">
+							<img src="{{ STATIC_URL }}healersource/img/wellness_center.png" width="64" height="64" /><br />
+							Wellness Center<br>or Spa
+						</div>
+					</td>
+{#					<td>#}
+{#						<div class="ambassador_signup_button highlight_button extra_padding_vert signup_type_selection_button" onclick="enable_ambassador_signup()">#}
+{#							<img src="{{ STATIC_URL }}healersource/img/ambassador.png" width="64" height="64" /><br />#}
+{#							Ambassador<br>(<a href="#" onclick="event.stopPropagation(); fb.start('#ambassador_tip'); return false;" data-fb-options="source:#ambassador_tip">?</a>)#}
+{#						</div>#}
+{#						<div id="ambassador_tip" class="hidden">#}
+{#							<a class="contact">Contact Us</a> to find out more about our Ambassador Program#}
+{#						</div>#}
+{#					</td>#}
+				</tr>
+				{% if not facebook_signup %}
+					<tr id="facebook_signup">
+						<td colspan="99" class="center">
+							<div class="facebook_signup_container">
+								<br/>
+								<hr />
+								<b>or&nbsp;&nbsp;</b>
+								{% if phonegap %}
+									<a href="facebook_signup.html"><div class="facebook_login" onclick="facebook_login();">Sign Up With Facebook</div></a>
+								{% else %}
+									<fb:login-button size="large" onlogin="on_login()" data-scope="{{ facebook_scopes }}">Sign Up With Facebook</fb:login-button>
+								{% endif %}
+							</div>
+						</td>
+					</tr>
+				{% endif %}
+			</table>
+		{% endif %}
+		<div class="client_signup_form signup_form_main">
+			<form class="signup_client signup_form" method="post" action="">
+				{% csrf_token %}
+				<p class="clearfix"></p>
+				<div class="form-errors ui-helper-hidden"></div>
+				{% for field in client_signup_form %}
+					{{ field }}
+					{% if not forloop.last and not field.is_hidden %}<br/>{% endif %}
+				{% endfor %}
+				{% if user.is_superuser %} <input type="hidden" name="is_superuser" value="1"/> {% endif %}
+				<input type="hidden" name="type" value="client"/>
+				<input type="hidden" name="is_ambassador" value="0"/>
+				<input type="hidden" name="plugin" value="{% if embed %}{{embed.username}}{% endif %}"/>
+				<div class="clearfix"></div>
+				<button type="button" class="homepage_button" onclick="$(this).closest('form').submit();">Go &raquo;</button>
+				<input type="submit" class="hidden-submit">
+			</form>
+		</div>
+		<div class="healer_signup_form signup_form_main">
+			<form class="signup_provider signup_form" method="post" action="">
+				{% csrf_token %}
+				<div class="form-errors ui-helper-hidden"></div>
+				{% for field in client_signup_form %}
+					{{ field }}
+					{% if not forloop.last and not field.is_hidden %}<br/>{% endif %}
+				{% endfor %}
+
+				{% if user.is_superuser %} <input type="hidden" name="is_superuser" value="1"/> {% endif %}
+				<input type="hidden" name="type" value="healer"/>
+				<input type="hidden" name="is_ambassador" value="0"/>
+				<input type="hidden" name="plugin" value="{% if embed %}{{embed.username}}{% endif %}"/>
+				<div class="clearfix"></div>
+				<button type="button" class="homepage_button" onclick="$(this).closest('form').submit();">Go &raquo;</button>
+				<input type='submit' class="hidden-submit">
+			</form>
+		</div>
+		<div class="wcenter_signup_form signup_form_main">
+			<form class="signup_wcenter signup_form" method="POST" action="">
+				{% csrf_token %}
+				<div class="form-errors ui-helper-hidden"></div>
+				{% for field in client_signup_form %}
+					{{ field }}
+					{% if not forloop.last and not field.is_hidden %}<br/>{% endif %}
+				{% endfor %}
+				{% if user.is_superuser %} <input type="hidden" name="is_superuser" value="1"/> {% endif %}
+				<input type="hidden" name="type" value="wellness_center"/>
+				<input type="hidden" name="is_ambassador" value="0"/>
+				<input type="hidden" name="plugin" value="{% if embed %}{{embed.username}}{% endif %}"/>
+				<div class="clearfix"></div>
+				<button type="button" class="homepage_button" onclick="$(this).closest('form').submit();">Go &raquo;</button>
+				<input type='submit' class="hidden-submit">
+			</form>
+		</div>
+	</div>
+</div>
+<div class="clearfix"></div>

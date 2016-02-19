@@ -1,0 +1,134 @@
+{% load healer_tags %}
+{{ treatment_length_form.media }}
+
+<div id="tabs_treatment_types">
+	{% if not dont_show_no_treatment_types_warning or treatment_types|length != 0 %} {# this is for setup wizard #}
+		{% if not wellness_center_treatment_types.items and treatment_types|length == 0 and not is_selected_wcenter_treatment_type %}
+			<div class="message">
+				<p>You must add at least one treatment type before you can set your Availability.</p>
+			</div>
+		{% else %}
+			{% if treatment_types|length != 0 and not is_wellness_center or is_wellness_center and username == user.username %}
+				{% if not is_wellness_center and wellness_center_treatment_types %}
+					<h3>My Treatments</h3>
+				{% endif %}
+				<form id="treatment_length_form">
+					Length: {{ treatment_length_form.length }}<br>
+					Rate $: {{ treatment_length_form.cost }}<br>
+					<input type="hidden" name="treatment_type_id" id="treatment_type_id" />
+					<input type="button" onclick="add_treatment_length()" value="Add">
+					<br><br>
+				</form>
+				{% for treatment in treatment_types %}
+					<div class="grey_box">
+						<div class="float-align-right">
+							<span><a href="#" onclick="dlg_add_length({{ treatment.pk }})">add length</a></span>
+							&nbsp;|&nbsp;
+							<span><a href="{% url 'treatment_type_edit' treatment.id  %}">edit</a></span>
+							{% if treatment_types|length > 1 %}
+								&nbsp;|&nbsp;
+								<span><a href="{% url 'treatment_type_delete' treatment.id  %}"
+								         onclick="return confirm('Are you sure you want to delete this treatment type?')">delete</a></span>
+							{% endif %}
+						</div>
+						<h3>{{ treatment }}</h3>
+						{% if is_wellness_center %}
+							<div class="float-align-right">
+								{% if treatment.rooms.all %}
+									{% for room in treatment.rooms.all %}
+										{{ room.location }} - {{ room.name }} {% if not forloop.last %}<br>{% endif %}
+									{% endfor%}
+								{% else %}
+									Any Room
+								{% endif%}
+							</div>
+						{% endif %}
+						<div class="treatment_length">
+							{% for length in treatment.lengths.all %}
+								{% if not length.is_deleted %}
+									<div>{{ length }} {% invalid_tlength_error user length %}</div>
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+					<br>
+				{% endfor %}
+			{% endif %}
+		{% endif %}
+		{% for id, wellness_center_treatment_types in wellness_center_treatment_types.items %}
+			<div class="grey_box treatment_type_box">
+				{% if is_wellness_center %}
+					<h3>Treatment Types for {{ healer_name }}</h3>
+					{% if wellness_center_treatment_types.types %}
+						<span class="help">Check all treatment types that {{ healer_name }} offers at {{ wellness_center_treatment_types.name }}</span>
+					{% else %}
+						<div class="message">
+							<p>You have no Treatment Types defined at your center.</p>
+							<p><a href="{% url 'treatment_types' %}">Click here to Add New ones &raquo;</a></p>
+						</div>
+					{% endif %}
+				{% else %}
+
+					<h3>Treatment Types at {{ wellness_center_treatment_types.name }}</h3>
+					{% if wellness_center_treatment_types.types %}
+						<span class="help">Check all treatment types that you offer at {{ wellness_center_treatment_types.name }}</span>
+					{% else %}
+						<div class="message"><p>No Treatment Types defined yet at {{ wellness_center_treatment_types.name }}</p></div>
+					{% endif %}
+
+				{% endif %}
+				{% if wellness_center_treatment_types.types %}
+					<form action="{% url 'save_wcenter_treatment_types' username %}" method="post" id="wcenter_tt_form_{{ id }}" class="tt_form">
+						{% csrf_token %}
+						{% for treatment_type in wellness_center_treatment_types.types %}
+							<div class="treatment_type_select_item">
+								<input type="checkbox" id="treatment_type_{{ treatment_type.id }}" value="{{ treatment_type.id }}"
+										{% if treatment_type.selected %} checked {% endif %}
+										>
+								<label for='treatment_type_{{ treatment_type.id }}'>{{ treatment_type.title }}</label> <a href="{% url 'treatment_type_edit' treatment_type.id  %}"><span class="ui-icon ui-icon-pencil dib"></span></a>
+							</div>
+							{% if treatment_type.lengths|length > 1 %}
+								{% for t_length in treatment_type.lengths %}
+									<div class="treatment_length_select_item">
+										<input type="checkbox" id="t_length_{{ t_length.id }}" data-treatment-type-id="{{ treatment_type.id }}" class="treatment_type_{{ treatment_type.id }}" value="{{ t_length.id }}"
+												{% if t_length.selected %} checked {% endif %}
+												>
+										<label for='t_length_{{ t_length.id }}'>{{ t_length.title }}</label>
+									</div>
+								{% endfor %}
+							{% endif %}
+
+						{% endfor %}
+
+						{% if not is_wellness_center %}
+							<div class="copy_my_treatment_types_here">
+								<a href="#" class="copy_my_treatment_types" data-wcenter-id="{{ id }}">Duplicate All of my Treatment Types to {{ wellness_center_treatment_types.name }} &raquo;</a>
+							</div>
+						{% endif %}
+
+						<div id="copy_my_treatment_types_dlg_{{ id }}" class="hidden">
+							<p>
+								This will duplicate all of your Treatment Types and make them available at
+								"{{ wellness_center_treatment_types.name }}"<br>
+								Are you sure?
+							</p>
+						</div>
+
+						<input type="hidden" name="types">
+						<input type="hidden" name="type_lengths">
+						<input type="hidden" name="wcenter_id" value="{{ id }}">
+						<input type="submit" data-id="{{ id }}" class="save_treatment_types" value="Save">
+					</form>
+				{% endif %}
+
+				{% if is_wellness_center and healer.user != request.user %}
+					<p><a href="{% url 'treatment_types' %}" style="font-style: italic;">Treatment Types at {{ wellness_center_treatment_types.name }} &raquo;</a></p>
+				{% endif %}
+			</div>
+			<hr>
+		{% endfor %}
+	{% endif %}
+
+	{% include "healers/settings/treatment_types_add_form.html" %}
+	<p class="clearfix">&nbsp;</p>
+</div>

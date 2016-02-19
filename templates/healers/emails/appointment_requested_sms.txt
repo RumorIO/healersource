@@ -1,0 +1,5 @@
+Appointment requested by {{ from_user_name }}.
+{{ appointment.date_range_text }}
+at {{ appointment.location.title }}
+
+{{ appointment.note }}

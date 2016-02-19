@@ -1,0 +1,43 @@
+{% extends "base_new.html" %}
+
+{% block head_title %}Featured{% endblock %}
+
+{% block extra_head_last %}
+	{{ block.super }}
+	<script type="text/javascript" src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+
+	<script>
+		var HealersInfiniteUrl = "{% url 'search_infinite_grid' %}";
+		var search_results_infinite_scroll;
+		var search_results_display_type = 'grid';
+		var exclude_centers = true;
+	</script>
+	<script src="{{ STATIC_URL }}healersource/js/featured.js"></script>
+{% endblock %}
+
+{% block inner_content %}
+	<div class="panel solo_panel big_panel"><div class="panel_title">Wellness Centers</div>
+	<div class="content centers_homepage hide_last_grid_box_mobile_container">
+		{% include 'about/search/results_grid.html' with homepage_featured_centers=True found_providers=centers %}
+	</div>
+	</div>
+
+	<div class="panel solo_panel big_panel"><div class="panel_title">Featured Healers</div>
+	<div class="content">
+	<form id="healers_form" class="search_form" fire_event="true">
+		{% include 'about/search/form_fields.html' %}
+	</form>
+		<hr>
+		<div id="search_results_loader" style="text-align: center; display: none;">
+			<img src="{{ STATIC_URL }}infinite_scroll/images/loader.gif" />
+		</div>
+		<div id="search_results">
+			{% include 'about/search/results_grid.html' %}
+		</div>
+	</div>
+	</div>
+
+	<div id="footer">
+		{% include "base_content_footer.html" %}
+	</div>
+{% endblock %}

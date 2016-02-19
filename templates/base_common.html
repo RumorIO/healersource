@@ -1,0 +1,13 @@
+{% extends "base_new.html" %}
+{% block inner_content %}
+	<div class="panel solo_panel big_panel">
+		<div class="panel_title {% block panel_class %}{% endblock %}">{% block content_title %}{% endblock %}</div>
+		<div class="content">
+			{% block body %}{% endblock %}
+		</div>
+	</div>
+	{% block footer %}{% endblock %}
+	<div id="footer">
+		{% include "base_content_footer.html" %}
+	</div>
+{% endblock %}

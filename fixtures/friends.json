@@ -1,0 +1,46 @@
+[
+   {
+      "pk": 1, 
+      "model": "friends.contact", 
+      "fields": {
+         "email": "daniel@innergraphics.com", 
+         "users": [], 
+         "added": "2010-11-20", 
+         "user": 6, 
+         "name": null
+      }
+   }, 
+   {
+      "pk": 2, 
+      "model": "friends.contact", 
+      "fields": {
+         "email": "ebay@healersource.com", 
+         "users": [], 
+         "added": "2011-01-11", 
+         "user": 6, 
+         "name": null
+      }
+   }, 
+   {
+      "pk": 3, 
+      "model": "friends.contact", 
+      "fields": {
+         "email": "daniel@healersource.com", 
+         "users": [], 
+         "added": "2011-01-11", 
+         "user": 6, 
+         "name": null
+      }
+   }, 
+   {
+      "pk": 4, 
+      "model": "friends.contact", 
+      "fields": {
+         "email": "admin@healersource.com", 
+         "users": [], 
+         "added": "2011-01-11", 
+         "user": 1, 
+         "name": null
+      }
+   }
+]

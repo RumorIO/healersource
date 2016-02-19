@@ -1,0 +1,81 @@
+{% extends 'site_base.html' %}
+
+{% load compress %}
+
+{% block head_title %}Intake Forms{% endblock %}
+
+{% block extra_head %}
+	{% compress js %}
+		<script type="text/javascript">
+			var url_send_intake_form = "{% url 'send_intake_form' %}";
+			var list_intake_forms_page = true;
+			var clients = {{ clients|safe }};
+			var username = '';
+
+			$(document).ready(function(){
+				initClientSearchAutocomplete();
+				initNewClientDialog();
+			});
+		</script>
+		<script type="text/javascript" src='{{ STATIC_URL }}healersource/js/weekcalendar-schedule.js'></script>
+		<script src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+	{% endcompress %}
+	{% compress css %}
+		<!-- used for client form styles -->
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+	{% endcompress %}
+
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_intake">Intake Forms</h1>{% endblock %}
+
+{% block body %}
+
+	<div>
+		<a class="highlight_button nav_icon nav_pencil" href="{% url 'intake_form' %}" style="margin-bottom: 8px;;">Edit Intake Form</a>
+		<input type="hidden" id="id_client" />
+		<a href="#" onclick="dlg_new_client();" class="intake_form_new_client">+ New Client</a>
+		<div class='float_right grey_box pale_yellow_box search_box'>
+			<span class="nav_icon nav_find_a_provider">Send intake form to: <input type='text' data-page='list_intake_forms_page' id='search_client' placeholder='Client name or last name' style="width: 150px;"/></span>
+		</div>
+
+	</div>
+	{% include "healers/new_client_dialog.html" %}
+	<div class='clearfix' style="margin-bottom: 6px;"></div>
+
+
+	<h3>Completed Forms</h3>
+	{% if complete_forms %}
+		<table class="client_list responsive_table">
+			{% for answer in complete_forms %}
+				<tr>
+					<td>
+						<a class='floatbox' data-fb-options='type:ajax' href="{% url 'view_intake_form_answer' healer.user.username  answer.client.user.username %}">{{ answer.client }}</a>
+					</td>
+					{#						<td>{{ answer.date }}</td>#}
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		<p class="message">No answered intake forms.</p>
+	{% endif %}
+
+
+	<h3>Incomplete forms</h3>
+	{% if incomplete_forms %}
+		<table class="client_list responsive_table">
+			{% for history in incomplete_forms %}
+				<tr>
+					<td>
+						<a href='{% url 'client_detail' history.client.user.username %}' class="client_detail floatbox" data-fb-options="type:ajax">{{ history.client }}</a>
+						&nbsp;|&nbsp;
+						<a href="javascript:void(0);" onclick="send_intake_form({{ history.client.pk }})">Resend &raquo;</a>
+					</td>
+					{#						<td>{{ history.created_at }}</td>#}
+				</tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		<p class="message">No unanswered forms.</p>
+	{% endif %}
+{% endblock %}

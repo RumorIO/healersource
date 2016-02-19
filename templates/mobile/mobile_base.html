@@ -1,0 +1,32 @@
+{% load healer_tags %}
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE html PUBLIC '-//WAPFORUM//DTD XHTML Mobile 1.0//EN' 'http://www.wapforum.org/DTD/xhtml-mobile10.dtd'>
+{% load compress healer_tags %}
+<html xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+	<title>{% block head_title_base %}{% block head_title %}{% endblock %}{% if SITE_NAME %} :: {{ SITE_NAME }}{% endif %}{% endblock %}</title>
+	<link rel="stylesheet" href="{{ STATIC_URL }}uni_form/uni-form.css" />
+	{% compress css %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+	{% endcompress %}
+	{% jquery_js_import %}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/csrf.js"></script>
+	{% endcompress %}
+	{% block extra_head %}{% endblock %}
+</head>
+<body>
+<div class="fill_window"><img src="{{ STATIC_URL }}healersource/img/hs_background.jpg" class="fill_window"></div>
+
+<div class="fill_window" style="overflow:auto;">
+	<div class="content_frame">
+		<div>
+			<div style="float:right; "><a href="/">&laquo; home</a></div>
+			{% block content %}{% endblock %}
+		</div>
+	</div>
+</div>
+
+</body>
+</html>

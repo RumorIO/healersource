@@ -1,0 +1,54 @@
+<ul>
+	<li>
+		<a href="{% url 'schedule_settings' %}">
+			General
+			{% if is_wellness_center and healers_in_wcenter_with_schedule_perm %}
+				{% if not additional_menu %}
+					<span>&gt;</span>
+				{% endif %}
+			{% endif%}
+		</a>
+		<ul id="provider_schedule_settings">
+			{% if is_wellness_center %}
+				<li><a href="{% url 'schedule_settings' %}">{{ user.client }}</a></li>
+			{% endif %}
+			{% for healer in healers_in_wcenter_with_schedule_perm %}
+				<li><a href="{% url 'schedule_settings' healer.user.username %}">{{ healer.user.client }}</a></li>
+			{% endfor %}
+		</ul>
+	</li>
+
+	<li>
+		<a href="{% url 'treatment_types' %}">
+			Treatment Types
+			{% if is_wellness_center and healers_in_wcenter_with_schedule_perm %}
+				{% if not additional_menu %}
+					<span>&gt;</span>
+				{% endif %}
+			{% endif%}
+		</a>
+		<ul>
+			{% if is_wellness_center %}
+				<li><a href="{% url 'treatment_types' %}">{{ user.client }}</a></li>
+			{% endif %}
+			{% for healer in healers_in_wcenter_with_schedule_perm %}
+				<li><a href="{% url 'treatment_types' healer.user.username %}">{{ healer.user.client }}</a></li>
+			{% endfor %}
+		</ul>
+	</li>
+	<li>
+		<a href="{% if not is_wellness_center %}{% url 'vacation' %}{% else %}#{% endif %}">
+			Time Off
+			{% if is_wellness_center and healers_in_wcenter_with_schedule_perm %}
+				{% if not additional_menu %}
+					<span>&gt;</span>
+				{% endif %}
+			{% endif%}
+		</a>
+		<ul>
+			{% for healer in healers_in_wcenter_with_schedule_perm %}
+				<li><a href="{% url 'vacation' healer.user.username %}">{{ healer.user.client }}</a></li>
+			{% endfor %}
+		</ul>
+	</li>
+</ul>

@@ -1,0 +1,11 @@
+{{ review.reviewer }} wrote you a review on {{ review.date|date:"m/d" }}
+
+Rating: {% if html_email %}<img src="http://www.healersource.com/static/default/healersource/img/icons/stars/icon_star_{{ review.rating }}.png"/>{% else %}{{ review.rating }}{% endif %}
+
+{{ review.review }}
+
+{% if is_need_client_approval %}
+{{ review.reviewer }} wants to be added to your client list, to Approve, {% with approve_url as link %}{% include "email_link.html" %}{% endwith %}
+
+To Decline, {% with decline_url as link %}{% include "email_link.html" %}{% endwith %}
+{% endif %}

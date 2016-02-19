@@ -1,0 +1,12 @@
+<div class="video">
+	<div class="title" title="{{ video.title }}">{{ video.title }}</div>
+	<a href="https://www.youtube.com/embed/{{ video.video_id }}" class="embed_link floatbox" data-fb-options="width: 640px; height: 390px; caption: #video_caption_{{ video.id }};"><img src="https://img.youtube.com/vi/{{ video.video_id }}/0.jpg" width="{{ content_video_width }}" class="border_img" /></a>
+	{% if video.videotype != video.VIDEO_TYPE_GALLERY and not client %}
+	    <a href="{{ video.client.healer_profile_url }}" target="_blank" style="float: right;">by {{ video.client }} &raquo;</a>
+	{% endif %}
+
+	<div id="video_caption_{{ video.id }}" style="display: none;">
+		{{ video.title }}
+		<a href="{{ video.client.healer_profile_url }}" target="_blank" style="float: right;">by {{ video.client }} &raquo;</a>
+	</div>
+</div>

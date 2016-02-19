@@ -1,0 +1,1 @@
+{% load i18n %}{% load account_tags %}{% with user.client as user_name %}{% autoescape off %}{{ user_name }}{% endautoescape %} wants to refer to you on {{ SITE_NAME }}{% endwith %}

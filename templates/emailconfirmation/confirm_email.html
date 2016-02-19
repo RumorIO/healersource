@@ -1,0 +1,24 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load account_tags %}
+
+{% block head_title %}{% trans "Confirm E-mail" %}{% endblock %}
+
+{% block page_title %}<h1>{% trans "E-mail Confirmed" %}</h1>{% endblock %}
+
+{% block body %}
+
+	{% if email_address %}
+		{% user_display email_address.user as user_display %}
+		<p>{% blocktrans with email_address.email as email %}Your email address <strong>{{ email }}</strong> is now confirmed.{% endblocktrans %}</p>
+		<p><a href="{% url 'login_page' %}{% if request.GET.next %}?next={{ request.GET.next }}{% endif %}">Log In &raquo;</a></p>
+	{% else %}
+		{% if confirmation %}
+			<h1>Email confirmation key expired</h1>
+			<p>Your email confirmation key has expired.</p><p><a href="{% url 'resend_confirmation' confirmation.confirmation_key %}">Click Here to receive a new confirmation email &raquo;</a></p>
+		{% else %}
+			<p>{% trans "Invalid confirmation key." %}</p>
+		{% endif %}
+	{% endif %}
+{% endblock %}

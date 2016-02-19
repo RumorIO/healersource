@@ -1,0 +1,37 @@
+{% extends 'base_new_box.html' %}
+
+{% block head_title %}TShirt Gift{% endblock %}
+
+{% block page_title %}<h1>Free TShirts</h1>{% endblock %}
+
+{% block body %}
+	<div style="text-align: center;">
+		<img src="{{ STATIC_URL }}healersource/img/tshirts.png" style="max-width: 100%" />
+	</div>
+
+	<p style="font-weight: bold; font-style: italic; text-align: center;">Welcome to the Healersource Free TShirt redemption page!</p>
+
+	<p>To qualify for your shirts, you must meet the following criteria:</p>
+
+	<ol>
+		<li>You signed up for HealerSource as a Provider.</li>
+		<li>A friend of yours also signed up for HealerSource as a Provider.</li>
+		<li>
+			Both of your profiles are complete. That means:
+			<ol type="a">
+				<li>You uploaded your photo.</li>
+				<li>Your 'About Me' section is filled in.</li>
+				<li>You set your specialties.</li>
+				<li>You added your location.</li>
+			</ol>
+		</li>
+	</ol>
+
+	<p style="font-style: italic;">That's it!</p>
+
+	<p>Our elves are working really hard at automating this process, but in the meantime please <a class="contact">Contact Us</a> to redeem your free tshirt. <br>Please make sure to send us the name of the friend you referred to HealerSource.</p>
+
+	<p>Both you and your friend will receive a coupon code for a free tshirt each! Unfortunately, you'll still have to pay for shipping :(</p>
+
+	<p><a class="contact">Contact Us</a></p>
+{% endblock %}

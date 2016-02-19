@@ -1,0 +1,42 @@
+{% extends 'base_phonegap2.html' %}
+{% load compress %}
+{% block extra_head %}
+	{% compress css %}
+		<link rel="stylesheet" href="css/login.css" />
+	{% endcompress %}
+
+	<script>
+	var url_location_exists = "{% url 'location_exists_ajax' %}";
+
+	$(function() {
+		changeBackButton(function(){
+			document.location.href = "provider_choice.html";
+		});
+		var data = {};
+		updateDataWithAuth(data);
+
+		rest_ajax_get_request(url_location_exists, function(location_exists) {
+			if (location_exists) {
+				$('#start').prop('href', 'specialties.html');
+			} else {
+				$('#start').prop('href', 'location.html');
+			}
+		}, data);
+	});
+
+	</script>
+{% endblock %}
+
+{% block body %}
+	<div class="application2_container">
+        <div id="menu">
+			<a class="back_arrow_container" href="provider_choice.html"><div class="back_arrow"></div></a>
+			<div class="header_title">Would You Like to Create Your Profile?</div>
+			<div class="header_logo_container"><a href="https://www.healersource.com" target="_blank"><div class="header_logo"></div></a></div>
+			<hr class="clearfix">
+			<p>Next we'll walk you through a few easy steps to get your profile visible.</p>
+			<p><a id="start" href="#"> >> Let's get started!</a></p>
+			<p><a href="list.html"> >> Not right now, I'll do it later.</a></p>
+        </div>
+	</div>
+{% endblock %}

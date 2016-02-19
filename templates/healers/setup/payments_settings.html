@@ -1,0 +1,9 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/card_settings.js"></script>
+	<div class="grey_box">
+		{% include "payments/stripe_connect_settings_content.html" with setup=True %}
+	</div>
+	{% include "healers/setup/setup_controls.html" %}
+{% endblock %}

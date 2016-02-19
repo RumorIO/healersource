@@ -1,0 +1,25 @@
+{% if request.user.is_authenticated %}
+
+	<div id="compose_message_dlg" class="calendar_dialog" style="display: none;">
+		<form action="" method="post" id="new_message_form" class="uniForm message_form" accept-charset="utf-8">
+			{% csrf_token %}
+			<fieldset class="inlineLabels">
+				<div class="ctrlHolder " id="div_id_recipient">
+					<label for="id_recipient">To:</label>
+					<input type="text" class="ui-autocomplete-input" id="id_recipient" name="recipient_input">
+				</div>
+				<div class="ctrlHolder " id="div_id_subject">
+					<label for="id_subject">Subject:</label>
+					<input type="text" name="subject" id="id_subject">
+				</div>
+				<div class="ctrlHolder " id="div_id_body">
+					<label for="id_body">Message:</label>
+					<textarea class="textarea" name="body" cols="20" rows="24" id="id_body"></textarea>
+				</div>
+				<input type="hidden" id="recipient_hidden" name="recipient" />
+			</fieldset>
+		</form>
+		<div id="id_send_result_msg">Message Sent Successfully!</div>
+	</div>
+
+{% endif %}

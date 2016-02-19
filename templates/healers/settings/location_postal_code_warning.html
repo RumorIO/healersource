@@ -1,0 +1,10 @@
+<script type="text/javascript">
+	$(function() {
+		var $postal_code = $('#id_postal_code');
+
+		if ($postal_code.val() == '') {
+			if($('#zip_msg').length == 0)
+			$postal_code.after($("<span id='zip_msg' class='message single_button' style='color:darkred;'>IMPORTANT: Set your Zip Code!</span>"));
+		}
+	});
+</script>

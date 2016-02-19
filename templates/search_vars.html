@@ -1,0 +1,12 @@
+{{ search_healer_form.media }}
+{{ search_form.media }}
+<script>
+	{% if phonegap %}
+		var city_select_code = 0;
+	{% else %}
+		var city_select_code = {{ city_select_code }};
+	{% endif %}
+
+	var url_search = "{% url 'search_ajax' %}";
+	var url_search_city_select_code = "{% url 'search_city_select_code' %}";
+</script>

@@ -1,0 +1,1 @@
+You have an Appointment Tomorrow with {{ appointment.healer.user.client }}

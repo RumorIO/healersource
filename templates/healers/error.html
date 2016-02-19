@@ -1,0 +1,20 @@
+<div class="warning_button">
+	<div style="float: right; font-weight: bold;">v</div>
+	<img src="{{ STATIC_URL }}healersource/img/icons/eye_crossed_out.png" class="warning-icon" />
+	<div class="warning-message">
+		<div class="error-message">
+		{% if link %}
+			<a href="{{ link }}">
+		{% endif %}
+			{{ error_message }}
+		{% if link %}
+			</a>
+		{% endif %}
+		</div>
+		{% if show_billing_link %}
+			<br>
+			<a href="{% url 'account' %}">Please click here to update your billing infomation</a>
+		{% endif %}
+	</div>
+</div>
+<br>

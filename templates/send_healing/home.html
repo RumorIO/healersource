@@ -1,0 +1,149 @@
+{% extends phonegap|yesno:'base_phonegap.html,base_common.html' %}
+
+{% load compress %}
+
+{% block head_title %}The Healing Circle{% endblock %}
+
+{% block extra_head %}
+	{% block og %}
+		<meta property="og:type" content="website" />
+		<meta property="og:description" content="The Healing Circle" />
+	{% endblock %}
+	{% block og-image %}
+		<meta property="og:image" content="https://www.healersource.com/static/static/media/emails/ghp2.jpg" />
+	{% endblock %}
+
+	{% compress css %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/send_healing.css" />
+	{% endcompress %}
+
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/send_healing.js"></script>
+	{% endcompress %}
+	{% if not phonegap %}
+		{% compress js %}
+			<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.cookie.js"></script>
+			<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/csrf.js"></script>
+		{% endcompress %}
+	{% endif %}
+
+	<script type="text/javascript">
+		{% if user.is_authenticated or phonegap %}
+			var required_scopes = {{ required_scopes|safe }}.sort();
+			var scopes_to_check = {{ scopes_to_check|safe }};
+		{% endif %}
+
+		var phrases = $.parseJSON('{{ phrases|safe }}');
+
+		var send_healing_url = "{{ send_healing_url }}";
+
+		if (phonegap) {
+			var STATIC_URL = "{{ STATIC_URL }}";
+		} else {
+			var avatar_change_url = "{% url 'avatar_change' %}";
+			var url_send_healing_facebook = '{% url "send_healing_facebook" %}';
+		}
+
+		var url_list_skipped = '{% url "send_healing_ajax_list" "skipped" %}';
+		var url_list_favorite = '{% url "send_healing_ajax_list" "favorite" %}';
+		var url_remove_status_skipped = '{% url "send_healing_ajax_remove_status" "skipped" %}';
+		var url_remove_status_favorite = '{% url "send_healing_ajax_remove_status" "favorite" %}';
+		var url_save_settings = '{% url "send_healing_ajax_save_settings" %}';
+		var url_load_settings = '{% url "send_healing_ajax_load_settings" %}';
+		var url_add_favorite = '{% url "send_healing_ajax_add_favorite" %}';
+		var url_send_healing_to_person = '{% url "send_healing_ajax_send_healing_to_person" %}';
+		var url_load_initial_data = '{% url "send_healing_ajax_load_initial_data" %}';
+		var url_history = '{% url "send_healing_ajax_history" %}';
+		var url_total_healing_sent = '{% url "send_healing_ajax_total_healing_sent" %}';
+
+		{% if send_to_user %}
+			var send_to_user_on_load = {{ send_to_user }};
+		{% endif %}
+
+		$(function() {
+			if(!phonegap) {
+				on_initial_data_load({{initial_data|safe}});
+				on_history_load({{history|safe}});
+				on_settings_load({{settings|safe}});
+				on_total_healing_sent_load({{total_healing_sent|safe}});
+			}				
+		});		
+	</script>
+{% endblock %}
+
+{% block panel_class %}global_healing_panel{% endblock %}
+{% block content_title %}The Healing Circle{% endblock %}
+
+{% block body %}
+	<div id="content">
+		<p class="back"><a href="#" onclick="sh_back();">Back</a></p>
+		<div id="main" class="content_item">
+			<div id="send_healing_content">
+				<div id='sh_info_container' class="grey_box sh_panel_container">
+					<div style="font-size: 1.4em;">
+						<p style="font-size: 1.3em; font-weight: 600;">The Healing Circle lets you to send and receive healing with members of our community around the globe. </p>
+						<hr>
+						<p>You don't need to be a professional healer -<br>Anybody can send thoughts of Love, Compassion, and Wellbeing to others.</p>
+						<p style="font-style: italic;">Lets create a Tidal Wave of positive energy that will touch the hearts of millions everywhere! </p>
+						<hr>
+						<p style="font-weight: 600;">So take a minute to tune in with the highest good within you.. </p>
+					</div>
+					<div class="panel solo_panel">
+						<div class="panel_title">Send Healing To</div>
+						<div class="send_healing_to_inputs" style="padding: 11px 33px;">
+							<input id="send_to_ghp_members" type="checkbox"> <label for="send_to_ghp_members">Healing Circle Members</label><br>
+							<input class="favorites_checkbox" id="send_to_my_favorites_only" type="checkbox"> <label class="favorites_checkbox" for="send_to_my_favorites_only">My Favorites Only</label>
+							<hr>
+							<input id="i_want_to_receive_healing" type="checkbox"><label for="i_want_to_receive_healing">I want to receive Healing</label>
+						</div>
+
+						<a id='show_sh_page' class='homepage_button'>Go &raquo;</a>
+					</div>
+					{% if user.is_authenticated or phonegap %}
+						<p>
+							<span class="page_link" id="history_page_link"><a href="#" onclick="switch_content('history');">History</a></span>
+							<span class="page_link" id="skipped_page_link"><a href="#" onclick="switch_content('skipped');">Skipped</a></span>
+							<span class="page_link" id="favorites_page_link"><a href="#" onclick="switch_content('favorites');">Favorites</a></span>
+						</p>
+					{% endif %}
+				</div>
+				<div id="map" class="border_img"></div>
+				<br />
+				<div id="fb_share_links_under_map" class="sh_panel_container">
+					<div>
+						<div class="panel solo_panel" style="width: 100%;">
+							<div class="panel_title" style="font-size: 1.5em; background-color: #E9F6FC;">Total Healing</div>
+							<div class="panel_content" style="color: darkslateblue;" id="healing_sent_total"></div>
+						</div>
+						{% if user.is_authenticated or phonegap %}
+							<div class="panel solo_panel hidden" id="you_sent_panel">
+								<div class="panel_title" style="background-color: #F5DEDE;">You Sent</div>
+								<div class="panel_content" style="color: #5E0E5D;" id="healing_sent"></div>
+							</div>
+							<div class="panel solo_panel hidden" id="you_received_panel">
+								<div class="panel_title" style="background-color: #DEF5CA;">You Received</div>
+								<div class="panel_content" style="color: darkolivegreen;" id="healing_received"></div>
+							</div>
+						{% endif %}
+					</div>
+					<div style="display: block;" class="clearfix"></div>
+					{% include 'send_healing/fb_share_links.html' %}
+				</div>
+
+				<div id="friends_container">
+					<div id="sh_box"></div>
+				</div>
+			</div>
+
+			<div id="history"></div>
+		</div>
+		<div id="skipped" class="content_item"></div>
+		<div id="favorites" class="content_item"></div>
+	</div>
+
+	{% include 'facebook_init.html' %}
+{% endblock %}

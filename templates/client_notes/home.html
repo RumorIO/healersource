@@ -1,0 +1,278 @@
+{% extends phonegap|yesno:'base_phonegap.html,site_base.html' %}
+
+{% load compress %}
+{% load notes_tags %}
+
+{% block head_title %}
+	Notes
+{% endblock %}
+
+{% block extra_head %}
+	{% compress js %}
+		<script src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+		<script src="{{ STATIC_URL }}healersource/js/jquery.touchSwipe.min.js"></script>
+		<script>
+ 			var url_account_settings = '{% url "account" %}';
+ 			var url_autocomplete_clients_with_notes = '{% url "autocomplete_clients_with_notes" %}';
+ 			var url_load_initial_data = '{% url "notes_load_initial_data" %}';
+ 			var url_list = '{% url "notes_list" %}';
+ 			var url_create = '{% url "notes_create" %}';
+ 			var url_duplicate = '{% url "notes_duplicate" %}';
+ 			var url_save = '{% url "notes_save" %}';
+ 			var url_get = '{% url "notes_get" %}';
+ 			var url_delete = '{% url "notes_delete" %}';
+ 			var url_dot_create = '{% url "notes_dot_create" %}';
+ 			var url_dot_delete = '{% url "notes_dot_delete" %}';
+ 			var url_dot_save_position = '{% url "notes_dot_save_position" %}';
+ 			var url_dot_save_text = '{% url "notes_dot_save_text" %}';
+			var url_save_favorite_diagram = '{% url "notes_save_favorite_diagram" %}';
+		</script>
+		<script src="{{ STATIC_URL }}healersource/js/new_client.js"></script>
+		<script src="{{ STATIC_URL }}healersource/js/notes.js"></script>
+		<script>
+			{% for marker in markers %}
+				marker_elements[{{ marker.pk }}] = '{% marker_html_element marker phonegap %}';
+			{% endfor %}
+
+			{% if action %}
+				var client_id = {{ client_id }};
+				{% ifequal action 'list' %}
+					search_filter_client_id = client_id;
+				{% endifequal %}
+
+				$(function() {
+					{% if action == 'list' %}
+						$('#search_client_filter_note').val('{{ client_name }}');
+						$('#notes_for').html('for {{ client_name }}');
+					{% elif action == 'create' %}
+						create_note_for_client(client_id);
+					{% endif %}
+				});
+			{% endif %}
+			$(function() {
+				if(!phonegap) {
+					on_initial_data_load({{initial_data|safe}});
+					on_notes_list_load({{notes_list|safe}});
+				}				
+			})
+		</script>
+	{% endcompress %}
+
+	{% compress css %}
+		<!-- used for client form styles -->
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/notes.css" />
+	{% endcompress %}
+	{% if phonegap %}
+		<link rel="stylesheet" href="css/jquery-ui.min.css" />
+	{% else %}
+		<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.10.4/themes/redmond/jquery-ui.min.css" />
+	{% endif %}
+
+{% endblock %}
+
+{% block header_content %}
+	{% if phonegap %}
+		<div id="client_name"></div>
+	{% endif %}
+{% endblock %}
+
+{% block header_additional_content %}
+	{% if phonegap %}
+		<span class="single_button"><a href="javascript:void(0)">Save</a></span>
+	{% endif %}
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_notes">Client Notes</h1>{% endblock %}
+
+{% block body %}
+
+{% if not phonegap %}
+	<div class="loading" id="loading"></div>
+{% endif %}
+
+<div id="content_list" class="content">
+	<div class="grey_box pale_yellow_box search_box clients_search notes_top_panel">
+		<div class="notes_top_panel_title">
+			<span class="nav_icon nav_find_a_provider">Show Notes for</span>
+		</div>
+		<div class="notes_top_panel_input">
+			<input placeholder="Client Name or Last Name"
+				id="search_client_filter_note"
+				class="ui-autocomplete-input ui-autocomplete-loading"
+				maxlength="75"
+				type="text"
+				autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+		</div>
+	</div>
+
+	<div class="grey_box pale_yellow_box search_box add_note notes_top_panel">
+		<div class="notes_top_panel_title">
+			<span class="nav_icon icon_email_new">Create Note for</span>
+		</div>
+		<div class="notes_top_panel_input">
+			<input placeholder="Client Name or Last Name"
+				id="search_client_new_note"
+				class="ui-autocomplete-input ui-autocomplete-loading"
+				type="text"
+				autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+		</div>
+	</div>
+	<a href="#" onclick="dlg_new_client();" class="new_client_link notes_top_panel"></a>
+
+	<div class="hidden" id="recent_notes">
+		<h3>Recent Notes <span id="notes_for"></span> <span id="clear_search">| <a href="javascript:void(0)" onclick="clear_search()">clear search</a></span></h3>
+		<div id="notes_list"></div>
+	</div>
+	{% include "healers/new_client_dialog.html" %}
+</div>
+
+<div id="content_edit" class="content">
+	{% if not phonegap %}<h1 id="client_name"></h1>{% endif %}
+	<h2 id="date_menu">
+		<a href="javascript:void(0);" class="note_link" id="prev_note">&lt;</a>
+		<span id="created_date"></span><input type="hidden" id="created_date_input" name="created_date"/>
+		<a href="javascript:void(0);" class="note_link" id="next_note">&gt;</a>
+	</h2>
+	<h2 class="diagram_section_dropdown">
+	<div id="section_menu">
+		<span class="single_button diagram_additional_content diagram_button diagrams_list_button additional_content" id="section_menu_toggle_button">&nbsp;</span>
+		<span class="single_button soap_diagram_button soap_button additional_content">&nbsp;</span>
+		<div class="section_select">
+		<div id="section_top_bar">
+		{% for section in sections %}
+			<div class="section_items">
+				<img data-id="{{ section.pk }}" src="{{ STATIC_URL }}healersource/img/notes/sections/{{ section.code_name }}.png" alt="{{ section }}" class="section_item">
+			</div>
+		{% endfor %}
+			<div class="clearfix"></div>
+			<hr>
+		</div>
+			<div id="section_diagrams">
+				{% for diagram in diagrams %}
+					<div class="section_diagram" data-section-id="{{ diagram.section.id }}" data-id="{{ diagram.id }}">
+						<img src="{{ STATIC_URL }}healersource/img/notes/diagrams/thumbs/{{ diagram.code_name }}.png" alt="{{ diagram }}">
+						<span class="favorite"></span>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	</h2>
+	<div id="diagram_content">
+		<div class="marker_bar diagram_additional_content additional_content">
+			{% for marker in markers %}
+				<div class="marker" data-id="{{ marker.id }}">{% marker_html_element marker phonegap %}</div>
+			{% endfor %}
+		</div>
+		<div class="diagram_arrows">
+			<div class="arrow bottom_arrow bottom_arrow_left">&lt;</div>
+			<div class="arrow bottom_arrow bottom_arrow_right" onclick="show_diagram(3)">&gt;</div>
+		</div>
+		<div class="diagrams">
+			{% for diagram in diagrams %}
+				<div class="diagram_container" data-id="{{ diagram.id }}" {% if forloop.counter > 2 %} style="display: none;" {% endif %}>
+					<img class="diagram" data-id="{{ diagram.id }}" src="{{ STATIC_URL }}healersource/img/notes/diagrams/{{ diagram.code_name }}.png" alt="{{ diagram }}">
+				</div>
+			{% endfor %}
+		</div>
+		<hr>
+		<div class="center">
+			{% for diagram in diagrams %}
+				<img class="diagram_thumb" data-id="{{ diagram.id }}" src="{{ STATIC_URL }}healersource/img/notes/diagrams/thumbs/{{ diagram.code_name }}.png" alt="{{ diagram }}">
+			{% endfor %}
+		</div>
+		<hr>
+	</div>
+	<div id="soap_content">
+		<div class="text_cell" id="subjective_box">
+			Subjective<br>
+			<textarea id="subjective"></textarea>
+		</div>
+		<div class="text_cell" id="objective_box">
+			Objective<br>
+			<textarea id="objective"></textarea>
+		</div>
+		<div class="text_cell" id="assessment_box">
+			Assessment<br>
+			<textarea id="assessment"></textarea>
+		</div>
+		<div class="text_cell" id="plan_box">
+			Plan<br>
+			<textarea id="plan"></textarea>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+	<hr>
+	<h3>Overall Condition</h3>
+	<table class="overall_condition_table">
+		<tr>
+			<td colspan="3">Not So Good</td>
+			<td colspan="4">&nbsp;</td>
+			<td colspan="3" class="align-right">Excellent</td>
+		</tr>
+		<tr>
+			{% for i in '1234567891' %} {# 11 values #}
+				<td>
+					<input id="condition{{ forloop.counter }}" type="radio" name="condition" value="{{ forloop.counter }}">
+				</td>
+			{% endfor %}
+		</tr>
+		<tr>
+			{% for i in '123456789' %}
+				<td>
+					<label for="condition{{ forloop.counter }}">{{ forloop.counter }}</label>
+				</td>
+			{% endfor %}
+			<td>
+				<label for="condition10">10</label>
+			</td>
+		</tr>
+	</table>
+	<hr>
+	<div id="note_cancel_section" class="note_action_section">
+		<div class="save_delete_buttons">
+			<a id="save_and_finalize" href="javascript:void(0);">Finalize</a><br>
+			<hr>
+			<a id="delete_note" href="javascript:void(0);">Delete Note</a><br>
+			<hr>
+		</div>
+		<a id="cancel_changes" href="javascript:void(0);"></a>
+	</div>
+
+	<div class="note_action_section float_right">
+		<div id="save" class="homepage_button save_button">Save</div>
+	</div>
+
+	<div id="edit_dot_dialog">
+		<textarea id="dot_text" maxlength="1024"></textarea>
+	</div>
+
+	<div id="tooltip">
+		<div id="tooltip_actions">
+			<div class="small_icon_button tooltip_close_button" onclick="fb.end();"></div>
+			<div class="small_icon_button tooltip_edit_button"></div>
+		</div>
+		<div id="tooltip_text"></div>
+	</div>
+
+	<div id="delete_note_confirmation_dialog">
+		Are you sure you want to delete this note?
+	</div>
+	<div id="finalize_note_confirmation_dialog">
+		You will NOT be able to edit this note any more after you finalize it.
+	</div>
+	<div id="cancel_changes_confirmation_dialog">
+		Are you sure you want to cancel your changes?
+	</div>
+</div>
+
+{% if phonegap %}
+	<div id="notes_unauth" class="hidden">
+		<p class='message'>You must be logged in to use Notes</p>
+		{% include 'phonegap/login_buttons.html' %}
+		<a href="notes_landing.html" class="menu-link phonegap-menu-item nav_info">Learn More about Notes</a>
+	</div>
+{% endif %}
+
+{% endblock %}

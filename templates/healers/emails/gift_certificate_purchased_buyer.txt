@@ -1,0 +1,15 @@
+You have successfully purchased a gift certificate for {{ certificate.purchased_for }} to have a session with {{ certificate.discount_code.healer }}.
+
+Here are the details:
+
+Purchased For: {{ certificate.purchased_for }}
+Amount: {{ certificate.discount_code.amount }}
+Code: {{ certificate.discount_code.code }}
+Purchase Date: {{ certificate.purchase_date }}
+Expiry Date: {{ certificate.expiry_date }}
+
+Please print the attached PDF file and bring it to your session.
+
+Or you can use the code {{ certificate.discount_code.code }} when you book a session with {{ certificate.discount_code.healer.user.first_name }} online.
+
+To see {{ certificate.discount_code.healer.user.first_name }}'s profile and book online with them, {% include "email_link.html" %}.

@@ -1,0 +1,48 @@
+{% extends "site_base.html" %}
+
+{# {% load healer_tags %} #}
+
+{% block head_title %}{{ other_user.client }}{% endblock %}
+{% block extra_head %}
+{% endblock %}
+
+{% block page_title %}<h1 class="small_margin_bottom">{{ other_user.client }}</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "healers/client_invite_bar.html" %}
+	<div class="clearfix"></div>
+
+	{% if not is_me and other_user.is_active %}
+		<div style="float: right; white-space: nowrap;">
+			<span class="look_like_link" onclick="show_compose_message_dlg('{{ other_user.username }}', '{{ other_user.client|escapejs }}');">Send a Message</span>
+		</div>
+		<div class="clearfix"></div>
+	{% endif %}
+
+	{% if is_profile_visible or previous_invitation_from %}
+
+		{% if other_user.email %}
+			Email: <a href="mailto:{{ other_user.email }}">{{ other_user.email }}</a><br/>
+		{% endif %}
+
+		{% if phone_numbers %}
+			{% if phone_numbers|length == 1 %}
+				Phone number: {{ phone_numbers.0.number }}<br />
+			{% else %}
+				Phone numbers:
+					<ul>
+					{% for phone in phone_numbers %}
+						<li>{{ phone.type }} – {{ phone.number }}</li>
+					{% endfor %}
+					</ul>
+			{% endif %}
+		{% endif %}
+
+		{% if other_user.client.referred_by %}
+			Referred By: {{ other_user.client.referred_by }}
+		{% endif %}
+
+	{% endif %}
+{% endblock %}
+

@@ -1,0 +1,35 @@
+<div class="auto_width">
+	{{ field }}
+	<label {% if bold_label %} class="bold" {% endif %}>{{ field.label }}</label>
+	<span class="highlight_container button_container combined_button_container">
+		<span id="{{ setting_name }}_on" class="tour_appointments">
+			<a data-value="true" href="javascript:void(0);" class="icon_earth {{ setting_name }}_setting">Yes</a>
+		</span><span id="{{ setting_name }}_off"
+			class="selected tour_availability">
+		<a data-value="false" href="javascript:void(0);" class="icon_eye_crossed_out {{ setting_name }}_setting">No</a>
+		</span>
+	</span>
+</div>
+<script>
+$(function() {
+	var setting_name = '{{ setting_name }}';
+	var settings_field = $('#id_' + setting_name);
+	function init_setting_buttons(){
+		$('.' + setting_name + '_setting').click(function(){
+			settings_field.prop('checked', $(this).data('value'));
+			if (typeof additional_setting_action !== 'undefined') {
+				additional_setting_action();
+			}
+		});
+	}
+
+	function init_setting_value(){
+		if (settings_field.prop('checked')) {
+			$('#' + setting_name + '_on').trigger('click');
+		}
+	}
+
+	init_setting_value();
+	init_setting_buttons();
+});
+</script>

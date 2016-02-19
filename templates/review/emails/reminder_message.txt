@@ -1,0 +1,3 @@
+Our elves have noticed that you had a session with {{ healer_name }} yesterday. {{ healer_first_name }} would love to get a review from you!
+
+To write your review, {% with review_url as link %}{% include "email_link.html" %}{% endwith %}

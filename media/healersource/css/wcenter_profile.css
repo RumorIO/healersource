@@ -1,0 +1,47 @@
+#providers_list li {cursor: pointer;}
+
+#provider_list {
+	margin-top: 5px;
+}
+
+.provider-item {
+	padding: 2px 7px;
+	margin: 0px;
+	border: 1px solid transparent;
+}
+
+.provider-item-container {
+	text-align: center;
+	width: 130px;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.length_price {
+	display: inline-block;
+	margin-top: 5px;
+	background-color: #e3f6dc;
+	border-color: #d4d4d4;
+	font-weight: bold;
+}
+
+.provider-link {
+	cursor: pointer;
+	text-decoration: underline;
+	color: #273272;
+}
+
+#treatments_content {
+	margin-top: 10px;
+}
+
+#back_to_provider {
+	display: none;
+	margin-left: 6px;
+}
+
+.loading {
+	float: none;
+	margin-left: auto;
+	margin-right: auto;
+}

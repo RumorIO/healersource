@@ -1,0 +1,11 @@
+{% extends "healers/settings/settings_base.html" %}
+
+{% block head_title %}Edit Location{% endblock %}
+{% block title %}Locations{% endblock %}
+
+{% block settings_content %}
+	<div id="tabs_locations">
+		<h3>Edit Location</h3>
+		{% include 'healers/settings/location_edit_content.html' %}
+	</div>
+{% endblock %}

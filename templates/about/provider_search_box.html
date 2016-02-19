@@ -1,0 +1,33 @@
+<div style="margin-top: 18px; width: 325px;">
+	<div class='single_button' id='provider_search_box'>
+		<img src="{{ STATIC_URL }}healersource/img/icon-mini-search.gif" style="float: left; margin-left: -7px; margin-top: 8px;" />
+		{#	<img id="search_waiting" src="{{ STATIC_URL }}healersource/img/ajax-loader.gif" style="float: right; margin-right: 5px; margin-top: 8px; display: none;" />#}
+		<h3>Find a Healer Near You</h3>
+		<div class="clearfix"></div>
+		<form action='{% url 'search_results' %}' method='GET' name="search_form">
+			{#		{% if not zipcode and found_clients %}text-align: right;{% else %}margin: 1em 0px;{% endif %}'>#}
+			{% csrf_token %}
+			{{ search_form.zipcode }}
+			{{ search_form.city }}
+			{{ search_form.state }}
+			<input placeholder="{{ search_form.city_or_zipcode_placeholder }}" name="search_city_or_zipcode" id="search_city_or_zipcode" class="ui-autocomplete-input" size="5" type="text" value="" />
+			{{ search_form.modality_id }}
+			{{ search_form.modality_category_id }}
+			<div>{{ search_form.zipcode }}</div>
+			<div>
+				{{ search_form.modality }}
+				{{ modality_menu|safe }}
+			</div>
+			<p align='right'> <span class="single_button orange_button"  onclick='clear_autocomplete_hidden(); document.search_form.submit();'>Search &raquo;</span></p>
+
+			<div id="search_form_name_or_email">or&nbsp;<input placeholder="Provider Name or Email" id="search_name_or_email" class="ui-autocomplete-input" maxlength="75" type="text" /></div>
+			<input type="submit" style="display: none;" />
+			<script type="text/javascript">
+				$(document).ready(function() {
+					initProviderSearchAutocomplete();
+					initCitySearchAutocomplete();
+				});
+			</script>
+		</form>
+	</div>
+</div>

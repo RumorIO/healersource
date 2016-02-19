@@ -1,0 +1,39 @@
+{% include "payments/checkout.html" %}
+
+<div id="tabs_payments">
+	{% if message %}
+		<p>{{ message }}</p>
+	{% endif %}
+	{% if error %}
+		<div class="error_list">{{ error|safe }}</div>
+	{% endif %}
+	<p class="img_align_middle">
+		{% if is_healer.has_enabled_stripe_connect %}
+			<form action="{% if not setup %}{% url 'payments_settings' %}{% endif %}" method="post" id="payments_settings">
+				When a Client Books Online:&nbsp;
+				{% csrf_token %}
+				{{ form.booking_payment_requirement }}
+				<br>
+				{{ form.booking_healersource_fee.label }}: {{ form.booking_healersource_fee }}
+				<p><input type="submit" value="Save" /></p>
+			</form>
+			<div id="loading" class="loading"><div class="loading_icon"></div>Updating your subscription, take a few breaths...</div>
+			{% if not hide_additional_options %}
+				<p><a href="{% url 'stripe_connect_payments' %}">Go To Payments Page &raquo;</a></p>
+				<p><a href="{% url 'disable_stripe_connect' %}" style="opacity: 0.5;">Disable Stripe Connect</a></p>
+			{% endif %}
+		{% else %}
+			<a href="{{ STRIPE_CONNECT_LINK }}">
+				<div style="float: left; margin-right: 11px; border-right: 1px solid #aaa; padding-right: 11px;">
+					<img src="{{ STATIC_URL }}healersource/img/icons/mastercard.png" width="53" />
+					<img src="{{ STATIC_URL }}healersource/img/icons/visa.png" width="53" /><br />
+					<img src="{{ STATIC_URL }}healersource/img/icons/amex.png" width="53" />
+					<img src="{{ STATIC_URL }}healersource/img/icons/discover.png" width="53"  />
+				</div>
+			</a>
+			<strong style="font-size: 1.1em;">Accept Credit Cards for your Bookings and Gift Certificates, <a href="{{ STRIPE_CONNECT_LINK }}">Click Here</a>:</strong>
+			<p><a href="{{ STRIPE_CONNECT_LINK }}"><img src="{{ STATIC_URL }}healersource/img/blue_stripe_button.png" width="190" height="33"/></a></p>
+			{#		<div style="color: #808080; font-style: italic; margin-left: 11px;">HealerSource takes a modest 1% transaction fee in addition to Stripe's fees.</div>#}
+		{% endif %}
+	</p>
+</div>

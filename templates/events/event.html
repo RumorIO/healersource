@@ -1,0 +1,10 @@
+{% extends "base_common.html" %}
+
+{% block head_title %} Event {{ event }}{% endblock %}
+
+{% block panel_class %}articles_panel{% endblock %}
+{% block content_title %}{{ event }}{% endblock %}
+
+{% block body %}
+	{% include 'events/event_content.html' %}
+{% endblock %}

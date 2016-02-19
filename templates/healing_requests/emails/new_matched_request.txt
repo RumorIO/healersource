@@ -1,0 +1,6 @@
+A new healing request has been added that matched your <a href='{{ search_link }}'>search</a>.
+
+{{ title }}
+{{ description }}
+
+To see this request and make contact, {% with request_link as link %}{% include "email_link.html" %}{% endwith %}

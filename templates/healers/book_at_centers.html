@@ -1,0 +1,6 @@
+{% if healer.get_wellness_centers and not is_embedded %}
+	{% for center in healer.get_wellness_centers %}
+		<div style="font-style: italic;">To book an Appointment at {{ center }}, <a href="{{ center.healer_profile_url }}">click here &raquo;</a></div>
+	{% endfor %}
+	<hr>
+{% endif %}

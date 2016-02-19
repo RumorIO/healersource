@@ -1,0 +1,61 @@
+{% extends "blank_page_base.html" %}
+
+{% load i18n %}
+{% load pagination_tags %}
+{% load healer_tags %}
+{% load compress %}
+{% load dajaxice_templatetags %}
+
+{% block extra_head_last %}
+	{% jquery_ui_css_import %}
+	{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}floatbox/floatbox.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}tinydropdown/tinydropdown.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}infinite_scroll/css/jquery.ias.css" />
+		<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}healersource/css/healer.css" />
+		<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}healersource/css/search_results.css" />
+	{% endcompress %}
+
+	{% dajaxice_js_import %}
+	{% jquery_ui_js_import %}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/underscore-min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.ui.autocomplete.html.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.placeholder.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}infinite_scroll/jquery-ias.js"></script>
+	{% endcompress %}
+	<script type="text/javascript" src="{{ STATIC_URL }}floatbox/floatbox_6.js"></script>
+
+	<script type="text/javascript">
+		var STATIC_URL = "{{ STATIC_URL }}";
+		$(document).ready(function(){
+			$(':input[placeholder]').placeholder();
+		});
+	</script>
+{% endblock %}
+
+{% block content %}
+	{% include "account/facebook_init.html" %}
+	<div class="col_group">
+		<div class="header_top_menu">
+			<div class="logo"><a href="{% url 'home' %}"><img src="{{ STATIC_URL }}healersource/img/home/logo.png" width="367"></a></div>
+{#			{% url 'home' as home_url %}#}
+			{#	{% with 'find' as selected %}#}
+			{% include 'nav_top_mobile_buttons.html' %}
+			{% include 'nav_top.html' with show_my_account=True %}
+			{% include 'nav_left.html' %}
+			{#	{% endwith %}#}
+		</div>
+		<div class="clearfix"></div>
+
+		<div class="content">
+
+			{% block inner_content %}{% endblock %}
+
+			{% include "base_content_compose_dlg.html" %}
+			{% include "healers/unreg_send_msg_dlg.html" %}
+		</div>
+	</div>
+{% endblock %}

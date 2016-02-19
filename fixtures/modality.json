@@ -1,0 +1,33 @@
+[
+    {
+        "pk": 1,
+        "model": "modality.modalitycategory",
+        "fields": {
+            "title": "Massage"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "modality.modalitycategory",
+        "fields": {
+            "title": "Yoga Instruction"
+        }
+    },
+    {
+        "pk": 1,
+        "model": "modality.modality",
+        "fields": {
+            "category": [1],
+            "title": "Massage1"
+        }
+    },
+    {
+        "pk": 2,
+        "model": "modality.modality",
+        "fields": {
+            "category": [2],
+            "title": "Yoga1"
+        }
+    }
+
+]

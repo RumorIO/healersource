@@ -1,0 +1,19 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Facebook Link Error" %}{% endblock %}
+
+{% block page_title %}<h1>{% trans "Facebook Link Error" %}</h1>{% endblock %}
+
+{% block body %}
+
+	<div>
+		{{ error_message }}
+	</div>
+
+	{% if oauth_error_is_facebook_duplicate %}
+		<p>Do you want to associate your Facebook account with this HealerSource Account? This will disable your other account.</p>
+		<p><a href="{% url 'send_healing_facebook_associate_new_account' %}">Yes</a> | <a href="/">No</a></p>
+	{% endif %}
+{% endblock %}

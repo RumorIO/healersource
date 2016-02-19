@@ -1,0 +1,47 @@
+{% extends "healers/settings/settings_base.html" %}
+
+{% block head_title %}Time Off{% endblock %}
+{% block title %}Time Off{% endblock %}
+
+{% block extra_head %}
+	{{ block.super }}
+	{% include 'healers/timepicker_includes.html' %}
+{% endblock %}
+
+{% block settings_content %}
+<div id="tabs_time_off">
+
+	{% if vacation_list|length == 0 %}
+		<p class="message">No Time Off Defined Yet. Add One Below.</p>
+	{% endif %}
+
+	<table>
+		{% for vac in vacation_list %}
+			<tr>
+				<td>{{ vac.start|date:"n/j/Y g:iA" }} - {{ vac.end|date:"n/j/Y g:iA" }}</td>
+				<td><a href="{% url 'vacation_delete' vac.id  %}">delete</a></td>
+			</tr>
+		{% endfor %}
+		<tr><td>&nbsp;</td></tr>
+	</table>
+
+	<div class="add_box">
+		<h3>+ Create Time Off {% if is_wellness_center and user.username != username %} for {{ healer.user.client }} {% endif %}</h3>
+		{% include "form_errors.html" %}
+		<form action="{% url 'vacation' username %}" method="post">{% csrf_token %}
+			<div>{{ form.start.label }}:&nbsp;{{ form.start }}</div>
+			<div>{{ form.end.label }}:&nbsp;{{ form.end }}</div>
+			<input type="submit" value="Add Time Off" />
+		</form>
+	</div>
+
+	<script>
+		$(document).ready(function() {
+			$(".datepicker").datepicker();
+		});
+	</script>
+
+	<p class="clearfix">&nbsp;</p>
+
+</div>
+{% endblock %}

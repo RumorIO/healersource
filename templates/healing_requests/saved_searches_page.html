@@ -1,0 +1,30 @@
+{% load endless %}
+{% load strip_tags %}
+
+
+{% lazy_paginate saved_searches using 'saved_searches_page' %}
+{% for search in saved_searches %}
+	<div data-sid='{{ search.id }}' class="{% if request.GET.search_id|add:'0' == search.id %} current_search {% endif %}">
+
+		{% strip '&middot;' %}
+			{% include 'healing_requests/healing_request_line.html' with obj=search %}
+
+			{% if search.only_my_specialities %}
+				&middot; Only my specialities
+			{% else %}
+				{% for speciality in search.specialities.all %}
+					{% if forloop.first %} &middot; {% endif %}
+					{{ speciality }}
+					{% if not forloop.last %}, {% endif %}
+				{% endfor %}
+			{% endif %}
+		{% endstrip %}
+		<div style="float: right; margin-right: 11px;">
+			<a href="{% url 'delete_healing_request_search' search.id %}">delete</a>
+			&nbsp;|&nbsp;
+			<a href="{% url 'show_healing_request_search' search.id %}">search &raquo;</a>
+		</div>
+	</div>
+{% endfor %}
+
+{% show_more 'Load more &raquo;' %}

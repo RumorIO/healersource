@@ -1,0 +1,8 @@
+{% if referrals_to_me_count == 0 %} icon_thumb_empty {# {% if is_me %} error_text{% endif %} #}
+	{% else %}{% if referrals_to_me_count < 3 %} icon_thumb_1
+		{% else %}{% if referrals_to_me_count < 6 %} icon_thumb_2
+			{% else %}{% if referrals_to_me_count < 9 %} icon_thumb_3
+{#				{% else %}{% if referrals_to_me_count < 20 %} icon_thumb_3#}
+				{% else %} icon_thumb_4
+				{% endif %}{% endif %}{% endif %}{% endif %}
+{#{% endif %}#}

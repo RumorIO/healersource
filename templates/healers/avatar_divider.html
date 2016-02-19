@@ -1,0 +1,17 @@
+{% if friends_per_row %}
+	{% if forloop.counter|divisibleby:friends_per_row %}
+		{% if table_divider %}
+			</tr><tr>
+		{% else %}
+			<div class="clearfix"></div>
+		{% endif %}
+	{% endif %}
+{% else %}
+	{% if forloop.counter|divisibleby:5 %}
+		{% if table_divider %}
+			</tr><tr>
+		{% else %}
+			<div class="clearfix"></div>
+		{% endif %}
+	{% endif %}
+{% endif %}

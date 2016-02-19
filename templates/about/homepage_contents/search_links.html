@@ -1,0 +1,54 @@
+<div class="three_column_container" style="margin-bottom: 16px;" id="quick_links_homepage">
+	<div style="width: 150px;">
+        <h3><img src="{{ STATIC_URL }}healersource/img/home_page/usa.png" style="margin-right: 4px;" />City</h3>
+		<ul class="cities">
+            <li class="highlight_container"><span class="selected"><a data-code="z" title="Find healer and book an appointment online" >All</a></span></li>
+            {% for city in quick_links %}
+            <li class="highlight_container"><span><a href="{% url 'search_seo_city2' city.city city.state %}" data-code="z{{ city.code }}" title="Find healer in {{ city.city|title }}, {{ city.state|upper }} and book an appointment online" >{{ city.city|title }}</a></span></li>
+            {% endfor %}
+		</ul>
+	</div>
+
+    <div style="width: 180px;" class="quick_links_catmod" id="cat_z">
+        <h3><img src="{{ STATIC_URL }}healersource/img/home_page/folder-search.png" style="position: relative; top: 1px; left: -2px; margin-right: 2px;" />Category Search</h3>
+		<ul>
+            {% for category in quick_links_category%}
+            <li><a href="{% url 'search_seo_city_specialty' 'all' category.title %}" title="Find {{category.title}} Practitioners and book an appointment online">{{ category.title }}</a></li>
+            {% endfor %}
+			<li><a href="{% url 'modailty_list' %}">More...</a></li>
+		</ul>
+	</div>
+	<div style="width: 200px;" class="quick_links_catmod" id="mod_z">
+		<h3><img src="{{ STATIC_URL }}healersource/img/home_page/hand.png" style="margin-right: 4px;" />Specialty</h3>
+		<ul>
+            {% for modality in quick_links_modality %}
+            <li><a href="{% url 'search_seo_city_specialty' 'all' modality.title %}" title="Find {{modality.title}} Practitioners and book an appointment online">{{ modality.title }}</a></li>
+            {% endfor %}
+            <li><a href="{% url 'modailty_list' %}">More...</a></li>
+		</ul>
+	</div>
+
+    {% for city in quick_links %}
+	<div style="width: 180px; display: none;" class="quick_links_catmod" id="cat_z{{ city.code }}">
+        <h3><img src="{{ STATIC_URL }}healersource/img/home_page/folder-search.png" style="position: relative; top: 1px; left: -2px; margin-right: 2px;" />Category Search</h3>
+		<ul>
+            {% for category in city.category %}
+            <li><a href="{% url 'search_seo_city_specialty2' city.city city.state category.title %}" title="Find {{category.title}} Practitioners in {{ city.city|title }}, {{ city.state|upper }} and book an appointment online">{{ category.title }}</a></li>
+            {% endfor %}
+			<li><a href="{% url 'modailty_list' %}">More...</a></li>
+		</ul>
+	</div>
+	<div style="width: 200px; display: none;" class="quick_links_catmod" id="mod_z{{ city.code }}">
+		<h3><img src="{{ STATIC_URL }}healersource/img/home_page/hand.png" style="margin-right: 4px;" />Specialty</h3>
+		<ul>
+            {% for modality in city.modality %}
+            <li><a href="{% url 'search_seo_city_specialty2' city.city city.state modality.title %}" title="Find {{modality.title}} Practitioners in {{ city.city|title }}, {{ city.state|upper }} and book an appointment online">{{ modality.title }}</a></li>
+            {% endfor %}
+            <li><a href="{% url 'modailty_list' %}">More...</a></li>
+		</ul>
+	</div>
+    {% endfor %}
+
+	<div class="clearfix" style="float: none;"></div>
+
+</div>

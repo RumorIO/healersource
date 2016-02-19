@@ -1,0 +1,132 @@
+{% extends 'base_phonegap.html' %}
+{% load compress %}
+{% block extra_head %}
+	<link rel="stylesheet" href="css/jquery-ui.min.css" />
+	<script>
+		var url_get_modalities = "{% url 'get_modalities_ajax' %}";
+		var url_add_healer = "{% url 'modality_add_healer' %}";
+		var url_remove_healer = "{% url 'modality_remove_healer' %}";
+		var add_healer_error = "Adding Specialty Failed. Please Try Again.";
+		var username;
+		var Modalities_Count;
+		data = {}
+		if(!access_token) {
+			data.email = localStorage.getItem('email');
+			data.password = localStorage.getItem('password');
+		}
+
+		$(function(){
+			changeBackButton(function(){
+				document.location.href = "location.html";
+			});
+			rest_ajax_get_request_long_timeout(url_get_modalities,
+				function(response){
+					username = response.username;
+					max_modalities = response.max_modalities;
+					Modalities_Count = response.modalities_count;
+					$('#modalities').append(response.modalities);
+				}, data);
+
+		function addModalityCallback(result) {
+			if (!result)
+				showError(add_healer_error);
+			else {
+				$('<div id="modality_'+result.id+'"><span class="modality_title">'+result.title+'</span> | <a href="javascript:void(0);" onclick="removeModality('+result.id+')">remove</a></div>').insertBefore('#modality_input');
+
+				Modalities_Count++;
+				if (Modalities_Count >= max_modalities)
+					$('#modality_input').hide();
+
+				$("#specialties_hint").hide();
+			}
+		}
+
+		$("#modality_input").autocomplete({
+			source: "{% url 'autocomplete_modality' %}?email=" + data.email + '&password=' + data.password,
+			minLength: 1,
+			autoFocus: true,
+			html: true,
+			select: function(event, ui) {
+				$('#modality_input').val('');
+				var modality_id = ui.item.id;
+				if(modality_id) {
+					rest_ajax_post_request_no_timeout([url_add_healer, modality_id],
+						addModalityCallback, $.extend({}, data, {username: username}), undefined, undefined, add_healer_error)
+				} else {
+					localStorage.setItem('modality_title', ui.item.value);
+					document.location.href = 'add_modality.html';
+				}
+				$("#modality_input").focus();
+				return false;
+			}
+		});
+
+		$("#modality_input").focus(function() {
+			$("#modality_input").val('');
+		});
+
+		$("#modality_input").blur(function() {
+			$("#modality_input").val('');
+		});
+	});
+
+	$('#modality_input').keydown(function (e){
+		if(e.keyCode == 13)
+			return false;
+	});
+
+	function removeModality(id) {
+		var modality_removal_error = "Removing Modality Failed. Please Try Again.";
+
+		function removeModalityCallback(result) {
+			if (!result)
+				showError(modality_removal_error);
+			else {
+				$('#modality_' + result.id).remove();
+				Modalities_Count--;
+				if (Modalities_Count < max_modalities)
+					$('#modality_input').show();
+
+				if (Modalities_Count == 0)
+					$("#specialties_hint").show();
+			}
+		}
+
+		rest_ajax_post_request_no_timeout([url_remove_healer, id],
+			removeModalityCallback,
+			$.extend({}, data, {username: username}),
+			undefined, undefined, modality_removal_error);
+	}
+
+	</script>
+
+{% endblock %}
+
+{% block body %}
+	<div class="application2_container">
+        <div id="menu">
+        <div id="setup_body">
+			<h2>Enter Your Specialties</h2>
+			<div class="message" id="setup_specialties_msg">
+				Type The Name of a Specialty:&nbsp;
+				<br>
+				<div style="color: grey;">(a Modality that you specialize in)</div>
+			</div>
+
+<a name="specialties_anchor"></a>
+<div id="modalities"></div>
+<input type="text" id="modality_input" placeholder='Try Typing "Massage"'/>
+
+<br />
+<br />
+
+or <a href="{% url 'modailty_list' %}?fb" class="floatbox" data-fb-options="type:ajax" style="font-style: italic;" target="_blank">Browse All Specialties &raquo;</a>
+<br>
+<div id="setup_controls">
+	<a class="highlight_button" href="location.html">« Back</a>
+	<a class="highlight_button" href="optional_info.html">Next »</a>
+</div>
+        </div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+[
+	{
+		"pk": 1,
+		"model": "clients.client",
+		"fields": {
+			"user": 6,
+            "about": "AboutInfo",
+			"approval_rating": 100
+		}
+	},
+	{
+		"pk": 3,
+		"model": "clients.client",
+		"fields": {
+			"user": 1,
+            "about": "AboutInfo2",
+			"approval_rating": 100
+		}
+	},
+	{
+		"pk": 4,
+		"model": "clients.client",
+		"fields": {
+			"user": 7,
+			"approval_rating": 100
+		}
+	},
+	{
+		"pk": 5,
+		"model": "clients.client",
+		"fields": {
+			"user": 8,
+			"approval_rating": 100
+		}
+	},
+	{
+		"pk": 220,
+		"model": "clients.clientphonenumber",
+		"fields": {
+			"client": 1,
+			"type": "Mobile",
+			"number": "2223322"
+		}
+	}
+]

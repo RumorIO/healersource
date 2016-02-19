@@ -1,0 +1,4 @@
+{% autoescape off %}{{ message }}{% endautoescape %}
+{% if reply_url %}
+
+To reply to this message, {% with reply_url as link %}{% include "email_link.html" %}{% endwith %}{% endif %}

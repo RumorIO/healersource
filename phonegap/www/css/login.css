@@ -1,0 +1,70 @@
+input[name=username] {
+	width: 100%;
+}
+
+.facebook_login {
+	cursor: pointer;
+	width: 94%;
+	background-image: url('../img/facebook.png');
+	color: #fff;
+	padding: 10px;
+	height: 20px;
+	text-align: center;
+	background-repeat: no-repeat;
+	background-color: #235385;
+	border-radius: 5px;
+	margin-top: 12px;
+}
+
+.fb_login {
+	cursor: pointer;
+	background-color: #fff;
+	padding: 5px;
+	text-align: center;
+	border: 1px solid #000;
+	width: 150px;
+}
+
+#id_email, #id_first_name, #id_location, #id_about {
+	font-size: 13px;
+	margin: 10px 0;
+}
+
+#id_email, #id_password, #id_password1 {
+	width: 95%;
+}
+
+#id_first_name, #id_location {
+	font-weight: bold;
+	width: 90%;
+}
+
+#id_first_name::-webkit-input-placeholder, #id_location::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+	color: #000;
+}
+
+#id_first_name:-moz-placeholder, #id_location:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	color: #000;
+}
+
+#id_first_name::-moz-placeholder, #id_location::-moz-placeholder { /* Mozilla Firefox 19+ */
+	color: #000;
+}
+#id_first_name:-ms-input-placeholder, #id_location:-ms-input-placeholder { /* Internet Explorer 10-11 */
+	color: #000;
+}
+
+#id_about {
+	width: 98%;
+}
+
+#id_password, #id_password1 {
+	font-size: 13px;
+	margin-bottom: 10px;
+}
+
+.header_login {
+	text-align: center;
+	padding-top: 5px;
+	font-size: 1.5em;
+}

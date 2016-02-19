@@ -1,0 +1,27 @@
+{% extends "site_base.html" %}
+{% load pagination_tags %}
+
+{% block head_title %}Bulk Import Videos{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_videos">Bulk Import Videos</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "blog/blog_nav.html" %}
+	{% include "form_errors.html" %}
+
+	<form id="video_form" action="." method="post">{% csrf_token %}
+		<table><tbody>
+		<tr>
+			<td>
+				<img valign="top" alt="See Us on YouTube" src="{{ STATIC_URL }}healersource/img/icons/youtube.gif">
+			</td>
+			<td>
+				
+			<div style="font-style: italic; color: rgb(85, 85, 85);"><span style="font-style: normal;">Enter your Gmail or YouTube username</span><br> (e.g. if your email is rockstar@gmail.com, just enter "rockstar")</div>
+			{{ form.youtube_username }}<input value="Import" type="submit"></td>
+		</tr>
+		</tbody></table>
+	</form>	
+
+{% endblock %}

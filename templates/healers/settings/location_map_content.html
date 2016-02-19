@@ -1,0 +1,9 @@
+{% if location.point %}
+	{% include "healers/settings/location_check.html" %}
+
+	<script type="text/javascript">
+		$(function() {
+			initialize_gmap("map_canvas", '{{ location.point.y }}', '{{ location.point.x }}', '{{ location.title }}');
+		});
+	</script>
+{% endif %}

@@ -1,0 +1,19 @@
+<form action="{% url 'search_results' %}" method="get" id="search_form" class="search_form">
+	{{ search_healer_form.city }}
+	{{ search_healer_form.state }}
+	{{ search_healer_form.zipcode }}
+	{{ search_healer_form.modality_id }}
+	{{ search_healer_form.modality_category_id }}
+	<input type="text" placeholder="Your City or Town" name="search_city_or_zipcode" class="search_city_or_zipcode" value="{% if search_healer_form.search_city_or_zipcode.value %}{{ search_healer_form.search_city_or_zipcode.value }}{% endif %}"/><br/>
+	<input type="hidden" name="remote_sessions" value="" />
+	<div style="white-space: nowrap;" id="select2_specialties">
+		{{ search_healer_form.modality }}
+		{{ search_healer_form.modality2 }}
+	</div>
+	<p id="select2_no_healers" class="message" style="display: none;">Unfortunately, there are no Providers yet within 50 Miles of <span></span> yet.. Be the first to <a href="{% url 'signup' %}">Sign Up</a> </p>
+	<br>
+	<div class="homepage_button" onclick="submit_search_form();">Search &raquo;</div>
+	<div class="clearfix"></div>
+	<hr>
+	<input class="search_name_or_email" type="text" placeholder="or Find a Specific Healer (Name or Email)"/>
+</form>

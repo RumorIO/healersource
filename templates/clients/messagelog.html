@@ -1,0 +1,46 @@
+{% load pagination_tags %}
+<html>
+<head>
+<style>
+table {
+    border-collapse: collapse;
+}
+th, td { 
+	border: thin solid gray;
+	padding: 4px;
+	text-align: left;
+}
+</style>
+</head>
+<body>
+{% autopaginate messages %}
+<table>
+<thead>
+	<tr>
+		<th>Id</th>
+		<th>Added</th>
+		<th>Attempted</th>
+		<th>Result</th>
+		<th>To</th>
+		<th>Subject</th>
+	</tr>
+</thead>
+<tbody>
+	{% for message in messages  %}
+	<tr>
+		<td>{{ message.id }}</td>
+		<td>{{ message.when_added }}</td>
+		<td>{{ message.when_attempted }}</td>
+		<td>{{ message.result }}</td>
+		<td>{{ message.email.to }}</td>
+		<td>{{ message.email.subject }}</td>
+	</tr>
+	<tr>
+		<td colspan="6">{{ message.email.body|linebreaksbr }}</td>
+	</tr>
+	{% endfor %}
+</tbody>
+</table>
+{% paginate %}
+</body>
+</html>

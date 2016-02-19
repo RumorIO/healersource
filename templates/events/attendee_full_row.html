@@ -1,0 +1,14 @@
+<tr id="attendee_{{ attendee.pk }}">
+	<td>
+		{{ attendee }}
+	</td>
+	<td>
+		{{ attendee.get_email }}
+	</td>
+	<td>
+		{{ attendee.phone }}
+	</td>
+	<td class="attendee_remove">
+		 | <a href="javascript:void(0);" onclick="remove_attendee({{ event.pk }}, {{ attendee.pk }})">x</a>
+	</td>
+</tr>

@@ -1,0 +1,17 @@
+<p><hr></p>
+<div class="grey_box">
+	<h3 style="display: inline-block;">Embed HealerSource Plugin into Your Own Website</h3>
+	<p>Just copy and paste the code below into your page:</p>
+	<textarea style="width: 90%; height: 69px;">&lt;iframe src="{{embed_plugin_link}}" width="700" height="1111" style="border: 0 !important;" &gt;&lt;/iframe&gt;
+	</textarea>
+</div>
+<p><hr></p>
+<div class="grey_box">
+	<h3>Plugin Settings</h3>
+	<form class="ambassador_form" action="." method="post">{% csrf_token %}
+		{{ forms.embed.as_p }}
+		<input name="form_name" value="embed" type="hidden" />
+		<input type="submit" value="Save" />
+	</form>
+</div>
+

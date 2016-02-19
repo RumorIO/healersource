@@ -1,0 +1,60 @@
+.links a {
+    width: 19%;
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    border: 1px black solid;
+    padding-top: 8px;
+    margin-bottom: 5px;
+    height: 28px;
+}
+
+.links a.active {
+    background-color: lightgrey;
+}
+
+#list img {
+	width: 49%;
+}
+
+@media screen and (min-width: 25.25em) {
+	#list img {
+		width: 32%;
+	}
+}
+
+@media screen and (min-width: 36.25em) {
+	#list img {
+		width: 24%;
+	}
+}
+
+@media screen and (min-width: 44em) {
+	#list img {
+		width: 19%;
+	}
+}
+
+#received img {
+    border-radius: 10px;
+    width: auto;
+}
+
+.sent_by {
+	font-style: italic;
+	text-align: right;
+	float: right;
+}
+
+#version_update {
+	color: blue;
+	position: fixed;
+	bottom: 5px;
+	width: 92%;
+	left: 5px;
+}
+
+#version_update div {
+	float: right;
+	font-style: italic;
+}

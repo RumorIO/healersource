@@ -1,0 +1,13 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Ambassador Program{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_ambassador">Ambassador Program</h1>{% endblock %}
+
+{% block body %}
+
+	<p><b>Welcome to the HealerSource Ambassador Program!</b></p>
+	<p>We'll walk you through a few simple setup steps before you get started.</p><p> The first thing you need to do is to create a Stripe Account. <a href="https://stripe.com/" target="_blank">Stripe</a> is a popular online payment service and its how we will pay your monthly commissions. Its completely free to create a Stripe Account. Click the button below to continue:</p>
+	<p><a href="{{ STRIPE_CONNECT_LINK }}"><img src="{{ STATIC_URL }}healersource/img/blue_stripe_button.png" width="190" height="33"/></a></p>
+
+{% endblock body %}

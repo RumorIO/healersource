@@ -1,0 +1,70 @@
+<form id="invite_postcard_form" class="{{ invite_postcard_css_id }}_form" action="{% if is_for_review %}{% url 'invite_postcard_review' %}{% else %}{% url 'invite_postcard' %}{% endif %}" method="post">{% csrf_token %}
+	<h3>{% if is_for_review %}Invite Your Clients to Review You{% else %}Send an Invitation{% endif %}</h3>
+	<input type="hidden" id="form_type" name="form_type" value="autocomplete"/>
+	<div style="display: none;">
+	{{ join_request_form.postcard_background }}
+	</div>
+	<div id="postcard_from_to">
+		<div style="margin-top: 2px">
+			<span class="postcard_label" style="line-height: 2em;">To:</span>
+			<span id="search_contacts_container" class="postcard_content">
+				<span id="autocomplete_form">
+					<input type="text" placeholder="Name or Email" id="search_contacts" class="ui-autocomplete-input" maxlength="75" /><button type="button" onclick="addEmail()" style="padding: 6px;">Add</button>
+					<ul id="contacts_list"></ul>
+				</span>
+				<span id="bulk_invite_form" style="display: none;">
+					<textarea id="id_emails" rows="5" cols="30" name="emails" class="textarea">{{ join_request_form.initial.emails }}</textarea>
+					<br />
+					<span class="grey_box note"><a class="switch_form hs_font">[x]</a>Copy &amp; Paste your list of email addresses into the box above.
+						<div style="border-top: 1px solid #bbb;">Put one email per line, or you can put a comma or semicolon between each email.</div>
+					</span>
+				</span>
+				<span style="color: red; {% if not join_request_form.errors %}display: none;{% endif %}" class="contacts_error">You must add at least one recipient.
+				</span>
+			</span>
+		</div>
+		{{ join_request_form.message }}
+		<div>
+			<hr />
+			<span id='add_spreadsheet' class="hsfont">
+				<span class="highlight_container button_container" style="display: inline;">
+					<span><a class="switch_form hsfont"><i>&raquo; Add people from a list or spreadsheet</i></a></span>
+				</span></span>
+		</div>
+
+	</div>
+	<div style="float: left; white-space: nowrap; margin: 6px 12px; {% if is_for_review %}display: none;{% endif %}">
+		<b>Invite As:</b>
+		<span id="invite_type" class="highlight_container button_container combined_button_container">
+			<span class="selected" onclick="setInviteType('client')">
+				<a href="#">Clients</a>
+			</span><span onclick="setInviteType('provider')">
+				<a href="#">Providers</a>
+			</span>
+		</span>
+		{{ join_request_form.invite_type }}
+		<br/>
+		<span id="invite_provider_recommend" class="highlight_container button_container combined_button_container" style="display: none;">
+			<span onclick="setInviteProviderRecommend(false)">
+				<a href="#">Invite Only</a>
+			</span><span class="selected" onclick="setInviteProviderRecommend(true)">
+				<a href="#">Invite and Refer To These Providers</a>
+			</span>
+		</span>
+		{{ join_request_form.invite_provider_recommend }}
+	</div>
+	<hr class="clearfix">
+	<div class="highlight_button" style="float: right; margin: 0 6px 6px 0; font-weight: bold;"
+		 id="invite_postcard_form_send" onclick="send()">Send Invitation!
+	</div>
+</form>
+{% load compress %}
+<script type="text/javascript">
+	var fb_from_name = '{{ user.client }}';
+	var fb_action = '{% if is_to_healer %}Refer To You{% endif %}';
+	var set_invite_type_provider = {% if request.GET.provider and not join_request_form.invite_type.data %}true{% else %}false{% endif %};
+	var is_iphone = 1;
+</script>
+{% compress js %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/invite_postcard.js"></script>
+{% endcompress %}

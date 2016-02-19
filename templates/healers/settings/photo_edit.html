@@ -1,0 +1,108 @@
+{% extends "site_base.html" %}
+{% load pagination_tags %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Photo Gallery" %}{% endblock %}
+
+{% block extra_head_last %}
+	<script>
+		var url_gallery = "{% url 'gallery' %}";
+	</script>
+	<script src="{{ STATIC_URL }}healersource/js/photo_edit.js"></script>
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_photo">{% trans "Photo Gallery" %}{% if username %} for {{ avatar_user.client }}{% endif %}</h1>{% endblock %}
+
+{% block body %}
+
+	<div class="error_message">{{ error }}</div>
+	{% if user.ghp_settings.i_want_to_receive_healing and not user.avatar_set.exists %}
+		<div class="single_button">You must add a photo to receive healing via The Healing Circle</div><br>
+	{% endif %}
+
+	<div class="grey_box">
+		<h3 class="nav_icon nav_upload">Upload a New Photo</h3>
+		{% include "healers/settings/photo_edit_content.html" %}
+	</div>
+	<br>
+	<div class="grey_box">
+		<h3 class="nav_icon nav_upload">Upload a New Video</h3>
+		{% include 'clients/new_youtube_video_form.html' %}
+	</div>
+
+	<form id="change_order_form" action="{% url 'gallery_change_order' %}" method="post">
+		{% csrf_token %}
+		<input type='hidden' name='order' />
+		<input type='hidden' name='gallery_id' />
+	</form>
+	<hr style="margin: 12px 0;">
+	<div class="clearfix">
+		{% autopaginate gallery 14 %}
+
+		<div class="client_gallery grey_box">
+			<div class="gallery_preview"><a href="javascript:void(0);" class="show_gallery icon_eye">Preview Gallery</a></div>
+			{% if avatar_user == user %}
+				<h3 class="nav_icon nav_photo">Gallery</h3>
+
+				{% if not gallery.count %}
+					<div class='message'>Your gallery is empty</div>
+				{% endif %}
+			{% else %}
+				<h3 class="nav_icon nav_photo">Gallery for {{ avatar_user.get_full_name }}</h3>
+				{% if not gallery.count %}
+					<div class='message'>Gallery is empty</div>
+				{% endif %}
+			{% endif %}
+
+			{% for item in gallery %}
+				<div class='item  {% if item.is_photo %} photo-block {% else %} video-block {% endif %}' data-item_id="{{ item.id }}" >
+					<div style='display: inline-block;'>
+						{% if item.is_photo %}
+							<div class='photo'>
+								<img data-id="{{ item.id }}" src="{{ item.content_object.avatar.url }}?{% now 'U' %}" class="border_img gallery_avatar"
+								{% if item.hidden %}
+									style="opacity: 0.5"
+								{% endif %}
+								/>
+							</div>
+						{% else %}
+							{% include "clients/video_display_in_list.html" with video=item.content_object %}
+						{% endif %}
+					</div>
+					<div class='change_order_block'>
+						Change Order:
+						<select class='item_order'>
+							{% for i in gallery_count %}
+								<option value={{ i }} {% if i == item.order %} selected {% endif %}> {{ i }}</option>
+							{% endfor %}
+						</select><br>
+						{% if item.is_photo %}
+							Rotate: <a href="{% url 'gallery_rotate' item.id 'left' %}">left</a> | <a href="{% url 'gallery_rotate' item.id 'right' %}">right</a>
+							<br>
+							{% if forloop.counter != 1 %}
+								{% if item.hidden %}<strong>{% endif %}Visibility: <a data-id="{{ item.id }}" class="visibility" href="javascript:void(0);" data-hidden="{{ item.hidden|yesno:'1,0' }}">{{ item.hidden|yesno:'Show,Hide' }}</a>{% if item.hidden %}</strong>{% endif %}
+								<br>
+							{% endif %}
+						{% endif %}
+						<a href="{% url 'gallery_remove' item.id %}">Delete</a>
+					</div>
+				</div>
+				{% if not forloop.last %}<hr />{% endif %}
+			{% endfor %}
+		</div>
+
+		<p>{% paginate %}</p>
+
+	</div>
+	{% if username %}
+		<p><a href="{% if is_healer %}{% url 'healer_edit' username %}{% else %}{% url 'clients_profile' %}{% endif %}">&laquo; Back to Provider Profile</a></p>
+	{% else %}
+		<p><a href="{% url 'healer_edit' %}">&laquo; Back to My Profile</a></p>
+	{% endif %}
+
+	{% with c_gallery=gallery %}
+		{% include 'clients/gallery.html' %}
+	{% endwith %}
+
+{% endblock %}

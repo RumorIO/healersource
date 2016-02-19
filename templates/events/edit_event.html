@@ -1,0 +1,92 @@
+{% extends "site_base.html" %}
+{% block head_title %}Edit Event{% endblock %}
+{% block extra_head %}
+	{% include 'healers/timepicker_includes.html' %}
+	{% include 'events/event_common_includes.html' %}
+	{{ event_form.media }}
+	{{ event_location_date_form.media }}
+	<script>
+		event_id = {{ event.pk }};
+
+		var url_autocomplete_providers = "{% url 'autocomplete_providers' %}";
+		var url_add_host = "{% url 'event_add_host' event.pk %}";
+		var url_remove_host = "{% url 'event_remove_host' event.pk %}";
+
+	</script>
+	<script src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+	<script src="{{ STATIC_URL }}healersource/js/new_client.js"></script>
+	<script src="{{ STATIC_URL }}healersource/js/event_create.js"></script>
+	<script src="{{ STATIC_URL }}healersource/js/edit_event.js"></script>
+	<!-- used for client form styles -->
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/events.css" />
+{% endblock %}
+{% block page_title %}<h1 class="nav_icon nav_events">Edit Event</h1>{% endblock %}
+
+{% block body %}
+
+	<div class="loading"></div>
+	{% include "form_errors.html" with form=event_form %}
+	{% include "form_errors.html" with form=event_location_date_form %}
+	{% include "form_errors.html" with form=location_form %}
+	<form action="" method="post" enctype="multipart/form-data" class="event_form">
+	   {% csrf_token %}
+		<table class="no_wrap no_wrap1">
+			{{ event_form.as_table }}
+			{{ event_location_date_form.as_table }}
+			<tr>
+				<th>
+					Hosts:
+				</th>
+				<td>
+					<ul id="hosts">
+					{% for host in event.hosts.all %}
+						{% include 'events/host_row.html' %}
+					{% endfor %}
+					</ul>
+					<i>Add Host:</i>&nbsp;
+					<input placeholder="Provider Name or Last Name"
+						id="add_host"
+						class="ui-autocomplete-input ui-autocomplete-loading"
+						maxlength="75"
+						type="text"
+						autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+				</td>
+			</tr>
+			<tr>
+				<th>
+					Guests:
+				</th>
+				<td class="attendees">
+					<ul id="attendees">
+					{% for attendee in event.attendees.all %}
+						{% include 'events/attendee_row.html' %}
+					{% endfor %}
+					</ul>
+					<span><i>Add Guest:</i>&nbsp;</span>
+					<input placeholder="Name or Last Name"
+						id="add_attendee"
+						class="ui-autocomplete-input ui-autocomplete-loading"
+						maxlength="75"
+						type="text"
+						autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+					<a href="#" onclick="dlg_new_client();" class="new_client_link">+ New Guest</a>
+				</td>
+			</tr>
+		</table>
+		<table id="location_form" class="no_wrap no_wrap1">
+			{{ location_form.as_table }}
+		</table>
+		<div class="clearfix"></div>
+		<input type="button" value="Save" onclick="submit_form()" />
+   </form>
+	<p>
+		{% if event.is_past %}
+			<a href="{% url 'events_history' %}">&laquo; Past Events</a>
+		{% else %}
+			<a href="{% url 'list_events' %}">&laquo; Current Events</a>
+		{% endif %}
+	</p>
+   {% include "healers/new_client_dialog.html" %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% if user.is_anonymous %}
+	<div class="bottom_menu_container col_group">
+		<div id="bottom_menu" role="navigation">
+			<ul class="buttons menu bottom_menu">
+				<li><a href="{% url 'home' %}" class="find">Find a Healer</a></li>
+				<li><a href="{% url 'learn' %}" class="learn">Articles &amp; Videos</a></li>
+				<li><a href="{% url 'healing_request_home' %}" class="request">Request Healing</a></li>
+				<li><a href="{% url 'send_healing' %}" class="global_healing_panel global_healing">Join the Healing Circle</a></li>
+				<li><a href="{% url 'tour' %}" class="tour_benefits">Take the Tour</a></li>
+				<li class="top_menu_signup"><a href="{% url 'signup' %}" class="signup">Sign Up</a></li>
+			</ul>
+		</div>
+	</div>
+{% endif %}

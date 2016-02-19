@@ -1,0 +1,11 @@
+{% extends "base_new_box.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Server Error" %}{% endblock %}
+
+{% block page_title %}<h1>{% trans "Server Error" %}</h1>{% endblock %}
+
+{% block body %}
+<p>{% trans "We're sorry but a server error has occurred. We've been notified and will look into it as soon as possible." %}</p>
+{% endblock %}

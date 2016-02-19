@@ -1,0 +1,28 @@
+{% extends "base_common.html" %}
+
+{% block extra_head_last %}
+	{{ block.super }}
+	<script>
+		$(function(){
+			$('.partners').addClass('selected');
+		});
+	</script>
+{% endblock %}
+
+{% block head_title %}Partners{% endblock %}
+{% block panel_class %}partners_panel{% endblock %}
+{% block content_title %}HealerSource Partners{% endblock %}
+
+{% block body %}
+	<div id="partners_page">
+		<h2 style="font-style: italic;">HealerSource is proud to partner with these outstanding organizations who share our commitment and common vision of a world at peace with health and wellbeing for all.</h2>
+		<hr>
+		<br>
+		<a href="https://www.unify.org" target="_blank"><img src="{{ STATIC_URL }}healersource/img/partners/unify.jpg" /></a>
+		<a href="https://www.mcssl.com/app/?Clk=5322781" target="_blank"><img src="{{ STATIC_URL }}healersource/img/partners/dabney.jpg" /></a>
+		<a href="https://tribalconvergence.com/" target="_blank"><img src="{{ STATIC_URL }}healersource/img/partners/tcn.jpg" /></a>
+		<a href="https://www.retreatnetwork.com/?ref=15" target="_blank"><img src="{{ STATIC_URL }}healersource/img/partners/rnetwork.jpg" /></a>
+		<a href="https://www.opositivefestival.org/" target="_blank"><img src="{{ STATIC_URL }}healersource/img/partners/opositive.jpg" /></a>
+		<a href="https://www.healersworldwide.com/" target="_blank"><img src="{{ STATIC_URL }}healersource/img/partners/hww.jpg" /></a>
+	</div>
+{% endblock %}

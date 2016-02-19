@@ -1,0 +1,12 @@
+{% if in_email %}
+    <span class="icon_email no_wrap">
+        <a href="{{ healer.healer_profile_url }}">Send a Message</a>
+    </span>
+{% else %}
+    <span class="icon_email no_wrap look_like_link" onclick="show_compose_message_dlg('{{ healer.user.username }}', '{{ healer.user.client|escapejs }}', {{ request.user.is_authenticated|yesno:"0,1" }});">Send a Message</span>
+{% endif %}
+<br />
+{% if healer.first_phone %}
+    <span class="icon_phone no_wrap">{{ healer.first_phone }}</span>
+    <br />
+{% endif %}

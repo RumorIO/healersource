@@ -1,0 +1,17 @@
+{% include 'form_errors.html' %}
+<form id="discount_code_form" action="" method="post">
+	{% csrf_token %}
+	<ul class="errorMessages"></ul>
+	<table class="no_wrap no_wrap1">
+		<tr>
+			<th>{{ form.code.label }}:</th>
+			<td>{{ form.code }}</td>
+		</tr>
+		<tr>
+			<th>{{ form.amount.label }}:</th>
+			<td>{{ form.amount }} {{ form.type }}</td>
+		</tr>
+	</table>
+	<input type="submit" class="hidden" />
+	<p><input type="button" value="Save Discount Code" id="save_discount_code" /></p>
+</form>

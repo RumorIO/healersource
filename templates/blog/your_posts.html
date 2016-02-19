@@ -1,0 +1,90 @@
+{% extends "blog/base.html" %}
+
+{% load i18n %}
+{% load account_tags %}
+{% load blog_tags %}
+{% load markup %}
+{% load switchcase %}
+{% load tagging_tags %}
+{% load restructuredtext %}
+{% load theme_tags %}
+{% load compress %}
+
+{% block head_title %}{% blocktrans %}Your Blog Posts{% endblocktrans %}{% endblock %}
+
+{% block extra_head %}
+	<link rel="alternate" type="application/atom+xml" title="Blog Post Feed for All Users" href="/feeds/posts/all/" />
+	<link rel="alternate" type="application/atom+xml" title="Blog Post Feed for User {% user_display user %}" href="/feeds/posts/only/{{ user.username }}/" />
+
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/blog.js"></script>
+	{% endcompress %}
+	<script>
+		var url_change_post_status = "{% url 'blog_change_post' %}";
+	</script>
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_blog">{% trans "Blog" %}</h1>{% endblock %}
+
+{% block body %}
+
+	<div class="highlight_container button_container" style="float: right; margin-left: 12px;">
+		<span><a href="{% url 'blog_publish_all' %}" class="icon_earth">{% trans "Publish All" %}</a></span>
+	</div>
+	{% with 1 as hide_all_link %}{% include "blog/blog_nav.html" %}{% endwith %}
+
+	{% if blogs %}
+		<table class="blog-list">
+			{#			<th>Title</th>#}
+			{#			<th style="white-space: nowrap;">Published On</th>#}
+			{#			<th>Status</th>#}
+			{#			<th></th>#}
+			{% for post in blogs %}
+				<tr class="{% cycle odd,even %}">
+
+					{#					<td nowrap></td>#}
+
+					<td>
+						<div class='post_date'>{{ post.publish_date|date:"n/j/Y" }}</div>
+						<h3>{{ post.title }}</h3>
+						{% with post.description|truncatewords:"50" as body %}
+							{#							{% if post.markup %}#}
+							{#								{% switch post.markup %}#}
+							{#									{% case 'rst' %}{{ body|restructuredtext|safe }}{% endcase %}#}
+							{#									{% case 'mrk' %}{{ body|force_escape|markdown }}{% endcase %}#}
+							{#									{% case 'txl' %}{{ body|force_escape|textile }}{% endcase %}#}
+							{#								{% endswitch %}#}
+							{#							{% else %}#}
+							{{ body|safe }}
+							{#							{% endif %}#}
+						{% endwith %}
+					</td>
+					<td class="controls">
+						{% include 'blog/post_status_button.html' %}
+						<p class="button_container highlight_container" style="margin-right: 3px;">
+							<span><a href="{% post_url post %}">View &raquo;</a></span>&nbsp;
+							<span><a href="{% url 'blog_edit' post.id %}">Edit &raquo;</a></span>
+						</p>
+						<p><a href="{% url 'blog_destroy' post.id  %}" style="color: #999;"
+						      onclick="return confirm('Are you sure you want to delete this post?')">Delete</a></p>
+						{#						&nbsp;|&nbsp;#}
+
+					</td>
+					{#					<td align="center" style='white-space: nowrap;'>#}
+					{#					</td>#}
+					{#					<td align="right">#}
+					{#							{% csrf_token %}#}
+					{# @@@ still can't replace this with a silk tag yet #}
+					{#							<input type="image" src="{{ STATIC_URL }}pinax/img/silk/icons/delete.png" border="0" title="{% trans "Delete Post" %}" />#}
+					{#							<input type="hidden" name="action" value="delete"/>#}
+					{#						</form>#}
+					{#					</td>#}
+				</tr>
+				<tr><td colspan="99"><hr></td> </tr>
+			{% endfor %}
+		</table>
+	{% else %}
+		{% trans "No blog posts yet." %}
+	{% endif %}
+
+{% endblock %}

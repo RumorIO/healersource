@@ -1,0 +1,62 @@
+{% extends "healers/setup/setup_base.html" %}
+{% load compress %}
+
+{% block extra_head %}
+    {% compress css %}
+        <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+    {% endcompress %}
+    {% compress js %}
+        <script type="text/javascript" src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+    {% endcompress %}
+{% endblock %}
+
+{% block setup_body %}
+    {% include "facebook_init.html" %}
+
+    {#	One of the most useful features of HealerSource is the ability to recommend your friends and colleagues right from your profile page. No more rushing around after an appointment to find a scrap of paper to write down a name and number, only to have your client lose it a few minutes later. Just send them to your HealerSource page instead!#}
+
+{#	Our main goal at HealerSource to bridge the gap between providers such as yourself and the mainstream public who so desperately need the work, but typically know little or nothing about holistic health.#}
+
+
+{#	<p>We've created HealerSource as an act of service to the healing community. Our mission is to empower you with free practice management and advertising tools - so that you can reach more people and spend more time doing what you love.</p>#}
+{#	<p><strong><em>The best way to give back is to help grow our community.</em></strong></p>#}
+{#	<p>Together we can multiply our power so that <em>everyone</em> can have access to the healing they deserve.</p>#}
+
+	<p>HealerSource helps you keep track of the clients that you send and receive from other practitioners.</p>
+
+	<p>If you are using our built-in scheduler, it will also count the number of appointments that result from these referrals.</p>
+
+	<p style="font-style: italic;">Here are some examples of what your referrals could look like:</p>
+
+	<div class="referral_example">
+		<b>&nbsp;<u>Referral To:</u></b>
+		<br/>
+		<img src="{{ STATIC_URL }}healersource/img/tour/referral_to_david_wolfe.png" width="262" height="138"  class="grey_box" />
+	</div>
+
+	<div class="referral_example">
+		<b>&nbsp;<u>Referral From:</u></b>
+		<br/>
+		<img src="{{ STATIC_URL }}healersource/img/tour/referral_from_shiva_rae.png" width="265" height="138" class="grey_box" />
+	</div>
+
+	<div class="clearfix"></div>
+
+	{% if user.is_active %}
+		<p>Use the button below to invite the people you want to refer to:</p>
+			{% with send_invite_button_text='Send a Referral Invitation' send_invite_button_float='left' invite_provider=1 %}
+				{% include 'healers/send_invite_button.html' %}
+			{% endwith %}
+
+		<div class="clearfix"></div>
+
+		<p>Or you can search for existing HealerSource providers to add:</p>
+		<div style="float: left;">{% include 'healers/recommend_search_providers_bar.html' %}</div>
+
+		<div class="clearfix"></div>
+	{% else %}
+		{% include 'account/email_confirmation_required.html' %}
+	{% endif %}
+
+	{% include "healers/setup/setup_controls.html" %}
+{% endblock %}

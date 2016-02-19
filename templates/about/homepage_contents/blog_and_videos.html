@@ -1,0 +1,61 @@
+{% load client_tags blog_tags %}
+
+{% if posts or videos %}
+	{% if videos %}
+		<div class="grey_box videos {% if not posts %}videos_fullsize{% endif %}">
+			<div class="videos_rotate_container_container">
+				<div class="videos_rotate_container">
+					{% for video in videos %}
+						<div {% if not posts %}{% if forloop.counter0 > 1 %}style="display: none;"{% endif %}{% else %}{% if forloop.counter0 %}style="display: none;"{% endif %}{% endif %}>
+							<div class="title" title="{{ video.title }}">{{ video.title }}</div>
+							<a href="https://www.youtube.com/embed/{{ video.video_id }}" class="floatbox" data-fb-options="width: 640px; height: 390px; beforeBoxStart: `stopIntervals();`; afterBoxEnd:`startIntervals();`; caption: #video_caption_{{ video.id }};"><img src="https://img.youtube.com/vi/{{ video.video_id }}/0.jpg" width="100%"/></a>
+							<div id="video_caption_{{ video.id }}" style="display: none;">
+								{{ video.title }}
+								<a href="{{ video.client.healer.healer_profile_url }}" target="_blank" style="float: right;">by {{ video.client }} &raquo;</a>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="clearfix"></div>
+			<hr />
+			<span>
+				{% if request.other_user %}
+					<a href="{% url 'videos_list_user' request.other_user.username %}">{{ request.other_user.first_name }}'s Videos &raquo;</a>
+				{% endif %}
+				<a href="{% url 'videos_list_all' %}" style="float: right;">All Videos &raquo;</a>
+			</span>
+		</div>
+	{% endif %}
+
+	{% if posts %}
+		<div class="featured_articles_wrapper {% if not videos %}featured_articles_fullsize{% endif %}">
+			<div class="grey_box">
+				<h3>{% if healer %}Latest{% else %}Featured{% endif %} Articles</h3>
+				<div class="featured_articles">
+					{% for post in posts %}
+						<div {% if forloop.counter > 3 %}style="display: none;"{% endif %}>
+							{% if not healer %}
+								<div class="avatar"><a href='{% post_url post %}'>{% avatar post.user 60 %}</a></div>
+							{% endif %}
+							<div class="title" title="{{ post.title }}"><a href='{% post_url post %}'>{{ post.title }}</a></div>
+							<div class="text">
+								{{ post.description }}
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<hr style="width: 100%;" />
+				<span>
+					{% if request.other_user %}
+						<a href="{% url 'blog_list_user' request.other_user.username %}">{{ request.other_user.first_name }}'s Articles &raquo;</a>
+					{% endif %}
+					<a href="{% url 'blog_list_all' %}" style="float: right;">All Articles &raquo;</a>
+				</span>
+			</div>
+		</div>
+	{% endif %}
+	<div style="width:100%;"><hr class="posts_videos"></div>
+
+	{% if not dont_rotate %}<script src="{{ STATIC_URL }}healersource/js/blog_and_videos.js"></script>{% endif %}
+{% endif %}

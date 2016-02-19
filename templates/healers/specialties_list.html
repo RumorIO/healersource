@@ -1,0 +1,7 @@
+<li>
+<a
+	href="{% if in_email %}{{ healer.healer_profile_url }}{% else %}{% url 'modality_description' modality.id %}{% endif %}"
+	class="modality_link floatbox"
+ 	data-fb-options="type:ajax afterItemEnd:resumeBothIntervals"
+ 	{% if not modality.approved %}style="color: lightgray"{% endif %}>{{ modality.title }}</a>
+</li>

@@ -1,0 +1,13 @@
+{% for person_status in person_statuses %}
+	<div class="healing_history_block">
+		<div class="pic">
+			<a href="javascript:void(0);" onclick="send_healing_to_person({{ person_status.person_object_id }}, '{{ person_status.type }}')"><img src="{{ person_status.avatar }}" data-external /></a>
+		</div>
+		<div class="name">
+			<a href="javascript:void(0);" onclick="send_healing_to_person({{ person_status.person_object_id }}, '{{ person_status.type }}')">{{ person_status.full_name }}</a>
+		</div>
+		<div class="time">
+			<a href="javascript:void(0);" data-id="{{ person_status.pk }}" class="{{ class }}">{{ action }}</a>
+		</div>
+	</div>
+{% endfor %}

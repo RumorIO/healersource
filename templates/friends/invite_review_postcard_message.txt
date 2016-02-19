@@ -1,0 +1,5 @@
+{% extends "friends/invite_postcard_message.txt" %}
+
+{% block accept_message %}
+<a style="font-size: 13px;font-family: tahoma;font-weight:bold" href='{{ review_url }}'>&raquo; Click Here to Write your Review</a>
+{% endblock %}

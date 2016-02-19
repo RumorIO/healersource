@@ -1,0 +1,1 @@
+{{ wellness_center }} has requested to edit your profile and schedule on HealerSource

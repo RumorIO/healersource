@@ -1,0 +1,44 @@
+{% extends "django_messages/base.html" %}
+
+{% load i18n account_tags timezone_filters %}
+
+{% block page_title %}<h1 class="nav_icon nav_inbox">{% trans "Inbox" %}</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "django_messages/inbox_nav.html" %}
+
+	{% if message_list|length < 1 %}
+		<p class="message">No Messages.</p>
+	{% else %}
+		<table class="messages">
+			<tbody>
+			{% for message in message_list %}
+				<tr>
+					<td>{{ message.sent_at|localtime:account.timezone|date:"n/d/y g:m a" }}</td>
+					<td scope="row">
+						{% if is_healer %}
+							<a href="{% url 'client_detail' message.sender.client.user.username %}" class="client_detail floatbox" data-fb-options="type:ajax">
+                                {{ message.sender.client|capfirst }}
+                            </a>
+						{% else %}
+                            <a href="{% url 'healer_my_profile' message.sender.client.user.username %}">
+                                {{ message.sender.client|capfirst }}
+                            </a>
+						{% endif %}
+					</td>
+					<td class="email_subject">
+						{% if message.new %}<strong>{% endif %}
+						{% if message.replied %}<em>{% endif %}
+						<a href="{{ message.get_absolute_url }}" class="message_subject floatbox" data-fb-options="type:ajax">
+                            {% if message.subject.strip %}{{ message.subject }}{% else %}(none){% endif %}
+                        </a>
+						{% if message.replied %}</em>{% endif %}
+						{% if message.new %}</strong>{% endif %}</td>
+					<td>&nbsp;|&nbsp;<a href="{% url 'messages_delete' message.id %}">{% trans "delete" %}</a></td>
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+{% endblock %}

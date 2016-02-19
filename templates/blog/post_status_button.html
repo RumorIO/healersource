@@ -1,0 +1,7 @@
+<div class="highlight_container button_container combined_button_container blog_post_status" id="blog_post_status_{{ post.pk }}">
+	<span class="{% if post.status == 2 %}selected{% endif %}">
+		<a href="#blog_post_status_{{ post.id }}" class="icon_earth" onclick="changePostStatus({{ post.id }}, 2);" name='blog_post_status_{{ post.id }}'>Published</a>
+	</span><span class="{% if post.status == 1 %}selected{% endif %}">
+		<a href="#blog_post_status_{{ post.id }}" class="icon_eye_crossed_out" onclick="changePostStatus({{ post.id }}, 1);">Draft</a>
+	</span>
+</div>

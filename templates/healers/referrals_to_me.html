@@ -1,0 +1,5 @@
+<h3>Providers who Refer To {{ healer_name|capfirst }}</h3>
+{% for user in referrals_to_me %}
+	{% with 94 as avatar_size %}{% include "healers/friend_box.html" %}{% endwith %}
+	{% include "healers/avatar_divider.html" %}
+{% endfor %}

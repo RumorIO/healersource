@@ -1,0 +1,29 @@
+<div id="menu" role="navigation" >
+	<ul id="top_menu" class="top_menu buttons menu">
+		<li id="menu_item_find"><a href="{% url 'home' %}" class="find {% if selected == 'find' %}selected{% endif %}">Find</a></li>
+		{% block items %}
+			{% include 'about/menu_items.html' %}
+		{% endblock items %}
+		{% if request.user.is_authenticated and not landing %}
+			<li id="menu_item_me"><a href="{% if is_healer %}{% url 'what_next' %}{% else %}{% url 'receiving_appointments' %}{% endif %}" class="nav_my_profile">Me</a></li>
+			<li><a href="{% url 'logout_page' %}" class="login">Logout</a></li>
+		{% else %}
+			<li class="top_menu_signup"><a href="{% url 'signup' %}" class="signup">Sign Up</a></li>
+			{% if not landing %}
+				<li><a href="{% url 'login_page' %}" class="login">Login</a></li>
+			{% endif %}
+		{% endif %}
+	</ul>
+</div>
+<div id="additional_nav_menu">
+	<div class="arrow_menu"></div>
+	{% with additional_menu=True %}
+		{% include 'nav_left.html' %}
+	{% endwith %}
+</div>
+{% if not no_find_popup %}
+	<div id="find_healer_menu">
+		<div class="arrow_menu"></div>
+		{% include 'healers/find_healer_form.html' %}
+	</div>
+{% endif %}

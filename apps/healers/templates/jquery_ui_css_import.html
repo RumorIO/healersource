@@ -1,0 +1,5 @@
+{% if not RUNNING_LOCAL %}
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.10.4/themes/redmond/jquery-ui.min.css" />
+{% else %}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/redmond/jquery-ui.min.css" />
+{% endif %}

@@ -1,0 +1,19 @@
+{% extends "base_new_box.html" %}
+
+{% load i18n %}
+{% load pagination_tags %}
+{% load humanize %}
+{# {% load healer_tags %} #}
+{% load account_tags %}
+
+{% block head_title %}{% blocktrans %}Page Not Found{% endblocktrans %}{% endblock %}
+
+{% block page_title %}<h1>Page Not Found</h1>{% endblock %}
+
+{% block body %}
+	<div style="float:left; "><img src="{{ STATIC_URL }}healersource/img/404.png" /></div>
+	<div style="float:right; font-size: 5em; margin-right:18px;">404</div>
+	<p>Wise man say: <i>"You can only be lost if you are trying to get somewhere"</i></p>
+	<p>Sadly, whatever you are looking for is not here.</p>
+	<p>Terribly sorry for the inconvenience!</p>
+{% endblock %}

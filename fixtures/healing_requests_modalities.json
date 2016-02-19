@@ -1,0 +1,52 @@
+[
+	{
+		"pk": 1,
+		"model": "modality.modalitycategory",
+		"fields": {
+			"title": "Massage"
+		}
+	},
+	{
+		"pk": 2,
+		"model": "modality.modalitycategory",
+		"fields": {
+			"title": "Yoga Instruction"
+		}
+	},
+	{
+		"pk": 1,
+		"model": "modality.modality",
+		"fields": {
+			"category": [1],
+			"title": "Massage1",
+			"healer": [1]
+		}
+	},
+	{
+		"pk": 2,
+		"model": "modality.modality",
+		"fields": {
+			"category": [2],
+			"title": "Yoga1",
+			"healer": [1]
+		}
+	},
+	{
+		"pk": 3,
+		"model": "modality.modality",
+		"fields": {
+			"category": [2],
+			"title": "Yoga2",
+			"healer": [3]
+		}
+	},
+	{
+		"pk": 4,
+		"model": "modality.modality",
+		"fields": {
+			"category": [2],
+			"title": "Yoga3",
+			"healer": [3]
+		}
+	}
+]

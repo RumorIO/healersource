@@ -1,0 +1,175 @@
+<div id='healing_requests'>
+	{% if hide_about %}<div style="float: right;" class="look_like_link" onclick="$('#hr_about').toggle();">What Are Healing Requests?</div>{% endif %}
+	<div class="clearfix"></div>
+	<div id="hr_about"
+	     {% if hide_about %}style="display: none;"{% endif %}>
+		<img src="{{ STATIC_URL }}healersource/img/healing_requests_girl.jpg" class="border_img" style="float: right; margin: 6px 10px 10px 12px; width: 333px; max-width: 95%" />
+
+		<p style="font-size: 1.4em; line-height: 1em;">Do you need healing but can't afford it? </p>
+
+		<p style="font-size: 1.2em; margin: 0.4em 0;">Are you a Healer who wants to reach more people but don't want to lower your regular rates?</p>
+
+		<p style="font-weight: bold; font-style: italic; font-size: 1.2em; line-height: 1em;">Then Healing Requests is for you!</p><p>
+
+		Healing Requests is a matchmaking service for Healers and those in need of Healing.
+	</p><p>
+
+		You can post a request describing your condition and what kind of healing you are looking for. You can specify In Person or Remote Healing, and the amount you can pay - or even trade for other services you can offer like Babysitting, Accounting, Yardwork, Housekeeping, Repairs or anything in between!</p><p>
+
+		To protect your privacy, you can show or hide your photo, and choose whether to display your full name or just initials. Your email address is always hidden and you'll be contacted privately through HealerSource.</p><p>
+
+		If you are a Healer, you can search through current requests to contact recipients. You can even save your search - our system will email you when someone submits a new request that matches your criteria.</p>
+
+		<p style="font-weight: bold; font-style: italic; font-size: 1.2em; line-height: 1em;">Get started today!</p>
+	</div>
+
+	<div id='accordion'>
+		<h3 id="search_title">Search</h3>
+		<form action="{% url 'healing_request_home' %}"> <!-- form with get request for searching requests -->
+			<div id='search_requests' >
+				<div class="float_block_left white_box">
+					<div class="section_header">Location</div>
+
+					<label><input type="radio" name='{{ hr_search_form.near_my_location.html_name }}'
+							{% if hr_search_form.near_my_location.value == None %} checked {% endif %}
+							        value=''>Everywhere</label>
+					<br>
+
+					{% if is_healer.has_pointed_location %}
+						<label><input type="radio" name='{{ hr_search_form.near_my_location.html_name }}'
+								{% if hr_search_form.near_my_location.value  %} checked {% endif %}
+								        value='True'>Near my location(s)</label>
+						<br>
+					{% endif %}
+
+					<input type="radio" name='{{ hr_search_form.near_my_location.html_name }}'
+							{% if hr_search_form.near_my_location.value == False %} checked {% endif %}
+							 value='False' id="id_accept_location">
+
+					<label for="id_accept_location">Near  {{ hr_search_form.search_city_or_zipcode }}
+						{{ hr_search_form.zipcode }}</label>
+					<br>
+					<label>{{ hr_search_form.remote_healing }} Remote Healing</label>
+				</div>
+
+				<div class='float_block_left white_box'>
+					<div class="section_header">Exchange</div>
+					<label>{{ hr_search_form.accept_cost_per_session }} Can pay at least $ {{ hr_search_form.cost_per_session }} per session<br></label>
+					<label>{{ hr_search_form.trade_for_services }} Trade for services</label>
+					<div>&nbsp;</div> {# to make it the same height as Location box = prettier ui #}
+				</div>
+
+				<div class="clearfix"></div>
+
+				<div class='float_block_right specialities_block white_box'>
+					<div class="section_header">Specialties</div>
+					<label>
+						<input type="radio" name='{{ hr_search_form.only_my_specialities.html_name }}'
+								{% if hr_search_form.only_my_specialities.value == None %} checked {% endif %}
+								 value=''>
+						Any speciality
+					</label>
+					<br>
+					{% if is_healer %}
+						<label>
+							<input type="radio" name='{{ hr_search_form.only_my_specialities.html_name }}'
+									{% if hr_search_form.only_my_specialities.value  %} checked {% endif %}
+									 value='True'>
+							Find only my specialities</label>
+						<br>
+
+					{% endif %}
+					<label><input type="radio" name='{{ hr_search_form.only_my_specialities.html_name }}'
+							{% if hr_search_form.only_my_specialities.value == False %} checked {% endif %}
+							        value='False'>
+						<span>Specific Specialities:</span></label>
+					<br>
+					{{ hr_search_form.search_specialities }}
+				</div>
+
+				<div class='clearfix'></div>
+
+				{% if user.is_authenticated %}
+					<hr />
+					<label>{{ hr_search_form.saved }}
+						Save my search and email me when someone creates a new matching request.</label>
+				{% endif %}
+				<input type='hidden' name='search' value='True' />
+
+				<div class='clearfix'></div>
+				<input type='submit' class='homepage_button float_left' value='Search &raquo;' />
+			</div>
+		</form> <!-- end search requests form -->
+
+		{% if my_requests.count %}
+			<h3 id="my_requests_title">My Requests</h3>
+			<div id='my_requests'>
+				{% include 'healing_requests/my_requests_page.html' %}
+			</div>
+		{% endif %}
+
+		<h3 id="new_request_title">+ Create a New Healing Request</h3>
+
+		<form action="{% url 'healing_request_home' %}" method="post">
+			{% include 'healing_requests/email_not_confirmed_message.html' %}
+
+			{% if not user.is_authenticated and 'new_user_hr' not in request.session %}
+				{% include 'form_errors.html' with form=client_signup_form %}
+				<div style="float: right;">Already have an account? <a href="{% url 'login_page' %}">Login</a></div>
+				<h3 style="width: 80%;">Signup</h3>
+				<table id="new_client_dialog_table">
+					<tr><td>Name </td>
+						<td class='new_client_dlg_name'>
+							{{ client_signup_form.first_name }}<br>
+							{{ client_signup_form.last_name }}
+						</td></tr>
+					<tr><td>Email </td>
+						<td>{{ client_signup_form.email }}</td></tr>
+					<tr><td>Create a Password </td>
+						<td>{{ client_signup_form.password1 }}</td></tr>
+					<tr><td>Password (again) </td>
+						<td>{{ client_signup_form.password2 }}</td></tr>
+					<tr><td>Security veritfication</td>
+						<td>{{ client_signup_form.security_verification }}</td></tr>
+				</table>
+				<h3 style="width: 80%;">Your Request</h3>
+			{% endif %}
+			{% include 'form_errors.html' with form=request_form %}
+			{% include 'healing_requests/request_form.html' %}
+		</form>
+	</div> <!-- id='accordion' -->
+</div>
+
+<hr>
+<!-- Search Results -->
+{% if 'search' in request.GET or 'show_search' in request.GET %}
+	<div class='grey_box'>
+		<h3 class="nav_icon nav_find_a_provider">Search Results</h3>
+		{% if user.is_authenticated %}
+			<div>
+				{% include 'healing_requests/saved_searches_page.html' %}
+			</div>
+			{% if saved_searches.count %} <hr><div class="clearfix"></div> {% endif %}
+		{% endif %}
+
+		{% if not search_results.count %}
+			<p class="message">No results matched your search. Please try again!</p>
+		{% else %}
+			{% include 'healing_requests/search_results_page.html' %}
+		{% endif %}
+	</div>
+{% endif %}
+
+{% if 'search' not in request.GET and 'show_search' not in request.GET %}
+	<div class='grey_box'>
+		<h3 class="nav_icon nav_schedule">Recent requests</h3>
+		<div class='endless_page_template'>
+			{% include 'healing_requests/recent_requests_page.html' %}
+		</div>
+
+		{% if not recent_requests.count %}
+			<p class='message'>No recent requests. Be the first to create one!</p>
+		{% endif %}
+
+	</div>
+{% endif %}

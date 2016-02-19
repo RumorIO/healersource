@@ -1,0 +1,55 @@
+{% if user.is_active %}
+	<a href="{% url 'healer_create' %}" class="highlight_button nav_icon icon_users_add" style="float:left; padding-left: 27px;">
+		Create a New Provider
+	</a>
+
+	<div style="float: right; margin-bottom: 4px;">
+		{% with search_label="+ Add Existing HealerSource Provider" no_add_buttons=1 as_add_button=1 %}
+			<div>{% include 'healers/recommend_search_providers_bar.html' %}</div>
+		{% endwith %}
+	</div>
+{% endif %}
+<div class="clearfix"></div>
+
+{% if existing_provider_request_permission %}<p class="single_button" style="color: blue;">{{ existing_provider_request_permission }}</p>{% endif %}
+
+{% if friends.incomplete %}
+	<div class="friends single_button">
+		<h3>Incomplete Providers</h3>
+		<p><span class="icon_eye_crossed_out red_text">These providers will not be visible until you add a photo and fill in their 'About Me'</span></p>
+		{% with message='Providers' edit_provider_link=1 friends=friends.incomplete email_not_confirmed_button=True %}
+			{% include "clients/friend_loop.html" %}
+		{% endwith %}
+		<div class="clearfix"></div>
+	</div>
+{% endif %}
+
+{% if friends.complete and friends.incomplete %}<hr/>{% endif %}
+
+{% if friends.complete %}
+	<div class="friends grey_box">
+		<h3>Providers at your Center</h3>
+		{% if not user.is_active %}
+			{% include 'account/email_confirmation_required.html' %}
+		{% endif %}
+		{% if friends.complete.editable %}
+			{% with message='Providers' edit_provider_link=1 friends=friends.complete.editable editable=True %}
+				{% include "clients/friend_loop.html" %}
+			{% endwith %}
+		{% endif %}
+		{% if friends.complete.editable and friends.complete.uneditable %}<hr/>{% endif %}
+		{% if friends.complete.uneditable %}
+			{% with message='Providers' edit_provider_link=1 friends=friends.complete.uneditable %}
+				{% include "clients/friend_loop.html" %}
+			{% endwith %}
+		{% endif %}
+		<div class="clearfix"></div>
+	</div>
+	{% if not setup %}
+		<hr>
+		<div class="grey_box">
+				<input type="checkbox" id="clients_visible_to_providers" name="clients_visible_to_providers" {% if user.client.healer.wellnesscenter.clients_visible_to_providers %} checked {% endif %}> <a href="#"><label for="clients_visible_to_providers">Allow our providers to see all of our Client contact information.</label></a>
+			</form>
+		</div>
+	{% endif %}
+{% endif %}

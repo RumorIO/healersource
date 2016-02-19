@@ -1,0 +1,20 @@
+
+Hi {{ first_name|capfirst }}
+
+This is just a friendly reminder that your HealerSource profile is not yet visible in search results.
+
+We want your profile to look great! Here's what you can do:
+
+{% for warning in fill_warning_links.values %}
+>> {{ warning.text|capfirst }}
+{% with link='http://'|add:site_base|add:warning.href %}{% include 'email_link.html' %}{% endwith %}
+
+{% endfor %}
+
+To change how often you receive this email reminder:
+{% with link=reminder_interval_link %}{% include 'email_link.html' %}{% endwith %}
+
+
+Thanks for being a part of HealerSource!
+
+- The HealerSource Team

@@ -1,0 +1,35 @@
+{% extends 'base_phonegap2.html' %}
+{% load compress %}
+
+{% block extra_head %}
+	{% compress js %}
+		<script src="js/phonegap_home.js"></script>
+	{% endcompress %}
+	{% compress css %}
+		<link rel="stylesheet" href="css/home.css" />
+	{% endcompress %}
+{% endblock %}
+
+{% block body %}
+	<div class="center hr_80">
+		<div class="logo">
+			<img src="site_media/static/healersource/img/home/logo.png"><br>
+			<img src="img/faces.png"><br>
+		</div>
+		<div class="ghp_title">
+			HEALING CIRCLE
+		</div>
+		<hr />
+		<div>
+			Exchange Love &amp; Wellbeing with<br>
+			People Around the World
+		</div>
+		<hr />
+		<div>Practice Compassion · Receive Loving Kindness</div>
+		<div>
+			<a class="get_started btn" href="ghp_screen0.html">Get Started &raquo;</a>
+		</div>
+		<hr />
+		<div><a href="login.html">I already have a HealerSource account. <b>Log In</b></a></div>
+	</div>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base_phonegap.html' %}
+{% load compress %}
+{% block extra_head %}
+  	<script type="text/javascript" src="{{ STATIC_URL }}tinydropdown/tinydropdown.js"></script>
+	<link rel="stylesheet" href="{{ STATIC_URL }}tinyeditor/style.css" />
+	<script src="{{ STATIC_URL }}tinyeditor/tinyeditor.js"></script>
+
+<script>
+	var url_write_a_bit = "{% url 'write_a_bit_ajax' %}";
+	$(function() {
+		changeBackButton(function(){
+			document.location.href = "optional_info.html";
+		});
+		var data = {};
+		if(!access_token) {
+			data.email = localStorage.getItem('email');
+			data.password = localStorage.getItem('password');
+		}
+		rest_ajax_get_request(url_write_a_bit, function(response) {
+			$('#id_about').html(response.about);
+		}, data);
+		data.data = $('form').serialize(true);
+		$('form').submit(function(e) {
+            e.preventDefault();
+            editor.post();
+			rest_ajax_post_request(url_write_a_bit, function(response) {
+				document.location.href = 'list.html';
+			}, data);
+		});
+	});
+</script>
+{% endblock %}
+
+{% block body %}
+	<div class="application2_container">
+        <div id="menu">
+        <h2>Write a Bit About Yourself</h2>
+		<p style="font-style: italic;">Write a bit about your practice, your education, and any extra info for new clients</p>
+		<form method="POST" action="">
+			{% csrf_token %}
+			{{ form.about }}
+		</form>
+
+		</div>
+		<br>
+		<div id="setup_controls">
+			<a class="highlight_button" href="optional_info.html">« Back</a>
+			<a class="highlight_button" href="#" onclick="$('form').submit();">Next »</a>
+		</div>
+
+        </div>
+	</div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends "site_base.html" %}
+
+{% load gratitude_tags %}
+{% load comment_tags %}
+{% load compress %}
+
+{% block head_title %}Gratitude Stream{% endblock %}
+
+{% block extra_head %}
+	{% compress js %}
+		<script>
+			var url_post = "{% url 'gs_post' %}";
+			var url_comment = "{% url 'gs_comment' %}";
+			var url_like = "{% url 'gs_like' %}";
+			var url_report = "{% url 'gs_report' %}";
+		</script>
+		<script src="{{ STATIC_URL }}healersource/js/gratitude_stream.js"></script>
+	{% endcompress %}
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/gratitude_stream.css" />
+{% endblock %}
+
+{% block page_title %}<h1>Gratitude Stream</h1>{% endblock %}
+
+{% block body %}
+
+	<div class="loading"></div>
+
+	<p>{{ question }}</p>
+	{% if not is_user_blocked %}
+		<textarea id="text"></textarea>
+		<input type="button" value="Post" id="post" />
+	{% else %}
+		You cannot post due to too much spam.
+	{% endif %}
+
+	<div id="posts">
+		{% for post in posts %}
+			{% include 'gratitude_stream/posting.html' with posting=post %}
+			{% get_comments post as comments %}
+			<div id="post_{{ post.pk }}_comments">
+				{% for comment in comments %}
+					{% include 'gratitude_stream/posting.html' with posting=comment %}
+				{% endfor %}
+			</div>
+			<hr>
+		{% endfor %}
+	</div>
+
+{% endblock body %}

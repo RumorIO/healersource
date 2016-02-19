@@ -1,0 +1,57 @@
+.content {
+	padding: 5px !important;
+}
+
+#signup {
+	height: 130vw;
+	max-height: 678px;
+	background-image: url('../img/pricing/francesca-sm.jpg');
+	margin-top: 10px;
+	box-shadow: 3px 3px 6px rgba(66, 66, 66, 0.3);
+	color: #f2f3f3;
+	font-size: 26px;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+}
+
+.signup_content {
+	padding: 15px;
+}
+
+.signup_button {
+	height: 55px;
+	max-width: 201px;
+	line-height: 56px;
+	border: 1px solid #000;
+	border-radius: 10px;
+	background-color: #f36155;
+	text-align: center;
+	text-shadow: none;
+	font-weight: bold;
+	cursor: pointer;
+	padding: 10px 20px;
+	color: white;
+}
+
+.signup_button:hover {
+	color: white;
+}
+
+@media screen and (min-width: 500px) {
+	.signup_content {
+		padding: 30px;
+	}
+
+	#signup {
+		background-image: url('../img/pricing/francesca.jpg');
+		height: 64vw;
+		font-size: 35px;
+	}
+
+	.signup_button {
+		height: 80px;
+		max-width: 345px;
+		line-height: 78px;
+	}
+}

@@ -1,0 +1,165 @@
+<div class="my_account_menu" role="navigation" class="">
+<ul id="{% if additional_menu %}me_menu{% else %}left_menu{% endif %}" class="menu main_menu">
+{% if user.is_authenticated %}
+	{% if is_healer %}
+		{% if not is_healer.is_completed_setup %}
+			<li {% if additional_menu %} style="border-top: 0" {% endif %}><a class="nav_wand" href="{% url 'provider_setup' is_healer.setup_step %}">Setup</a></li>
+		{% endif %}
+		{% if user.is_active %}
+			<li {% if additional_menu and is_healer.is_completed_setup %} style="border-top: 0" {% endif %}>
+				<a class="nav_my_profile" href="{% url 'healer_my_profile' request.user %}" >
+					{{ is_wellness_center|yesno:',My ' }}Profile
+					{% if not additional_menu %}
+						<span>&gt;</span>
+					{% endif %}
+				</a>
+				<ul>
+					<li><a class="nav_icon nav_my_profile" href="{% url 'healer_my_profile' request.user %}">See {{ is_wellness_center|yesno:'Our,My' }} Profile</a></li>
+					<li><a class="nav_icon nav_pencil" href="{% url 'healer_edit' %}">Edit {{ is_wellness_center|yesno:'Our,My' }} Profile</a></li>
+					<li><a class="nav_icon nav_photo" href="{% url 'avatar_change' %}">Photo Gallery</a></li>
+				</ul>
+			</li>
+
+			{% if is_wellness_center and is_healer.get_locations|length > 1 %}
+				{% for location in is_healer.get_locations_objects %}
+					 {% include 'nav_left_schedule.html' with number_of_unconfirmed_appts=location.number_of_unconfirmed_appointments %}
+				{% endfor %}
+			{% else %}
+				 {% include 'nav_left_schedule.html' %}
+			{% endif %}
+
+			{% if is_healer %}
+				<li><a class="nav_payments" href="{% url 'stripe_connect_payments' %}">Payments</a></li>
+			{% endif %}
+
+			<li>
+				<a class="nav_settings" href="{% url 'settings' %}">
+					Settings
+					{% if not additional_menu %}
+						<span>&gt;</span>
+					{% endif %}
+				</a>
+				<ul>
+					<li><a href="{% url 'location' %}">Locations</a></li>
+					<li>
+						<a href="{% url 'schedule_settings' %}">
+							Schedule Settings
+							{% if not additional_menu %}
+								<span>&gt;</span>
+							{% endif %}
+						</a>
+						{% include 'nav_left_schedule_settings.html' %}
+					</li>
+					<li><a href="{% url 'account' %}">Account</a></li>
+					{% if is_stripe_connect_beta_tester %}<li><a href="{% url 'payments_settings' %}">Payments</a></li>{% endif %}
+				</ul>
+			</li>
+			<li>
+				<a class="nav_blog" href="{% url 'blog_list_yours' %}">
+					Blog
+					{% if not additional_menu %}
+						<span>&gt;</span>
+					{% endif %}
+				</a>
+				<ul>
+					<li><a class="nav_icon nav_blog" href="{% url 'blog_list_yours' %}" >Blog</a></li>
+					<li><a class="nav_icon nav_videos" href="{% url 'videos' %}" >Videos</a></li>
+					<li><a href="{% url 'blog_import' %}" >Import Blog</a></li>
+					<li><a href="{% url 'videos_import' %}" >Import Videos</a></li>
+				</ul>
+			</li>
+
+			<li><a class="nav_reviews" href="{% url 'review_list' request.user %}">Reviews</a></li>
+
+			<li><a class="nav_intake" href="{% url 'intake_forms_list' %}">Intake</a></li>
+
+			<!--<li><a class="nav_events" href="{% url 'list_events' %}">Events</a></li> -->
+
+			<li><a class="nav_notes" href="{% url 'notes' %}">Notes</a></li>
+
+			<li>
+				<a class="nav_inbox" href="{% url 'messages_inbox' %}">
+					Inbox
+					{% if messages_inbox_count > 0 %}
+						<span class="red_bubble">{{ messages_inbox_count }}</span>
+					{% endif %}
+					<span id="new_msg_plus" class="icon_email_new look_like_link" onclick="return show_compose_message_dlg();"></span>
+				</a>
+			</li>
+
+			{% if is_wellness_center %}
+				<li><a class="nav_providers" href="{% url 'friends' 'providers' %}">Providers</a></li>
+			{% else %}
+				<li><a class="nav_recommend" href="{% url 'friends' 'referrals' %}">Referrals</a></li>
+			{% endif %}
+
+			<li>
+				<a class="nav_clients" href="{% url 'friends' "clients" %}">
+					Clients
+					{% if client_invitations_count > 0 %}
+						<span class="red_bubble" title="New Clients!">
+									{{ client_invitations_count }}
+								</span>
+					{% endif %}
+				</a>
+			</li>
+
+			{% if is_healer.ambassador_program %}
+				<li>
+					<a class="nav_ambassador" href="{% url 'ambassador:dashboard' %}">
+						Ambassador
+					</a>
+				</li>
+			{% endif %}
+
+			<li>
+				<a class="nav_invite {% if not request.is_mobile %}floatbox{% endif %}" data-fb-options="width:715" href="{% url 'invite_postcard' %}">
+					Share
+				</a>
+			</li>
+		{% else %}
+			<li><a class="nav_schedule" href="{% url 'feature_schedule' %}">Schedule</a></li>
+			<li><a class="nav_payments" href="{% url 'feature_payments' %}">Payments</a></li>
+			<li><a class="nav_blog" href="{% url 'feature_blog' %}">Blog</a></li>
+			<li><a class="nav_reviews" href="{% url 'feature_reviews' %}">Reviews</a></li>
+			<li><a class="nav_intake" href="{% url 'feature_intake' %}">Intake</a></li>
+			<li><a class="nav_notes" href="{% url 'feature_notes' %}">Notes</a></li>
+			<li><a class="nav_inbox" href="{% url 'feature_inbox' %}">Inbox</a></li>
+			{% if is_wellness_center %}
+				<li><a class="nav_providers" href="{% url 'feature_providers' %}">Providers</a></li>
+			{% else %}
+				<li><a class="nav_recommend" href="{% url 'feature_referrals' %}">Referrals</a></li>
+			{% endif %}
+			<li><a class="nav_clients" href="{% url 'feature_clients' %}">Clients</a></li>
+		{% endif %}
+	{% else %} {# client menu #}
+		<li><a class="nav_appointments" href="{% url 'receiving_appointments' %}">Appointments</a></li>
+
+		<li><a class="nav_my_providers" href="{% url 'friends' 'healers' %}">My Providers</a></li>
+		{# {% if client_invitations_count > 0 %} <span class="red_bubble" title="New Providers!">{{ client_invitations_count }}</span>{% endif %} #}
+
+		<li><a class="nav_client_account" href="{% url 'clients_profile' %}">Account</a></li>
+
+		<li>
+			<a class="nav_inbox" href="{% url 'messages_inbox' %}">
+				Inbox
+				{% if messages_inbox_count > 0 %}
+					<span class="red_bubble" title="New Messages!">
+								{{ messages_inbox_count }}
+							</span>
+				{% endif %}
+				<span id="new_msg_plus" class="icon_email_new" onclick="return show_compose_message_dlg();"></span>
+			</a>
+		</li>
+
+		{% if request.user.client.ambassador_program %}
+			<li>
+				<a class="nav_ambassador" href="{% url 'ambassador:dashboard' %}">
+					Ambassador
+				</a>
+			</li>
+		{% endif %}
+	{% endif %}
+{% endif %}
+</ul>
+</div>

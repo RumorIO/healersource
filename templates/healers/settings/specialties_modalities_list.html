@@ -1,0 +1,9 @@
+{% for modality in modalities %}
+	<div id="modality_{{ modality.id }}"><span class="modality_title">{{ modality.title }}</span> |
+		<a href="javascript:void(0);"
+				onclick="removeModality( {{ modality.id }} );"
+				>remove</a></div>
+	{% if use_parent_js %}
+		<input type="hidden" name="modalities" id="modality_{{ modality.id }}" value="{{ modality.id }}"/>
+	{% endif %}
+{% endfor %}

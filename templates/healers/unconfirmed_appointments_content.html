@@ -1,0 +1,73 @@
+{% if confirm_message %}
+	<div class="single_button">{{ confirm_message|safe }}</div>
+	<br>
+{% endif %}
+
+{% if unconfirmed_appt_list %}
+<div id="unconfirmed_appointments">
+	<div {% if not main_page %} class="single_button" {% endif %}>
+		{% if not main_page %}<h3>Unconfirmed Appointments</h3>{% endif %}
+		{% for healer_username, appt_list in unconfirmed_appt_list.items %}
+			<div id="unconfirmed_{{ healer_username }}" class="unconfirmed">
+			{% if is_wellness_center %} <h3>{{ appt_list.0.healer }}</h3> {% endif %}
+			<table style='width:100%;'>
+				{% regroup appt_list by week as week_list %}
+				{% for appts in week_list %}
+					{% if forloop.counter0 %}<tr><td colspan="4"><hr/></td></tr>{% endif %}
+					{% for appt in appts.list %}
+						<tr>
+							<td>{{ forloop.counter }}. {{ appt.date_range_text }}</td>
+							<td><a href="{% url 'client_detail' appt.client.user.username  %}" class="client_detail floatbox" data-fb-options="type:ajax"
+									  {% if not appt.is_my_client %} style="color:red;"{% endif %}>
+								{{ appt.client }}
+							</a></td>
+							<td>
+								{% if appt.owner_healer_has_intake_form %}
+									{% if appt.client_completed_form %}
+										<a class="floatbox" data-fb-options="type:ajax" href="{% url 'view_intake_form_answer' appt.healer.user.username appt.client.user.username %}">View Intake »</a>
+									{% else %}
+										<a href="javascript:void(0);" onclick="send_intake_form(appt.client.pk)">Send Intake Form »</a>
+									{% endif %}
+									|
+								{% endif %}
+
+								{% if is_wellness_center and appt.owner_healer_has_notes_for_client or not is_wellness_center and appt.healer_has_notes_for_client %}
+									<a href="{% url 'notes_view_notes_page' appt.client.user.username %}">View Notes »</a>
+								{% else %}
+									<a href="{% url 'notes_create_note_page' appt.client.user.username %}">Create Note »</a>
+								{% endif %}
+							</td>
+							<td style="text-align: right;">
+								<a href="{% url 'appointment_confirm' appt.id %}">confirm</a> |
+								{% if not appt.is_my_client %}<a href="{% url 'appointment_confirm_and_accept' appt.id %}">confirm and accept client</a> |{% endif %}
+								<a href="#" onclick="confirmDialog('{% url 'appointment_decline' appt.id  %}', 'Decline')">decline</a>
+							</td>
+						</tr>
+					{% endfor %}
+				{% endfor %}
+				{% if appt_list|length > 1 %}
+					<tr>
+						<td colspan="4" style="text-align: right;">
+							<span style="border-top:1px solid gray;">
+								<a href="{% url 'appointment_confirm_all' healer_username %}">confirm all</a> |
+								<a href="#" onclick="confirmDialog('{% url 'appointment_decline_all' healer_username %}', 'Decline')">decline all</a>
+							</span>
+						</td>
+					</tr>
+				{% endif %}
+			</table>
+			</div>
+		{% endfor %}
+
+		{% if is_wellness_center and request.user.username == username and unconfirmed_appt_list|length > 1 %}
+			<div class="confirm-decline-wcenter">
+				<a href="{% url 'appointment_wcenter_confirm_decline_all' 'confirm' %}">confirm all for all providers</a> |
+				<a href="#" onclick="confirmDialog('{% url 'appointment_wcenter_confirm_decline_all' 'decline' %}', 'Decline')">decline all for all providers</a>
+			</div>
+			<div class="clearfix"></div>
+		{% endif %}
+
+	</div>
+	<hr />
+</div>
+{% endif %}

@@ -1,0 +1,136 @@
+Django==1.8.7
+Django-Select2==5.4.1
+Markdown==2.0.3
+#PIL==1.1.7
+http://effbot.org/downloads/Imaging-1.1.7.tar.gz
+#freetype problems on mac (maybe linux??), symlink /opt|usr/local/include/freetype2 to freetype
+Pillow==3.1.1
+#for osx: ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future pip install pillow pycrypto PIL
+#Pinax==0.9b1.dev10
+Pygments==1.3.1
+beautifulsoup4==4.1.3
+bleach==1.4
+creole==1.1
+diff-match-patch==20120106
+django-announcements==0.1.2
+django-appconf==0.6
+django-attachments==0.3.1
+django-bookmarks==0.1.0
+django-debug-toolbar
+django-dynamic-fixture==1.6.5
+django-encrypted-fields==1.1.1
+django-endless-pagination==2.0
+django-extensions==1.4.8
+django-flag==0.1.1
+django-locations==0.1.1
+django-markup==0.3
+#django-messages==0.5.0
+django-microblogging==0.1.2
+django-notification==0.2
+#django-oauth-access==0.1.dev22
+django-oembed==0.1.1
+#django-openid==0.2.3.dev1
+django-pagination==1.0.7
+django-photologue==2.3
+django-simple-captcha==0.4.2
+django-sorting==0.1
+django-swaps==0.5.3
+django-tagging==0.3.1
+django-tagging-ext==0.3.2
+django-timezones==0.2
+django-uni-form==0.7.0
+django-voting==0.1
+django-wakawaka==0.3
+docutils==0.6
+#elementtree==1.2.7-20070827-preview
+http://effbot.org/media/downloads/elementtree-1.2.7-20070827-preview.zip
+feedparser==5.1.3
+filebrowser-safe==0.2.31
+google-api-python-client==1.3.1
+gdata==2.0.18
+geopy==0.94
+grappelli-safe==0.2.22
+html5lib==0.999
+httplib2==0.9
+metron==1.3.5
+mock==1.0.1
+oauth==1.0.1
+oauth2==1.5.211
+oauthlib==0.6.0
+#psycopg2==2.5
+pyasn1==0.1.7
+pycrypto==2.6.1
+#pydkim==0.3
+http://hewgill.com/pydkim/pydkim-0.3.tar.gz
+python-dateutil==1.4.1
+python-keyczar==0.71c
+python-twitter==0.5
+pytz==2013.7
+requests==1.2.3
+requests-oauthlib==0.3.3
+setuptools-git==1.0b1
+six==1.8
+textile==2.1.4
+twilio==3.5.1
+unittest2==0.5.1
+vobject==0.9.0
+wsgiref==0.1.2
+#ybrowserauth==1.2
+yolk==0.4.3
+django_nose==1.4.2
+mailchimp
+djangorestframework==2.4.3
+django-cors-headers==0.13
+ipython
+django-contrib-comments
+django-yubin
+
+#!DO NOT REMOVE COMMENT django-stripe-payments==2.0b34 / FORKED - payments app - (from ed9304b)
+stripe==1.18.0
+django-jsonfield>=0.8
+
+
+#git+git://github.com/torchbox/django-mailer-2.git
+
+#django-ajax-validation==0.1.4
+#forked from git+git://github.com/alex/django-ajax-validation.git
+git+git://github.com/drownload/django-ajax-validation.git
+
+git+git://github.com/arneb/django-messages.git
+git+git://github.com/drownload/django-oauth-access.git
+
+django-markup-deprecated==0.0.3
+django-avatar==2.0
+
+#django-friends==0.1.5 / FORKED
+git+git://github.com/drownload/django-friends.git
+
+#django-dajax==0.9.2 / FORKED
+git+git://github.com/drownload/django-dajax.git
+
+#django-dajaxice==0.6 / Current version supports 1.7 but 0.6 doesn't. / 8d9fdfbc4fe4e38bb6ca49263e4bc01b6765a9b5
+git+git://github.com/jorgebastida/django-dajaxice.git
+
+#django-email-confirmation==0.2 / FORKED
+git+git://github.com/drownload/django-email-confirmation.git
+
+#Not installed in settings.py
+#http://dist.pinaxproject.com/dev/django-openid/django-openid-0.2.3.dev1.tar.gz
+#python-openid==2.2.5
+
+#FORKED FROM https://github.com/pinax/pinax a6c15cbf9fc6750f6ca93d895fcf0841d7fe9631
+git+git://github.com/drownload/pinax.git
+
+#Latest commit - with django 1.7 support - 48e90515dcd3ea2b6bccb8e4e6658256c40fc796
+git+git://github.com/stephenmcd/mezzanine.git
+
+#django-compressor==1.3 -- version 1.4 is the latest now and it says it supports django 1.6 so dev version is used now. Latest commit - 8170f2cd81419eb2090fd641517f0b85ea58db02
+git+git://github.com/django-compressor/django-compressor.git
+
+git+git://github.com/pythonforfacebook/facebook-sdk.git
+
+xhtml2pdf
+
+#django-oauth2-provider==0.2.6.1
+# Forked https://github.com/glassresistor/django-oauth2-provider - django 1.7 branch
+git+git://github.com/drownload/django-oauth2-provider.git

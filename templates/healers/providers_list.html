@@ -1,0 +1,16 @@
+{% extends "base_floatbox.html" %}
+
+{% block body %}
+	<div class="grey_box">
+		<h3>Refer {{ refer_client }} to...</h3>
+		{% if friends %}
+			{% with 'Referrals' as message %}
+			{% with 4 as friends_per_row %}
+				{% include "clients/friend_loop.html" %}
+			{% endwith %}
+			{% endwith %}
+		{% else %}
+			<p class="message">No Referrals Yet.</p>
+		{% endif %}
+	</div>
+{% endblock body %}

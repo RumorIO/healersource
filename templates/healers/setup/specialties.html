@@ -1,0 +1,14 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+	<div class="message" id="setup_specialties_msg">
+		Type The Name of a Specialty:&nbsp;
+		<br>
+		<div style="color: grey;">(a Modality that you specialize in)</div>
+	</div>
+	<br />
+	{#			<span style="color: #777;">(Then click the specialty <br />from the popup menu)</span>#}
+	<div>{% include "healers/settings/specialties_add.html" %}</div>
+	<br />
+	{% include "healers/setup/setup_controls.html" %}
+{% endblock %}

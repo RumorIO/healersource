@@ -1,0 +1,327 @@
+<div id="edit_appointment_container{% if healer_id %}_{{ healer_id }}{% endif %}" class="calendar_dialog appointment_container">
+	<form>
+		<table class="appt_dlg_table">
+			{% if is_wellness_center %}
+				<tr><td>Provider: </td> <td class="healer_name"></td></tr>
+			{% endif %}
+			<tr><td>Client: </td><td class="client_content"><span id="client_name"></span> <span style="color: #999;">|</span> <a href="#" class="edit_client">edit</a></td></tr>
+			<tr>
+				<td><label for="date">Date: </label></td>
+				<td><input type="text" name="date" value="" style="width: 100px;" class="datepicker"/></td>
+			</tr>
+			<tr>
+				<td><label for="start">Start&nbsp;Time: </label></td>
+				<td><input name="start" class="timepicker" /></td>
+			</tr>
+			<tr class="end_time_row">
+				<td><label for="end">End Time: </label></td>
+				<td><input name="end" class="timepicker" /></td>
+			</tr>
+			<tr>
+				<td>Treatment:</td>
+				<td>
+					<select name="treatment_length">
+						{% for length in treatment_lengths %}
+							<option value="{{ length.id }}"
+							        {% if length.is_deleted or length.treatment_type.is_deleted %}class="deleted" disabled{% endif %}>
+								{% if length.is_deleted %}[Deleted] {% endif %}{{ length.full_title }}
+							</option>
+						{% endfor %}
+					</select>
+				</td>
+			</tr>
+			{% if locations|length > 0 %}
+				<tr>
+					<td><label for="location">Location: </label></td>
+					<td>
+						<select name="location"></select>
+					</td>
+				</tr>
+			{% endif %}
+		</table>
+		<table class="appt_dlg_table">
+			{% if all_rooms|length > 0 %}
+				<tr class="room_row" style="display: none">
+					<td>Room:</td>
+					<td>
+						<span class="disabled_text"></span>
+						<select name="room"></select>
+					</td>
+				</tr>
+			{% endif %}
+			<tr>
+				<td>Discount:</td>
+				<td>
+					<select name="discount_code"></select>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="2">
+					<label for="appointment_repeat">Repeating:</label>
+					<input disabled type="checkbox" value="" id="appointment_repeat"  
+					       onclick="$('#appointment_repeat_options').toggle(this.checked);
+							      $('#appointment_repeat_options #repeat_every_input').select();
+							      hs_dialog('resize');">
+				</td>
+			</tr>
+			<tr id="appointment_repeat_options"  style="display: none;">
+				<td colspan="2">
+					<div style="border:1px solid #6CA6D1; padding: 10px;">
+						Every <input disabled type="text" name="repeat_every" value="1" style="width: 2em;" id="repeat_every_input" />
+						<select disabled name="repeat_period">
+							{% for key,val in repeat_choices %}
+								<option value="{{ key }}">{{ val }}s</option>
+							{% endfor %}
+						</select>
+						<br/>
+						<input disabled type="radio" name="end_after_radio" id="end_after_radio1" value="0"/>
+						<label for="end_after_radio1">Ongoing Appointment</label>
+						<br/>
+						<input disabled type="radio" name="end_after_radio" id="end_after_radio2" value="1"/>
+						<label for="end_after_radio2">
+							End After <input disabled type="text" name="repeat_count" value="10" style="width: 2em;" id="repeat_count_input" />
+							Sessions
+						</label>
+					</div>
+				</td>
+			</tr>
+			<tr><td colspan="2"><textarea name="note" rows="3" placeholder="Optional Note"></textarea></td></tr>
+			<tr><td colspan="2">
+				<input type="checkbox" id="send_update_notification" value="1" checked />
+				<label for="send_update_notification" id="send_update_notification_label" style="white-space: nowrap;">Email Client about Change</label>
+			</td></tr>
+		</table>
+		<hr>
+		<div class="action_links"><a class="intake_link"></a> <span class="separator">|</span> <a class="notes_link"></a></div>
+	</form>
+</div>
+
+
+<div id="confirm_reschedule" class="calendar_dialog">
+	<p>Are you sure you want to reschedule to this time?</p>
+	<div id="reschedule_time"></div>
+</div>
+
+
+<div id="confirm_reschedule_all" class="calendar_dialog">
+	<p>This is a Repeating Appointment</p>
+	<p>Do you want to reschedule all instances of this appointment or just this one?</p>
+</div>
+
+
+<div id="confirm_delete" class="calendar_dialog">
+	<form>
+		<ul>
+			<li><span id="dialog_client"></span></li>
+			<li><span id="dialog_date"></span></li>
+			<li><span id="dialog_time"></span></li>
+			{#			<li><span id="dialog_start"></span></li>#}
+			{#			<li><span id="dialog_end"></span></li>#}
+			{% if locations|length > 0 %}<li><span id="dialog_location"></span></li>{% endif %}
+			<li id="dialog_note_item" style="display: none;"><span id="dialog_note"></span></li>
+		</ul>
+	</form>
+
+	<p>Do you really want to delete this appointment?</p>
+</div>
+
+
+<div id="confirm_delete_all" class="calendar_dialog">
+	<form>
+		<ul>
+			<li><span id="dialog_client_r"></span></li>
+			<li><span id="dialog_date_r"></span></li>
+			<li><span id="dialog_time_r"></span></li>
+			{#			<li><span id="dialog_start_r"></span></li>#}
+			{#			<li><span id="dialog_end_r"></span></li>#}
+			{% if locations|length > 0 %}<li><span id="dialog_location_r"></span></li>{% endif %}
+			<li style="display: block;"><span id="dialog_repeat_r"></span></li>
+			<li id="dialog_note_item_r" style="display: none;"><span>Note: </span><span id="dialog_note_r"></span></li>
+		</ul>
+	</form>
+
+	<p>Do you want to delete:</p>
+	<ul class="normal_list">
+		<li>All Sessions for This Appointment</li>
+		<li>This Appointment and All Future Sessions</li>
+		<li>or Just This One?</li>
+	</ul>
+</div>
+
+<div id="conflicts_solving" class="calendar_dialog">
+	<p>There are conflicts scheduling this appointment on the following days: <span id="slot_exceptions"></span></p>
+	<p>Do you want to:</p>
+	<p id="reduce_option">
+		Cancel these appointments and reduce the total number of sessions to <span id="slot_reduce_count"></span>
+	</p>
+	<p id="options_join" style="text-align:center; font-weight:bold;">or</p>
+	<p id="reschedule_option">
+		Reschedule these sessions on the next available dates: <span id="slot_available_dates"></span>
+	</p>
+</div>
+
+<div id="new_appointment_container" class="calendar_dialog">
+	<form>
+		<table class="appt_dlg_table">
+			{% if is_wellness_center %}
+				<tr><td><label for="appointment_provider">Provider: </label></td>
+					<td>
+						<select id="appointment_provider">
+							{% for provider in providers %}
+								{% with healer=provider.healer %}
+									<option value="{{ healer.user.username }}">{{ healer.user.client }}</option>
+								{% endwith %}
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+			{% endif %}
+			<tr><td><label for="client">Client: </label></td>
+				<td>
+					<input placeholder="Client Name or Last Name"
+					       id="search_client"
+					       class="ui-autocomplete-input ui-autocomplete-loading"
+					       maxlength="75"
+					       type="text"
+					       style="width: 180px;"
+					       autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true">
+					<input type="hidden" id="id_client" name="client"/>
+					<input type="hidden" id="id_type" name="client_type"/>
+					<a href="#" onclick="dlg_new_client();" style="display: block; color:#1770BF; font-style:italic;">New Client...</a>
+				</td>
+			</tr>
+			<tr><td><span>Date: </span></td><td><input type="text" name="date" value="" style="width: 100px;" class="datepicker"/></td></tr>
+			<tr>
+				<td><label for="start">Start Time: </label></td>
+				<td><input name="start" class="timepicker" size="7"/></td>
+			</tr>
+			<tr class="end_time_row" style="display: none;">
+				<td><label for="end">End Time: </label></td>
+				<td><input name="end" class="timepicker" size="7"/></td>
+			</tr>
+			<tr>
+				<td>Treatment:</td>
+				<td>
+					<select name="treatment_length"></select>
+				</td>
+			</tr>
+		</table>
+		<table class="appt_dlg_table">
+			{% if locations|length > 0 %}
+				<tr>
+					<td>Location:</td>
+					<td>
+						<select name="location">
+							{#							<option value="-1">Default</option>#}
+							{% for loc in locations %}
+								{% if not loc.is_deleted %}
+									<option value="{{ loc.id }}" selected>{{ loc.text }}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+			{% endif %}
+			{% if all_rooms|length > 0 %}
+				<tr class="room_row" style="display: none">
+					<td>Room:</td>
+					<td>
+						<span class="disabled_text"></span>
+						<select name="room">
+							{% for room in all_rooms %}
+								<option value="{{ room.id }}">{{ room.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+			{% endif %}
+			<tr>
+				<td>Discount:</td>
+				<td>
+					<select name="discount_code"></select>
+				</td>
+			</tr>
+
+			<tr>
+				<td colspan="2">
+					<label for="appointment_new_repeat">Repeating:</label>
+					<input type="checkbox" value="" id="appointment_new_repeat"
+					       onclick="$('#appointment_new_repeat_options').toggle(this.checked);
+							      $('#appointment_new_repeat_options #repeat_every_input').select();
+							      hs_dialog('resize');">
+				</td>
+			</tr>
+			<tr id="appointment_new_repeat_options"  style="display: none;">
+				<td colspan="2">
+					<div style="border:1px solid #6CA6D1; padding: 10px;">
+						Every <input type="text" name="repeat_every" value="1" style="width: 2em;" id="repeat_every_input" />
+						<select name="repeat_period">
+							{% for key,val in repeat_choices %}
+								<option value="{{ key }}">{{ val }}s</option>
+							{% endfor %}
+						</select>
+						<br/>
+						<input type="radio" name="end_after_radio" id="end_after_radio1" value="0"
+						       onclick="disableInput('repeat_count');"/>
+						<label for="end_after_radio1">Ongoing Appointment</label>
+						<br/>
+						<input type="radio" name="end_after_radio" id="end_after_radio2" value="1"
+						       onclick="enableInput('repeat_count'); $('#appointment_new_repeat_options #repeat_count_input').select();"/>
+						<label for="end_after_radio2">
+							End After <input type="text" name="repeat_count" value="10" style="width: 2em;" id="repeat_count_input" />
+							Sessions
+						</label>
+					</div>
+				</td>
+			</tr>
+			<tr><td colspan="2"><textarea name="note" rows="3" placeholder="Optional Note"></textarea></td></tr>
+			<tr><td colspan="2">
+				<input type="checkbox" id="send_new_appointment_notification" value="1" disabled />
+				<label for="send_new_appointment_notification" id="send_new_appointment_notification_label" class="disabled_text" style="white-space: nowrap;">
+					Email Appointment Details to Client</label>
+			</td></tr>
+		</table>
+	</form>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			initClientSearchAutocomplete();
+		});
+	</script>
+
+</div>
+
+<div id="appointment_schedule_details" class="calendar_dialog">
+	<a href="javascript:void(0);" class="tooltip_x" onclick="fb.end();">x</a>
+	<ul id="tooltip_appointment">
+		<li><span id="tooltip_client"></span></li>
+		<li><span id="tooltip_healer"></span></li>
+		<li><span id="tooltip_treatment_name"></span></li>
+		<li><span id="tooltip_location"></span></li>
+		<li><span id="tooltip_room"></span></li>
+	</ul>
+	<ul>
+		<li><span id="tooltip_date"></span></li>
+		<li><span id="tooltip_time"></span></li>
+	</ul>
+	<ul id="tooltip_exceptions_block">
+		<li><span id="tooltip_exceptions"></span></li>
+	</ul>
+	{#		<ul id="tooltip_note_block">#}
+	<div id="tooltip_note"></div>
+	{#		</ul>#}
+	{#		<hr />#}
+
+	<hr />
+
+	<div id="tooltip_action_buttons">
+		<div id="tooltip_intake_btn"><a></a></div>
+		<div id="tooltip_notes_btn"><a></a></div>
+	</div>
+
+	<div id="tooltip_edit">
+		<span id="tooltip_edit_btn" class="single_button"><a>Edit &raquo;&nbsp;</a></span>
+		<span id="tooltip_confirm_btn" class="single_button"><a>Confirm</a></span>
+		<span id="tooltip_decline_btn" class="single_button"><a>Decline</a></span>
+	</div>
+</div>

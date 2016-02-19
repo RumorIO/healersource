@@ -1,0 +1,31 @@
+{% load i18n %}
+{% load account_tags %}
+{% load markup_tags %}
+{% load blog_tags %}
+
+<div class="blog_post {# {% if user %}blog_post_no_avatar{% endif %} #}">
+
+    {% if in_posts_list %}
+        {% include 'blog/blog_item_user.html' %}
+    {% endif %}
+
+    <div class="post">
+        {% if not in_posts_list %}
+            {% include 'blog/blog_item_user.html' %}
+        {% endif %}
+
+        {% if in_posts_list %}
+            <div class="blog_post_title"><a href="{% post_url blog_post 'blog_post_popup' %}" rel="nofollow"
+               onclick="fb.start(this, {'type':'ajax', 'maxContentWidth': '768px' }); return false;">{{ blog_post.title }}
+            </a></div>
+        {% endif %}
+
+        <div class="content">
+            {% if in_posts_list %}
+                {{ blog_post.description|truncatechars:600 }} <a href="{% post_url blog_post %}" style="font-style:italic;">Read More</a>
+            {% else %}
+                {{ blog_post.content|safe }}
+            {% endif %}
+        </div>
+    </div>
+</div>

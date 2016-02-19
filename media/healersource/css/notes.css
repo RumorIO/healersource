@@ -1,0 +1,438 @@
+.notes_top_panel {
+	width: 94%;
+	display: none;
+}
+
+.clients_search {
+	float: left;
+	margin-right: 5px;
+}
+
+.add_note {
+	float: left;
+}
+
+#recent_notes {
+	margin-top: 6px;
+	line-height: inherit;
+	clear: both;
+}
+
+#search_client_filter_note, #search_client_new_note {
+	width: 94%;
+}
+
+.new_client_link {
+	margin: 0 0 7px 0;
+}
+
+.note_link {
+	display: inline-block;
+	z-index: 10;
+	position: relative;
+}
+
+.diagram_arrows {
+	text-align: center;
+	margin-bottom: 5px;
+}
+
+.bottom_arrow {
+	display: inline-block;
+	z-index: 1;
+}
+
+.bottom_arrow_left {
+	visibility: hidden;
+}
+
+.marker {
+	border-radius: 10px;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	margin-left: 6px;
+	border: 2px solid white;
+	cursor: pointer;
+}
+
+.marker:first-child {
+	margin-left: 0;
+}
+
+.dot {
+	border: 2px solid #000;
+	border-radius: 10px;
+	display: inline-block;
+	width: 10px;
+	height: 10px;
+	position: absolute;
+}
+
+.marker:hover, .marker_selected {
+	border-color: #444;
+	box-shadow: 0 0 10px #888;
+}
+
+.marker_color {
+	width: 10px;
+	height: 10px;
+	border-radius: 10px;
+}
+
+.marker_image {
+	display: block;
+}
+
+.diagram_container {
+	display: inline-block;
+	position: relative;
+	padding-bottom: 4px;
+	width: 303px;
+	height: 514px;
+}
+
+.diagrams {
+	height: 527px;
+	overflow: hidden;
+	text-align: center;
+}
+
+.diagram_thumb {
+	cursor: pointer;
+}
+
+#content_edit, #edit_dot_dialog, #tooltip, #clear_search,
+#delete_note_confirmation_dialog, #finalize_note_confirmation_dialog,
+#cancel_changes_confirmation_dialog {
+	display: none;
+}
+
+.trial_notice {
+	display: none;
+	margin-bottom: 10px;
+}
+
+#dot_text {
+	height: 100px;
+	width: 90%;
+	resize: none;
+}
+
+.marker_bar {
+	text-align: center;
+	margin: 5px 0;
+}
+
+.text_cell div {
+	font-weight: normal
+}
+
+.text_cell {
+	margin-bottom: 6px;
+	float: none;
+	width: 100%;
+	font-weight: bold;
+}
+
+.text_cell textarea {
+	width: 95%;
+	height: 120px;
+	border: 1px solid grey;
+	font-weight: normal;
+	padding: 5px;
+	resize: none;
+}
+
+.text_cell textarea[disabled] {
+	background-color: #fff;
+}
+
+.diagram_section_dropdown {
+	width: auto;
+	text-align: center;
+	right: 20px;
+	position: absolute;
+	z-index: 100;
+	margin-top: 3px;
+}
+
+.section_menu {
+	display: inline;
+}
+
+.soap_diagram_button, .diagrams_list_button {
+	background-repeat: no-repeat;
+	background-size: contain;
+	background-position: 8px 0;
+}
+
+.soap_button {
+	background-image: url(../img/notes/soap.png);
+}
+
+.diagram_button {
+	background-image: url(../img/notes/muscular_small.png);
+}
+
+#section_menu .single_button {
+	font-weight: normal;
+	border-radius: 99px;
+	width: 36px;
+	height: 36px;
+	display: inline-block;
+	box-sizing: border-box;
+	cursor: pointer;
+	margin-right: 0;
+}
+
+.section_select {
+	position: absolute;
+	padding: 10px;
+	z-index: 10;
+	background-color: #fff;
+	border: 1px solid grey;
+	border-radius: 5px;
+	display: none;
+	width: 250px;
+	right: 0;
+	top: 36px;
+	margin: 0;
+}
+
+.section_items {
+	margin: auto;
+	width: 209px;
+}
+
+.section_item {
+	cursor: pointer;
+	float: left;
+}
+
+.section_diagram {
+	display: none;
+	cursor: pointer;
+	width: 80px;
+}
+
+.section_diagram img {
+	padding: 0 5px;
+}
+
+#section_diagrams {
+	overflow: auto;
+	max-height: 430px;
+}
+
+.favorite {
+	cursor: pointer;
+	margin-top: -31px;
+	display: table;
+	color: #B88C1B;
+	font-size: 0.8em;
+}
+
+.note_action_section {
+	display: inline-block;
+	margin-bottom: 20px;
+}
+
+#note_cancel_section {
+	text-align: left;
+	float: left;
+	clear: both;
+}
+
+.overall_condition_table {
+	margin: auto;
+}
+
+.overall_condition_table td {
+	text-align: center;
+	vertical-align: middle;
+}
+
+#tooltip_text {
+	width: 150px;
+	float: left;
+}
+
+#tooltip {
+	width: 200px;
+	min-height: 64px;
+	padding: 5px;
+}
+
+#tooltip_actions {
+	float: left;
+	border-right: 2px solid lightgrey;
+	margin-right: 10px;
+}
+
+.small_icon_button {
+	cursor: pointer;
+	width: 32px;
+	height: 32px;
+	margin: auto;
+}
+
+.show_note_menu_button {
+	cursor: pointer;
+}
+
+.tooltip_edit_button {
+	background-image: url(../img/notes/icons/pencil.png);
+}
+
+.tooltip_close_button {
+	background-image: url(../img/notes/icons/undo.png);
+}
+
+.edit_button {
+	background-image: url(../img/notes/icons/edit.png);
+}
+
+.view_button {
+	background-image: url(../img/notes/icons/view.png);
+}
+
+.duplicate_button {
+	background-image: url(../img/notes/icons/duplicate.png);
+}
+
+.intake_button {
+	background-image: url(../img/notes/icons/intake.png);
+}
+
+.new_button {
+	background-image: url(../img/notes/icons/new.png);
+}
+
+.notes_top_panel_title {
+	float: left;
+	width: 45%;
+}
+
+.notes_top_panel_input {
+	float: left;
+	width: 55%;
+}
+
+.edit_note_link {
+	float: right;
+	cursor: pointer;
+}
+
+.note_menu {
+	width: 100%;
+}
+
+.note_menu td {
+	border-right: 1px solid #000;
+	padding: 5px;
+	text-align: center;
+}
+
+.note_menu td:last-child {
+	border: 0;
+}
+
+#soap {
+	display: none;
+}
+
+#date_menu {
+	position: absolute;
+	z-index: 150;
+	margin-top: 3px;
+}
+
+#soap_content {
+	margin-top: 50px;
+}
+
+#created_date {
+	cursor: pointer;
+	text-decoration: underline;
+	color: #273272;
+}
+
+#notes_list .bottom_border {
+  border-bottom: 1px solid #bbb;
+  margin: 8px 0;
+}
+
+#recent_notes > h3 {
+	margin: 0 0 10px 0;
+}
+
+@media screen and (min-width: 29em) {
+	.notes_top_panel {
+		width: 96%;
+	}
+	#recent_notes > h3 {
+		margin-bottom: 4px;
+	}
+}
+
+@media screen and (min-width: 880px) {
+	#date_menu {
+		position: relative;
+	}
+
+	#soap_content {
+		margin-top: 0;
+	}
+
+	.section_select {
+		width: 400px;
+		margin: 0 auto 0 -278px;
+		right: auto;
+	}
+
+	.diagram_section_dropdown {
+		right: auto;
+		position: relative;
+		width: 85%;
+		margin-left: 37px;
+	}
+}
+
+@media screen and (min-width: 55em) {
+	.new_client_link {
+		margin: 7px 0 0 2px;
+		width: auto;
+	}
+
+	#search_client_filter_note, #search_client_new_note {
+		width: 140px;
+	}
+
+	.notes_top_panel_title {
+		margin-right: 5px;
+	}
+
+	.notes_top_panel_title, .notes_top_panel_input {
+		width: auto;
+	}
+
+	.clients_search {
+		width: auto;
+		float: right;
+	}
+
+	.add_note {
+		width: auto;
+	}
+
+	.text_cell {
+		float: left;
+		width: 50%;
+	}
+
+	.text_cell div {
+		width: 90%;
+	}
+
+}

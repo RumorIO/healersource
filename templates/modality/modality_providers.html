@@ -1,0 +1,19 @@
+<h3>{{ modality.title }} Providers Near You</h3>
+
+{% if providers %}
+	{% for user in providers %}
+		{% include "healers/friend_box.html"  %}
+		{% include "healers/avatar_divider.html" %} {# THIS IS WRONG - need to have a different number than 5 !!! #}
+	{% endfor %}
+
+	{% if show_more %}
+		<div class="clearfix"></div>
+		<a style="float:right;" href="{% url 'search_modality' modality.id %}">More {{ modality.title }} Providers &raquo;</a>
+	{% endif %}
+
+{% else %}
+	<div class="message">
+		Unfortunately there aren't any {{ modality.title }} providers near you.
+		<p>If you know of any please do send them our way.</p>
+	</div>
+{% endif %}

@@ -1,0 +1,11 @@
+{% extends "account/signup.html" %}
+
+{% block head_title %}Select Account Type{% endblock %}
+{% block extra_head %}
+	{{ block.super }}
+	<script>
+		$(function(){
+			facebook_token = '{{ token }}';
+		});
+	</script>
+{% endblock %}

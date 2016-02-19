@@ -1,0 +1,27 @@
+{% load healer_tags %}
+
+<div class="provider rotate" {% if hide %}style="display: none;"{% endif %}>
+	<a href="{% url 'healer_info' featured_provider.user.username %}" class='floatbox provider_info' data-fb-options="type:ajax maxContentWidth: 768px afterItemEnd:resumeBothIntervals">{% featured_image featured_provider.user %}</a>
+	<div class="panel">
+		<div class="panel_title">
+			<div class="icon_hand"></div>
+			<span><a href="{% url 'healer_info' featured_provider.user.username %}" class='floatbox provider_info' data-fb-options="type:ajax maxContentWidth: 768px afterItemEnd:resumeBothIntervals">{{ featured_provider.full_name }}</a></span>
+			<span class="icon {% rating_star_css_class featured_provider.ratings_average %}"></span>
+		</div>
+		<div class="content">
+			<span class="city">{{ featured_provider.default_location_city }}</span>
+			{% with featured_provider.modality_set.all as modalities %}
+				{% include 'healers/healer_specialties_list.html' %}
+			{% endwith %}
+
+			<div class="clearfix">
+				<a href="{{ featured_provider.healer_profile_url }}"
+					class="nav_icon nav_client_blue">See Full Profile &raquo;</a>
+				{% if is_schedule_visible %}
+					<a href="{{ featured_provider.healer_profile_url }}#schedule_content"
+						class="nav_icon nav_schedule_blue">Schedule Online &raquo;</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>

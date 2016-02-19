@@ -1,0 +1,10 @@
+<a
+	{% if phonegap %}
+		href="{% url 'embed_full' healer.user.username %}" target="_blank"
+	{% else %}
+		href="{{ healer.healer_profile_url }}#schedule_content"
+	{% endif %}
+
+	class="single_button orange_button nav_icon nav_schedule book_online_button book_online_button_two_line">
+		Book<br />Online
+</a>

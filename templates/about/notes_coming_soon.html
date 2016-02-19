@@ -1,0 +1,22 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Client Notes: Coming Soon!{% endblock %}
+
+{% block page_title %}<h1>Client Notes: Coming Soon</h1>{% endblock %}
+
+{% block body %}
+	<p>We're really excited to announce the latest addition to your HealerSource toolbox: Client Notes.</p><p> You'll be able to track your clients' condition over time and get insight into their progress. Designed to be super easy to use - you can add annotations right to the diagrams and keep your session notes in SOAP format.</p>
+	<p>We're also making iPhone and Android Apps to match!</p>
+{#	<p>Enter your best email address below to be part of our pre-launch BETA program. We want your input and ideas so we can make this the best Client Notes App ever!</p>#}
+{#<div style="color: #AF4C4C; padding: 4px;">{{ form.email.errors.0 }}</div>#}
+{#<form class1="uniForm" method="POST" action="." name="signup">#}
+{#	{% csrf_token %}#}
+{#	<input id="id_email" name="email" type="text" placeholder="Enter Email Here"#}
+{#	       style="height:22px; width:320px; border:1px solid gray; font-size:16px; color:#444;"/>#}
+{#<input type="submit" />#}
+</form>
+	<hr/>
+	<p><i>Here's a sneak preview of what the App will look like....</i></p>
+	<img src="{{ STATIC_URL }}healersource/img/tour/notes_coming_soon.png" class="grey_box" />
+	<p>&raquo; <a class="contact">Contact Us</a> if you want to receive updates and news about Client Notes!</p>
+{% endblock body %}

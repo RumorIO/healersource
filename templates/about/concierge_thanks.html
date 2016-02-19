@@ -1,0 +1,7 @@
+{% extends "base_new.html" %}
+{% block head_title %}Thanks{% endblock %}
+
+{% block inner_content %}
+	{% include 'about/thanks.html' %}
+	<a href="{% url 'search_results' %}">&laquo; Back to Your Search Results</a>
+{% endblock %}

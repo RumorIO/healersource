@@ -1,0 +1,21 @@
+{% load client_tags %}
+
+{% if healers %}
+	{% for healer in healers %}
+		<div class="provider-item-container">
+			<div class="provider-item">
+				<div class="provider-link" data-healer-id="{{ healer.healer.id }}" data-treatment-type-length-id="{{ healer.treatment_type_length.pk }}">
+					{% avatar healer.healer.user 90 %}<br>
+					{{ healer.healer.user.get_full_name }}
+				</div>
+				{{ healer.healer.healer_under_profile_photo_no_locations }}
+				<a href="{% url 'healer_info' healer.healer.user.username %}" class="floatbox" data-fb-options="type:ajax maxContentWidth: 768px">View profile »</a>
+			</div>
+			<div class="single_button length_price">
+				${{ healer.treatment_type_length.cost }}
+			</div>
+		</div>
+	{% endfor %}
+{% else %}
+	Sorry, no availability for this Treatment right now. Please check back again later...
+{% endif %}

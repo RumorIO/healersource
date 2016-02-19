@@ -1,0 +1,20 @@
+<script>
+	var url_submit_feedback = "{% url 'submit_feedback' %}";
+	var url_geo_specialties = "{% url 'geo_specialties' %}";
+	var url_send_message = "{% url 'send_message' %}";
+	var url_create_join_invitation = "{% url 'create_join_invitation' %}";
+	var url_confirm_sent_join_invitation = "{% url 'confirm_sent_join_invitation' %}";
+	var url_send_invite = "{% url 'send_invite' %}";
+	var url_update_modality = "{% url 'modality_update' %}";
+	var url_new_client = "{% url 'new_client' %}";
+	var url_autocomplete_contacts = "{% url 'autocomplete_contacts' %}";
+	var url_autocomplete_city = "{% url 'autocomplete_city' %}";
+
+	if (typeof phonegap !== 'undefined' && phonegap) {
+		var login_url = 'login.html';
+		var url_error_report = 'error_report.html';
+	} else {
+		var login_url = "{% url 'login_page' %}";
+		var url_error_report = "{% url 'report_error' %}";
+	}
+</script>

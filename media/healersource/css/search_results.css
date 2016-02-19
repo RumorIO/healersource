@@ -1,0 +1,143 @@
+.col_group > .logo {
+	margin-top: 10px;
+	text-align: center;
+}
+
+#search_results {
+	overflow: hidden;
+	max-width: 100%;
+	margin: 0 auto;
+	padding-right: 4px;
+}
+.search_results_provider .about_cell {
+	clear: both;
+}
+
+#search_results .healer_modalities_list_header {
+	display: none;
+}
+#search_results #healer_modalities_list ul {
+	overflow: hidden;
+	margin: 0;
+	padding-left: 40px;
+	list-style: disc;
+	border-bottom: 1px solid #c6c6c6;
+}
+#search_results #healer_modalities_list ul li {
+	float: left;
+	border-bottom: none;
+	margin-right: 40px;
+}
+
+@media screen and (min-width: 25em) {
+	.search_results_provider .avatar_cell {
+		width: 155px;
+		max-width: 155px;
+	}
+	.search_results_provider .avatar_cell img {
+		width: 156px;
+		height: 156px;
+	}
+}
+
+@media screen and (min-width: 36.25em) {
+	#left_menu {
+		display: none;
+	}
+	div[role=navigation] {
+		text-align: center;
+	}
+}
+
+@media screen and (min-width: 40em) {
+	.search_results_provider {
+		max-height: 196px;
+	}
+	.search_results_provider .specialties_cell {
+		float: right;
+		width: 100px;
+		clear: none;
+	}
+	.search_results_provider .about_cell {
+		clear: none;
+		margin-left: 316px;
+		padding: 3px 10px 3px 8px;
+		border-left: 1px solid #d4d4d4;
+	}
+	.healer_modalities_list_header {
+		display: block;
+	}
+	#search_results #healer_modalities_list ul {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		border-bottom: none;
+	}
+	#search_results #healer_modalities_list ul li {
+		float: none;
+		border-bottom: 1px solid #c6c6c6;
+		margin-right: 0;
+	}
+
+	#search_results #healer_modalities_list ul li:last-child {
+		border-bottom: none;
+	}
+	.col_group .logo {
+		display: inline-block;
+		/*margin-top: 20px;*/
+		/*margin-left: 25px;*/
+	}
+}
+
+@media screen and (min-width: 63.5em) {
+	div[role=navigation] {
+		text-align: left;
+	}
+
+	#left_menu {
+		display: none;
+	}
+}
+
+#concierge {
+	display: none;
+}
+
+.concierge_info {
+	float: left;
+	text-align: center;
+}
+
+.concierge_info img {
+	width: 333px;
+}
+
+.concierge_content {
+	float: right;
+	margin: 20px 20px 0 0;
+	width: 52%;
+}
+
+.concierge_title {
+	text-align: right;
+	color: #0a1d7e;
+	font-size: 30px;
+	text-decoration: underline;
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+
+.concierge_text {
+	font-style: italic;
+	font-size: 18px;
+	margin-bottom: 20px;
+}
+
+#concierge input {
+	height: 30px;
+	width: 100%;
+	margin-bottom: 12px;
+	font-size: 15px;
+	padding-left: 12px;
+	font-style: italic;
+}

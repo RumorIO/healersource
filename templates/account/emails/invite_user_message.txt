@@ -1,0 +1,9 @@
+{% autoescape off %}
+
+Welcome to {{ SITE_NAME }}, the best way to find wellness practioners online.
+
+Click on this link to register and send your Appointment Request to {{ from_user_name }}:
+
+{{ accept_url }}
+
+{% endautoescape %}

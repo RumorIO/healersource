@@ -1,0 +1,23 @@
+{% if is_profile_visible %}
+	{% if other_user.email %}
+	Emails:
+		<ul>
+			<li>Primary - <a href="mailto:{{ other_user.email }}">{{ other_user.email }}</a></li>
+			{% for email in contact_info.emails.all %}
+				<li>{{ email.type }} – {{ email.email }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	{% if phone_numbers or contact_info.phone_numbers.all %}
+	Phone numbers:
+		<ul>
+			{% for phone in phone_numbers %}
+				<li>{{ phone.type }} – {{ phone.number }}</li>
+			{% endfor %}
+			{% for phone in contact_info.phone_numbers.all %}
+				<li>{{ phone.type }} – {{ phone.number }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+
+{% endif %}

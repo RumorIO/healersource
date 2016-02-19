@@ -1,0 +1,30 @@
+<div id="new_client_dialog" class="calendar_dialog calendar_dialog_list">
+<form action="" method="post" id="new_user_form" accept-charset="utf-8">
+	<ul>
+		<li>{{ new_user_form.first_name.label_tag }}{{ new_user_form.first_name }}
+		<li>{{ new_user_form.last_name.label_tag }}{{ new_user_form.last_name }}
+		<li>{{ new_user_form.phone.label_tag }}{{ new_user_form.phone }}
+		<li>{{ new_user_form.email.label_tag }}{{ new_user_form.email }}
+		<span class="helptext">An invitation will be sent to this email</span>
+		<li style="display: none;" class="address_field">{{ new_user_form.address_line1.label_tag }}{{ new_user_form.address_line1 }}
+		<li style="display: none;" class="address_field">{{ new_user_form.address_line2.label_tag }}{{ new_user_form.address_line2 }}
+		<li style="display: none;" class="address_field">{{ new_user_form.postal_code.label_tag }}{{ new_user_form.postal_code }}
+		<li style="display: none;" class="address_field">{{ new_user_form.city.label_tag }}{{ new_user_form.city }}
+		<li style="display: none;" class="address_field">{{ new_user_form.state_province.label_tag }}{{ new_user_form.state_province }}
+		<li style="display: none;" class="address_field">{{ new_user_form.country.label_tag }}{{ new_user_form.country }}
+		<li><a href="javascript:void(0);" onclick="show_address_fields(this);">Add Client Address</a></li>
+		<li>{{ new_user_form.send_intake_form.label_tag }}{{ new_user_form.send_intake_form }}
+	</ul>
+	<div id="new_user_errors" class="ui-helper-hidden form-errors">
+		<ul id="new_user_error_list" class="form_error_list"></ul>
+	</div>
+</form>
+<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/new_client_dialog_autocomplete.js"></script>
+<script>
+	function show_address_fields(element){
+		$('.address_field').show();
+		fb.resize();
+		$(element).remove();
+	}
+</script>
+</div>

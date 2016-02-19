@@ -1,0 +1,17 @@
+{% if not request.is_mobile %}
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/jquery.timeentry.css" />
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.timeentry.pack.js"></script>
+
+	<script type="text/javascript">
+		function activate_timepickers(){
+			$(".timepicker").timeEntry( {
+					'spinnerImage' : "{{ STATIC_URL }}healersource/img/icons/up_down.png",
+					'spinnerSize': [14, 20, 0],
+					'spinnerIncDecOnly': true,
+					'timeSteps': [1, 5, 0]});
+		}
+		$(function() {
+			activate_timepickers();
+		});
+	</script>
+{% endif %}

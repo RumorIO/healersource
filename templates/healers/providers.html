@@ -1,0 +1,19 @@
+{% extends "healers/referrals.html" %}
+
+{% block head_title %}Providers{% endblock %}
+
+{% block extra_head %}
+	{{ block.super }}
+	<script>
+		var url_enable_clients_visible_to_providers = '{% url "clients_visible_to_providers" "enable" %}';
+		var url_disable_clients_visible_to_providers = '{% url "clients_visible_to_providers" "disable" %}';
+	</script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/providers.js"></script>
+{% endblock %}
+
+
+{% block page_title %}<h1 class="nav_icon nav_providers">Providers</h1>{% endblock %}
+
+{% block body %}
+	{% include 'healers/providers_content.html' %}
+{% endblock %}

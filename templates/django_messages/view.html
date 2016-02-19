@@ -1,0 +1,27 @@
+{#{% extends "django_messages/base.html" %}#}
+
+{% load i18n %}
+{% load oembed_tags %}
+{% load timezone_filters %}
+{% load account_tags %}
+
+<div style="float: right;">{{ message.sent_at|localtime:account.timezone|date:"n/d/y g:m a"}}</div>
+<h3 style="margin-top: 8px; min-width: 300px;">{{ message.sender.client }}</h3>
+<strong>{{ message.subject }}</strong>
+<p>{% oembed %}{{ message.body|linebreaksbr }}{% endoembed %}</p>
+
+<hr>
+
+<div style="overflow: hidden; padding-bottom: 6px;">
+	<a class="highlight_button" style="float: left; color: #8E2323;" href="{% url 'messages_delete' message.id %}">
+		{% trans "Delete" %}
+	</a>
+
+	{% ifequal message.recipient user %}
+		<span class="highlight_button" style="float: right;" onclick="show_compose_message_dlg('{{ message.sender }}', '{% spaceless %}{{ message.sender.client }}{% endspaceless %}', false, '{{ message.subject|escapejs }}');">{% trans "Reply" %}</span>
+	{% endifequal %}
+</div>
+
+<script type="text/javascript">
+	$('.highlight_button').click(clickContained);
+</script>

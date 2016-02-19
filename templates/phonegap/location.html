@@ -1,0 +1,138 @@
+{% extends 'base_phonegap.html' %}
+{% load compress %}
+{% block extra_head %}
+	<link rel="stylesheet" href="css/jquery-ui.min.css" />
+	<script src="{{ STATIC_URL }}healersource/js/settings_location.js"></script>
+
+	<script>
+		var url_save_location = "{% url 'save_location_ajax' %}";
+		additional_setting_action = undefined;
+
+		function show_additional_form(){
+			additional_form_is_visible = true;
+			$('#additional_form').show();
+		}
+
+		function hide_additional_form(){
+			additional_form_is_visible = false;
+			$('#additional_form').hide();
+		}
+
+		$(function() {
+			changeBackButton(function(){
+				document.location.href = "create_profile.html";
+			});
+
+			$('form').submit(function(e) {
+	            e.preventDefault();
+	            data = {data: $('form').serialize(true)};
+				if(!access_token) {
+					data.email = localStorage.getItem('email');
+					data.password = localStorage.getItem('password');
+				}
+
+				rest_ajax_post_request(url_save_location, function(response) {
+					if (typeof response.error_list == 'undefined') {
+						document.location.href = 'specialties.html';
+					} else {
+						response.error_elements.forEach(function(error_element){
+							$(error_element).addClass('error');
+						});
+						$('#location_error_list').html(response.error_list);
+						$('#location_errors').removeClass('ui-helper-hidden').addClass('ui-helper-clearfix');
+					}
+				}, data);
+			});
+
+		})
+	</script>
+
+{% endblock %}
+
+{% block body %}
+	<div class="application2_container">
+        <div id="menu">
+        <div id="setup_body">
+			<h2>Set Your Location</h2>
+
+	<div id='zip_msg' class='message single_button'>Make sure to set your location so New Clients can find you!</div>
+	<div id="location_errors" class="form-errors ui-helper-hidden">
+		The following fields have errors:
+		<ul id="location_error_list"></ul>
+	</div>
+	<form action="" method="post" class="location_settings">
+		{% csrf_token %}
+		<table class="no_wrap no_wrap1" id="edit_location">
+			<tr>
+				<th>{{ location_form.city.label_tag }}</th>
+				<td>{{ location_form.city }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.state_province.label_tag }}</th>
+				<td>{{ location_form.state_province }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.postal_code.label_tag }}</th>
+				<td>{{ location_form.postal_code }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.country.label_tag }}</th>
+				<td>{{ location_form.country }}</td>
+			</tr>
+		</table>
+			<hr>
+			<span class="bold">Do you want to Schedule Online at this Location? </span>
+			<span class="highlight_container button_container combined_button_container">
+				<span class="tour_appointments">
+					<a href="#" class="icon_earth"
+					onclick="show_additional_form()">Yes</a>
+				</span><span
+					class="selected tour_availability">
+				<a href="#" class="icon_eye_crossed_out"
+				   onclick="hide_additional_form()">No</a>
+				</span>
+			</span>
+			<br><br>
+
+		<table id="additional_form" style="display: none;">
+			<tr>
+				<th>{{ location_form.address_line1.label_tag }}</th>
+				<td>{{ location_form.address_line1 }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.address_line2.label_tag }}</th>
+				<td>{{ location_form.address_line2 }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.title.label_tag }}</th>
+				<td>{{ location_form.title }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.addressVisibility.label_tag }}</th>
+				<td>{{ location_form.addressVisibility }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.book_online.label_tag }}</th>
+				<td>{{ location_form.book_online }}</td>
+			</tr>
+		</table>
+		<hr>
+		<div class="grey_box remote_sessions_option">
+			{% include "healers/settings/remote_sessions_option.html" with form=remote_sessions_form bold_label=True %}
+		</div>
+	</form>
+
+	{% include 'healers/settings/location_postal_code_warning.html' %}
+
+	<div style="display: none;" id='dialog_check_address'>
+		{% include "healers/settings/location_check.html" %}
+	</div>
+
+		<div id="setup_controls">
+			<a class="highlight_button" href="create_profile.html">« Back</a>
+			<a class="highlight_button" href="#" onclick="add_location(true, true);">Next »</a>
+		</div>
+		</div>
+        </div>
+	</div>
+{% endblock %}

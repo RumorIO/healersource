@@ -1,0 +1,41 @@
+{% load healer_tags %}
+{% load dajaxice_templatetags %}
+{% load metron_tags %}
+{% load compress %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}">
+<head>
+	{% include 'fonts.html' %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+	{% compress css %}
+	<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}floatbox/floatbox.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+	{% endcompress %}
+	{% jquery_ui_css_import %}
+
+	<script type="text/javascript">
+		var STATIC_URL = "{{ STATIC_URL }}";
+	</script>
+	{% include 'common_js_vars.html' %}
+
+	{% jquery_js_import %}
+	{% dajaxice_js_import %}
+	{% jquery_ui_js_import %}
+	{% compress js %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/util.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.ui.autocomplete.html.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}floatbox/floatbox_6.js"></script>
+	{% endcompress %}
+</head>
+
+<body class="floatbox_page">
+	{% block body %}
+	{% endblock %}
+
+	{% block extra_body %}
+	{% endblock %}
+</body>
+</html>

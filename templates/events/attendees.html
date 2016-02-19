@@ -1,0 +1,4 @@
+{% for attendee in attendees %}
+	{% include 'events/attendee_full_row.html' %}
+{% endfor %}
+{% if not attendees %}<p class="history">No Guests Yet.</p>{% endif %}

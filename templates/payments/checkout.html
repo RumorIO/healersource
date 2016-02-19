@@ -1,0 +1,8 @@
+<script>
+	var user_email = '{{ user.email }}';
+	var static_url = '{{ STATIC_URL }}';
+	var stripe_public_key = '{{ STRIPE_PUBLIC_KEY }}';
+	var url_save_card = '{% url "payments_save_card" %}';
+</script>
+<script type="text/javascript" src="https://checkout.stripe.com/v2/checkout.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/checkout.js"></script>

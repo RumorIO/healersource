@@ -1,0 +1,23 @@
+{% extends 'dashboard/base.html' %}
+
+{% block head_title %}Confirm Emails{% endblock %}
+{% block page_title %}<h1>Confirm Email</h1>{% endblock %}
+
+{% block body %}
+	<table>
+		<tr>
+			<th>Name</th>
+			<th>Email</th>
+			<th>Signup Date</th>
+			<th>Activation</th>
+		</tr>
+	{% for email in emails %}
+		<tr>
+			<td>{{ email.user.client }}</td>
+			<td>{{ email.email }}</td>
+			<td>{{ email.user.date_joined }}</td>
+			<td><a href="{% url 'dashboard:confirm_email' email.pk %}">Activate</a></td>
+		</tr>
+	{% endfor %}
+	</table>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% if is_review_permission and request.user != healer.user %}
+	{% if request.user.is_authenticated %}
+		<a href="{% if in_email %}{{ healer.healer_profile_url }}{% else %}{% url 'review_form' healer.user.username %}?fb=1{% endif %}" class="floatbox" data-fb-options="width:500">
+			{% if review_exist %}Edit My Review{% else %}Write a Review{% endif %} &raquo;
+		</a>
+	{% else %}
+		<a href="{% url 'review_signup' healer.user.username %}">Write a Review &raquo;</a>
+	{% endif %}
+{% endif %}

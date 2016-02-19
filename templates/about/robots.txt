@@ -1,0 +1,4 @@
+Sitemap: http://www.healersource.com/sitemap.xml
+
+User-agent: AdsBot-Google
+Disallow: /oauth/callback/facebook/

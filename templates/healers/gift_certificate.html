@@ -1,0 +1,15 @@
+{% load client_tags %}
+
+<div id="gift_certificate">
+	<div class="gift_certificate_avatar">
+		{% avatar healer.user 148 %}<br>
+		{{ healer }}
+	</div>
+	<div class="gift_certificate_details">
+		{% if purchase %}
+			{% include "healers/gift_certificate_purchase_form.html" %}
+		{% else %}
+			{% include "healers/gift_certificate_details.html" %}
+		{% endif %}
+	</div>
+</div>

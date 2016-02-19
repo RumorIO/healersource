@@ -1,0 +1,27 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}{{ healer_name }}'s Intake Form{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_intake">{{ healer_name }}'s Intake Form</h1>{% endblock %}
+
+{% block body %}
+
+	{% if success %}
+		<p class="message">Thanks for filling in {{ healer_name }}'s Intake Form!</p>
+	{% else %}
+
+		{% if is_concierge %}
+			<div class="single_button message" style="margin-left: 0;">Please fill in this brief Intake Form so that {{ healer_name }} can serve you better.</div>
+		{% endif %}
+
+		{% include "form_errors.html" %}
+
+		<form id="intake_answer_form" action="." method="post">
+			{% csrf_token %}
+			{{ form.as_p }}
+			<p><input type="submit" value="Submit Form" /></p>
+		</form>
+	{% endif %}
+
+{% endblock %}
+

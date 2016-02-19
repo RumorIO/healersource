@@ -1,0 +1,15 @@
+{% extends "blank_page_base.html" %}
+
+{% block content %}
+	<div style="text-align: center;">
+		<img src="{{ STATIC_URL }}healersource/img/home/logo.png" style="margin:108px 0 16px;" width="367"/>
+		<br />
+		<p style="margin-bottom: 0;"><em>We're really sorry but</em></p>
+		<h2 style="margin-top: 0;">Your Browser is Not Supported</h2>
+		<p><em>Please upgrade or try one of these other fine browsers</em></p>
+		<a href="http://www.firefox.com" target="_blank"><img src="{{ STATIC_URL }}healersource/img/icons/browsers/firefox.png" /></a>&nbsp;&nbsp;
+		<a href="http://google.com/chrome" target="_blank"><img src="{{ STATIC_URL }}healersource/img/icons/browsers/chrome.png" /></a>&nbsp;
+		<a href="http://www.apple.com/safari/" target="_blank"><img src="{{ STATIC_URL }}healersource/img/icons/browsers/safari.png" /></a>
+		<a href="http://windows.microsoft.com/en-us/internet-explorer/download-ie" target="_blank"><img src="{{ STATIC_URL }}healersource/img/icons/browsers/msie.png" /></a>
+	</div>
+{% endblock %}

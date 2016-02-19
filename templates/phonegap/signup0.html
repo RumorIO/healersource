@@ -1,0 +1,73 @@
+{% extends 'base_phonegap2.html' %}
+{% load compress %}
+{% block extra_head %}
+	<script>
+	var intake_form = false;
+	var FacebookSignup = false;
+	var url_ajax_signup = "{% url 'ajax_signup' %}";
+	var url_facebook_signup = "{% url 'ajax_facebook_signup' %}";
+	$(function() {
+		$('form').submit(function() {
+			if (!$('#id_password1').val()) {
+				$('#id_password2').val('anything'); // to remove password again error
+			}
+
+			if (!$('#id_email').val() || !$('#id_password1').val()) {
+				return false;
+			}
+			$('#id_password2').val($('#id_password1').val());
+			localStorage.setItem('email', $('#id_email').val());
+			localStorage.setItem('password', $('#id_password1').val());
+		});
+		$('#sign_up').click(function() {
+			$('form').submit();
+		});
+		$('.facebook_login').click(function(){
+			FacebookSignup = true;
+			facebook_login(facebook_login_callback, $('form'));
+		});
+		changeBackButton(function(){
+			document.location.href = "ghp_screen0.html";
+		});
+	})
+	</script>
+	<script type="text/javascript" src="site_media/static/healersource/js/signup.js"></script>
+
+	{% compress css %}
+		<link rel="stylesheet" href="css/login.css" />
+	{% endcompress %}
+{% endblock %}
+
+
+{% block body %}
+	<div class="application2_container">
+        <div id="menu">
+    		<a class="back_arrow_container" href="ghp_screen0.html"><div class="back_arrow"></div></a>
+			<div class="header_title">Sign Up</div>
+			<div class="header_logo_container"><a href="https://www.healersource.com" target="_blank"><div class="header_logo"></div></a></div>
+			<hr class="clearfix">
+			<form class="signup_client signup_form" method="post" action="">
+				<p style="font-weight: bold;">Lets get you signed up - so people know where to send the love!</p>
+				<div class="facebook_login">Sign Up with Facebook</div>
+				<br />
+				<h3>Or Sign Up Manually</h3>
+				<div class="form-errors ui-helper-hidden"></div>
+				<input type="email" id="id_email" name="email" placeholder="Whats Your Email?"><br/>
+				<input type="password" id="id_password1" name="password1" placeholder="Create a Password">
+				<br/>
+				<div class="btn" id="sign_up">Sign Up</div>
+				<input type="hidden" id="id_password2" name="password2"/>
+				<input type="hidden" name="type" value="client"/>
+				<input type="hidden" name="is_ambassador" value="0"/>
+				<input type="hidden" name="no_name" value="1"/>
+				<input type="hidden" name="plugin" value=""/>
+				<input type="hidden" name="next_url" value="my_info.html"/>
+				<input type="submit" class="hidden-submit">
+				<br />
+				<hr />
+				<a href="login.html">I already have a HealerSource account. <b>Log In</b></a>
+				<div class="clearfix"></div>
+			</form>
+        </div>
+	</div>
+{% endblock %}

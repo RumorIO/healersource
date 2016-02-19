@@ -1,0 +1,43 @@
+<div id="sh_box">
+	<div id="sh_send_healing_to">Sending To</div>
+	<p id='sh_full_name'>{{ next_random_person.name }}</p>
+
+	<div id='sh_img'>
+		<img src="{{ next_random_person.profile_pic }}" onLoad="image_loaded()" data-external />
+		<br>
+		{% if next_random_person.profile_url %}
+			<a href="{{ next_random_person.profile_url }}" target="_blank">Profile</a>
+			{% if next_random_person.fb_uid %} <span> | </span> {% endif %}
+			{% if not next_random_person.fb_uid %}
+				{% if not next_random_person.is_favorite %} <span> | </span> {% endif %}
+			{% endif %}
+		{% endif %}
+		{% if next_random_person.fb_uid %}
+			<a href="javascript:void(0);" onclick="send_sh_to_friend({{ next_random_person.fb_uid }});">Message</a>
+			{% if not next_random_person.is_favorite %} <span> | </span> {% endif %}
+		{% endif %}
+		{% if not next_random_person.is_favorite %}
+			<div id="favorite_{{ next_random_person.id }}" class="inline">
+				<a href="javascript:void(0);" onclick="add_favorite({{ next_random_person.id }}, '{{ next_random_person.type }}')">Add to Favorites</a>
+			</div>
+		{% endif %}
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div id="timer">0:00</div>
+	<div id="phrase"><span id="phrase_content"></span></div>
+
+	<div id='sh_friends_buttons' class="highlight_container button_container">
+	<span>
+		<a id="skip">Skip</a>
+	</span>
+		<span id="pause">Pause</span>
+		{#				<span id="start">Start</span>#}
+		<span><a id="timer_done">Next &raquo;</a></span>
+	</div>
+
+	<br>
+
+	{% include 'send_healing/fb_share_links.html' %}
+</div>

@@ -1,0 +1,35 @@
+{#<script>#}
+{#	if (phonegap) {#}
+{#		var link_book_thanks = 'book_thanks.html';#}
+{#	} else {#}
+{#		var link_book_thanks = '{% url "book_thanks" %}';#}
+{#	}#}
+{##}
+{##}
+{#	// pure js code: (not in js file because of STATIC_URL problems)#}
+{#	function redirect_to_book() {#}
+{#		window.location.href = link_book_thanks;#}
+{#	}#}
+{##}
+{#	window.twttr = (function (d,s,id) {#}
+{#		var t, js, fjs = d.getElementsByTagName(s)[0];#}
+{#		if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;#}
+{#		js.src="https://platform.twitter.com/widgets.js";#}
+{#		fjs.parentNode.insertBefore(js, fjs);#}
+{#		return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });#}
+{#	}(document, "script", "twitter-wjs"));#}
+{##}
+{#	twttr.ready(function (twttr) {#}
+{#	  twttr.events.bind('tweet', function(event) {#}
+{#		redirect_to_book();#}
+{#	  });#}
+{#	});#}
+{#</script>#}
+{#<h3>Get our Free Book "Top 10 FB Mktg Tips for Healers" by sharing#}
+{#via twitter</h3>#}
+{#<div>#}
+{#<a href="https://twitter.com/share"#}
+{#	data-text="https://www.healersource.com"#}
+{#	data-via="healersource" class="twitter-share-button" data-lang="en"></a>#}
+{#</div><br>#}
+{#You will be able to customize the tweet before sending.#}

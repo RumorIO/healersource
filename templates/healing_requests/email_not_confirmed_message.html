@@ -1,0 +1,3 @@
+{% if 'new_user_hr' in request.session and not request.user.is_authenticated and not request.session.new_user_hr.is_active or new_hr_user %}
+	<p class="single_button bold">Your Healing Request will be visible as soon as you confirm your email address.</p>
+{% endif %}

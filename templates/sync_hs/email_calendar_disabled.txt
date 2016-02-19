@@ -1,0 +1,2 @@
+Your google calendar has failed to sync {{ MAX_GCAL_SYNC_RETRIES }} times. We have disabled sync for your schedule.
+To re-enable sync, {% with link=google_calendar_sync_link %}{% include 'email_link.html' %}{% endwith %}.

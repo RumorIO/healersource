@@ -1,0 +1,5 @@
+{{ client_name }} has Requested to be your Client on HealerSource
+
+To Accept, {% with accept_url as link %}{% include "email_link.html" %}{% endwith %}
+
+To Decline, {% with decline_url as link %}{% include "email_link.html" %}{% endwith %}

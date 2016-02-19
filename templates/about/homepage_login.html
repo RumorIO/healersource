@@ -1,0 +1,29 @@
+<div class="panel">
+	<div class="panel_title panel_title_login"
+	     onclick="$('.panel_content_login').slideDown(500, function() { $(window).scrollTop(999999); });">Log In</div>
+	<div class="content panel_content_login" style="display: {{ hide_panel_content_login|yesno:"none,block" }};">
+		<form action="" method="post">
+			{% csrf_token %}
+			{% with login_form as form %}
+				{% include "form_errors.html" %}
+			{% endwith %}
+			<input type="hidden" name="login" value="1"/>
+			<input type="hidden" name="next" value="{{ request.GET.next }}" />
+			{{ login_form.email }}<br/>
+			{{ login_form.password }}<br/>
+			<div class="homepage_button" onclick="$(this).closest('form').submit();">Log In &raquo;</div>
+			<a href="{% url 'acct_passwd_reset' %}" style="line-height: 42px;">Forgot Password?</a><br/>
+			<label style="line-height: 42px;">{{ login_form.remember }} Keep Me Logged In</label>
+			<input type='submit' class="hidden-submit">
+			<hr />
+			<div style="float: left; margin: 10px;">
+				<b>or </b><fb:login-button size="large" onlogin="on_login()" data-scope="{{ facebook_scopes }}">Log in with Facebook</fb:login-button>
+			</div>
+		</form>
+	</div>
+</div>
+{% if show_signup %}
+	<div class="panel">
+		<a href="{% url 'signup' %}"><div class="panel_title" id="panel_title_signup">or Sign Up Today</div></a>
+	</div>
+{% endif %}

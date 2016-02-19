@@ -1,0 +1,7 @@
+{% load client_tags %}
+{% for member in members %}
+	<a onclick="send_healing_to({{ member.pk }});">{% avatar member.user 250 True False False True %}</a>
+{% endfor %}
+{% if not is_last_page %}
+	<div class="center"><a class="next" onclick="load_list('{{ mode }}', {{ next_page }}); $(this).parent().remove();">Load more</a></div>
+{% endif %}

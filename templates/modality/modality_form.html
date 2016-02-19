@@ -1,0 +1,40 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Add a Specialty{% endblock %}
+
+{% block page_title %}<h1>Add a Specialty</h1>{% endblock %}
+
+{% block body %}
+
+	{% if specialty_name %}
+		<p>Thanks for submitting {{ specialty_name }}!</p>
+		<p>Sometimes people submit inappropriate or invalid specialties, so your submission will not be publicly visible until our staff reviews it. You can still add it to your Profile right away.</p>
+		<p>We'll look over your specialty within a day or two and then get in touch by email.</p>
+		<p><i>Sorry for any inconvenience!</i></p>
+
+		<a href="{{ back_url }}">« Go Back</a>
+	{% else %}
+		{{ form.media }}
+		<form action="." method="post">{% csrf_token %}
+			{% include "form_errors.html" %}
+			<p>{{ form.title.label_tag }} {{ form.title }} </p>
+			<p>{{ form.category.label_tag }} {{ form.category }} </p>
+			<p>{{ form.description.label_tag }}<br/> {{ form.description }} </p>
+			<div class="single_button" style="color: #300E0E; padding: 0 18px;">
+				<p style="font-weight: bold;">Note: This Specialty Description will be shared by all members of the HealerSource community.</p>
+				<p>We would really appreciate if you follow these guidelines...</p>
+				<ol>
+					<li>Check our <a href="{% url 'modailty_list' %}">List of Specialties</a> to avoid adding duplicates.</li>
+					<li>Do not include any personal information like your Name, or words like "I" or "My". </li>
+					<li>If this specialty is something that only you practice, please put it in your "About Me" instead of adding it here.</li>
+					<li>Links to other sites are not allowed.</li>
+					<li>Do write at least a 4-5 sentence description so that Clients can get a good sense of what it is.</li>
+				</ol>
+				<p>Thanks!</p>
+				<p style="font-style: italic;">- The HealerSource Team</p>
+			</div>
+			<br />
+			<input type="submit" value="Submit"/>
+		</form>
+	{% endif %}
+{% endblock body %}

@@ -1,0 +1,28 @@
+{% extends "site_base.html" %}
+
+{% load healer_tags %}
+{% load compress %}
+
+{% block head_title %}Stripe Connect Options{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/settings.css" />
+	<script>
+	$(function(){
+		// Auto select flat rate option (#2)
+		$('input[name="booking_healersource_fee"][value="2"]').prop('checked', true);
+	});
+	</script>
+{% endblock %}
+{% block page_title %}<h1 class="nav_icon nav_pricing">Stripe Connect Options</h1>{% endblock %}
+
+{% block body %}
+
+	<div class="loading" id="loading"></div>
+
+	<div class="single_button">
+		<p>Congratulations! You can now take payments for online bookings and charge your clients manually through the Payments console.</p>
+		<p>Choose your options below and click "Save" to continue.</p>
+	</div>
+	{% include "payments/stripe_connect_settings_content.html" with hide_additional_options=True %}
+{% endblock %}

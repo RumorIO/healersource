@@ -1,0 +1,8 @@
+<h3 style="clear: none;">About {% if editing_self %}Me{% else %}{{ first_name }}{% endif %}</h3>
+
+{% if not healer.about %}
+	<div style="color: #444;">
+		Write a bit about {% if editing_self %}your{% else %}{{ first_name }}'s{% endif %} practice, your education, and any extra info for new clients:
+	</div>
+{% endif %}
+{{ form.about }}

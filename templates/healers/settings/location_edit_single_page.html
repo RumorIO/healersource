@@ -1,0 +1,15 @@
+{% extends 'site_base.html' %}
+
+{% block head_title %}Edit Location{% endblock %}
+
+{% block extra_head %}
+	{{ block.super }}
+	{{ form.media }}
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_tour">Edit Location</h1>{% endblock %}
+
+{% block body %}
+	{% include 'healers/settings/location_edit_content.html' %}
+{% endblock %}
+

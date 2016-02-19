@@ -1,0 +1,7 @@
+Appointment declined by {{ from_user_name }}.
+
+{{ appointment.plain_text }}
+{% if healer_link %}
+To schedule another appointment, click here:
+{{ healer_link }}
+{% endif %}

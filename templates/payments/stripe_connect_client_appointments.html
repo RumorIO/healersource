@@ -1,0 +1,5 @@
+{% for appt in appointments %}
+	<div><input data-amount="{{ appt.unpaid }}" data-id="{{ appt.id }}" data-date="{{ appt.start_date|date:'m/d/Y' }}" type="checkbox" class="appointment_checkbox" id="appointment_checkbox_{{ appt.id }}_{{ appt.start_date|date:'m_d_Y' }}" checked /><label for="appointment_checkbox_{{ appt.id }}_{{ appt.start_date|date:'m_d_Y' }}">{{ appt.start|date:"M j" }} - {{ appt.treatment_length.title }} - <b>${{ appt.unpaid|stringformat:".2f" }}</b></label></div>
+{% endfor %}
+<hr />
+<div class="align-right">Total - <b>$<span id="total"></span></b></div>

@@ -1,0 +1,73 @@
+{% extends 'base_phonegap2.html' %}
+{% load compress %}
+{% block extra_head %}
+	<link  href="js/cropper/cropper.css" rel="stylesheet">
+	<script src="js/cropper/cropper.js"></script>
+
+	<script>
+	var AvatarCropper = function(saveUrl, getAvatarLinkUrl) {
+		this.saveUrl = saveUrl;
+		this.getAvatarLinkUrl = getAvatarLinkUrl;
+		this.image = $('#image');
+		this.data = {};
+		updateDataWithAuth(this.data);
+
+		this.showAvatar();
+		$('#save_btn').unbind('click').click(this.cropAndSave.bind(this));
+	}
+
+	AvatarCropper.prototype = {
+		showAvatar: function() {
+			var that = this;
+			rest_ajax_get_request(this.getAvatarLinkUrl, function(response) {
+				that.image.prop('src', response.url);
+				// that.image.cropper({minCropBoxHeight: 99999});
+				that.image.cropper();
+			}, this.data);
+		},
+		cropAndSave: function() {
+			var data = $.extend({}, this.data);
+			data.photo = $('#image').cropper('getCroppedCanvas').toDataURL().split(',')[1];
+			data.cropped = true;
+			rest_ajax_post_request_long_timeout(this.saveUrl, function(error) {
+				if (error) {
+					showError(error);
+					return;
+				}
+				document.location.href = 'provider_choice.html';
+			}, data);
+		}
+	}
+
+	$(function() {
+		changeBackButton(function(){
+			document.location.href = "upload_photo.html";
+		});
+		new AvatarCropper(
+			"{% url 'save_photo_ajax' %}",
+			"{% url 'get_avatar_link_ajax' %}");
+	});
+	</script>
+	{% compress css %}
+		<link rel="stylesheet" href="css/login.css" />
+	{% endcompress %}
+{% endblock %}
+
+{% block body %}
+	<div class="application2_container">
+        <div id="menu">
+			<a class="back_arrow_container" href="upload_photo.html"><div class="back_arrow"></div></a>
+			<div class="header_title">Crop Your Profile Photo</div>
+			<div class="header_logo_container"><a href="https://www.healersource.com" target="_blank"><div class="header_logo"></div></a></div>
+			<hr class="clearfix">
+    		<div style="text-align: right">
+    			<button id="save_btn" type="button" class="btn">Crop and Save</button>
+    		</div>
+    		<br>
+    		<img id="image" width="320" height="320">
+        </div>
+	</div>
+{% endblock %}
+
+
+

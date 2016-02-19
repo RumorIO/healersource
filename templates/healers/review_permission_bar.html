@@ -1,0 +1,14 @@
+<div style="margin-bottom: 10px; padding: 12px;" class="grey_box">
+	<span class="tour_visibility_bar">Who can leave reviews for you:</span>
+	<div style="display: inline-block;" id="schedule_visiblity_selector" class="button_container highlight_container">
+			<span class="green_button {% if healer.review_permission == healer.VISIBLE_EVERYONE %}selected green_button_selected{% endif %}"
+						><a href="{% url 'set_review_permission' 'everyone' %}" class="icon_earth">Everyone</a></span>
+
+		<span class="my_clients_only {% if healer.review_permission == healer.VISIBLE_CLIENTS %}selected{% endif %}"
+					><a href="{% url 'set_review_permission' 'clients' %}" class="icon_users_gold">My Clients Only</a></span>
+
+		<span class="red_button {% if healer.review_permission == healer.VISIBLE_DISABLED %}selected red_button_selected{% endif %}"
+					><a href="{% url 'set_review_permission' 'disabled' %}" class="icon_eye_crossed_out">Nobody (Hide All Current Reviews)</a></span>
+
+	</div>
+</div>

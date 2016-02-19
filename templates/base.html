@@ -1,0 +1,108 @@
+{% load i18n %}
+{% load dajaxice_templatetags %}
+{% load healer_tags %}
+{% load uni_form_tags %}
+{% load compress %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}">
+<head>
+	{% include 'fonts.html' %}
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>{% block head_title_base %}{% block head_title %}{% endblock %}{% if SITE_NAME %} :: {{ SITE_NAME }}{% endif %}{% endblock %}</title>
+	<link rel="shortcut icon" href="{{ STATIC_URL }}healersource/img/favicon.ico" />
+	<link rel="apple-touch-icon" sizes="152x152" href="{{ STATIC_URL }}healersource/img/touch-icon-ipad-retina.png">
+
+	{% include "og.html" %}
+	{% block og-image %}<meta property="og:image" content="https://www.healersource.com/static/default/healersource/img/hs_logo_og.png" />{% endblock %}
+
+	<link rel="stylesheet" href="{{ STATIC_URL }}uni_form/uni-form.css" />
+	{% jquery_ui_css_import %}
+	{% compress css %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}tinydropdown/tinydropdown.css" />
+		<link rel="stylesheet" href="{{ STATIC_URL }}floatbox/floatbox.css" />
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+	{% endcompress %}
+
+	{% jquery_js_import %}
+
+
+	{% dajaxice_js_import %}
+	{% jquery_ui_js_import %}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/underscore-min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/util.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.placeholder.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}tinydropdown/tinydropdown.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.ui.autocomplete.html.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/csrf.js"></script>
+
+	{% endcompress %}
+	<script type="text/javascript" src="{{ STATIC_URL }}floatbox/floatbox_6.js"></script>
+	<script>
+		var STATIC_URL = "{{ STATIC_URL }}";
+		$(document).ready(function(){ $(':input[placeholder]').placeholder(); });
+	</script>
+	{% include 'search_vars.html' %}
+	{% include 'common_js_vars.html' %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/search.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/healer_search_autocomplete.js"></script>
+
+	{% block extra_head_base %}
+		{% block extra_head %}{% endblock %}
+	{% endblock %}
+
+	{% block extra_head_last %}
+	{% endblock %}
+
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/respond.src.js"></script>
+	{% endcompress %}
+</head>
+
+<body class="hs_bg">
+{% include 'impersonate.html' %}
+{#{% url 'home' as home_url %}#}
+<div id="left_column">
+	<div class="smallscreen_logo"><a href="{% url 'home' %}"><img src="{{ STATIC_URL }}healersource/img/home/logo.png" width="367"></a></div>
+	<div id="logo"><a href="{% url 'home' %}"><img src="{{ STATIC_URL }}healersource/img/hs_logo.png" width="183" height="150"></a></div>
+	{% include 'nav_top_mobile_buttons.html' %}
+	{% block left_menu %}{% endblock %}
+</div>
+{#		{% include 'downtime.html' %}#}
+<div class="buttons_inner">
+	{% include 'nav_top.html' %}
+
+</div>
+<div class="content_frame hsfont">
+	<div>
+		<div id="page_title">{% block page_title %}{% endblock %}</div>
+		<div id="body">
+			{% block body %}{% endblock %}
+			<div class="clearfix"></div>
+		</div>
+	</div>
+</div>
+
+{% include "base_content_feedback_box.html" %}
+
+{% block extra_body_base %}
+	{% block extra_body %}{% endblock %}
+{% endblock %}
+
+{% include "base_content_compose_dlg.html" %}
+
+<form id='common-form' action='' style='display:none'>
+	{% csrf_token %}
+	<input type=submit id='common-submit'>
+</form>
+
+{% compress js %}
+	<script src="{{ STATIC_URL }}healersource/js/healer_search.js"></script>
+{% endcompress %}
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<script>
+	var url_ajax_signup = "{% url 'ajax_signup' %}";
+	var url_signup_client_validate = "{% url 'signup_client_validate' %}";
+	{% if facebook_signup %}
+		var FacebookSignup = true;
+		var url_facebook_signup = "{% url 'ajax_facebook_signup' %}";
+	{% else %}
+		var FacebookSignup = false;
+	{% endif %}
+	var intake_form = {{ intake_form|yesno:"true,false" }};
+</script>
+
+<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/signup.js"></script>
+<div id="signup_dlg" class="hidden">
+	<div id="signup_panel" class="panel_content_signup">
+		<form class="signup_form" id="signup_form" method="post">
+			{% csrf_token %}
+			<div class="clearfix"></div>
+			<div class="form-errors ui-helper-hidden"></div>
+			<input type="hidden" name="type" id="signup_type"/>
+			<input type="hidden" name="is_ambassador" id="is_ambassador" value="0"/>
+			<input type="hidden" name="plugin" value="{% if embed %}{{embed.username}}{% endif %}"/>
+			{% for field in signup_form %}
+				{{ field }}
+				{% if not forloop.last and not field.is_hidden %}<br/>{% endif %}
+			{% endfor %}
+			<input type="submit" class="hidden-submit">
+		</form>
+	</div>
+</div>
+
+<div id="signup_selection_dlg" class="hidden">
+	<div class="content panel_content_signup flex">
+		<div class="client_signup_button highlight_button extra_padding signup_type_selection_button" onclick="open_signup_dlg('client')">
+			<img src="{{ STATIC_URL }}healersource/img/user.png" width="64" height="64" /><br />
+			I'm a Client
+		</div>
+		<div class="provider_signup_button highlight_button extra_padding signup_type_selection_button" onclick="open_signup_dlg('healer')">
+			<img src="{{ STATIC_URL }}healersource/img/hand.png" width="64" height="64" /><br />
+			I'm a Provider
+		</div>
+		<div class="wcenter_signup_button highlight_button extra_padding signup_type_selection_button" onclick="open_signup_dlg('wellness_center')" style="white-space: nowrap;">
+			<img src="{{ STATIC_URL }}healersource/img/wellness_center.png" width="64" height="64" /><br />
+			Wellness Center<br>or Spa
+		</div>
+	</div>
+</div>

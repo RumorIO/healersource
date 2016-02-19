@@ -1,0 +1,84 @@
+{% if request.user.is_authenticated %}
+	<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css' />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/redmond/jquery-ui-1.8.12.custom.css" />
+
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	<script src="{{ STATIC_URL }}dajaxice/dajaxice.core.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery-ui-1.8.12.custom.min.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/util.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.ui.autocomplete.html.js"></script>
+	<!-- <script type="text/javascript" src="{{ STATIC_URL }}healersource/js/invite_postcard.js"></script> -->
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#search_provider").val('');
+			$("#search_provider").autocomplete({
+				source: "/autocomplete/search_name_healer/",
+				html: true,
+			});
+			$("#search_contacts").autocomplete({
+				source: url_autocomplete_contacts + "?show_term=1&with_providers=1",
+				position: {collision: 'fit'},
+				html: true,
+			});
+		});
+		var url_submit_feedback = "{% url 'submit_feedback' %}";
+	</script>
+	{% include 'common_js_vars.html' %}
+	<div>
+		{% if not check_client %}
+			<form action="/send_save_message_provider/{{cilent_id}}" method="get" id="new_message_form" class="uniForm" accept-charset="utf-8">
+			{% csrf_token %}
+			<div>
+				<big class="nav_icon nav_inbox"><b>Refer {{ client_name }} To</b></big>
+			</div>
+			<fieldset class="inlineLabels" style="border:none;">
+
+				<label for="search_provider">Provider:</label>
+				<div class="ctrlHolder ">
+					<input type="text" class="ui-autocomplete-input" id="search_provider" name="provider_input" required>
+				</div>
+
+				<label for="id_msgbody">Message:</label>
+				<div class="ctrlHolder " id="div_id_body">
+					<textarea class="textarea" name="message_body" cols="20" rows="24" id="id_msgbody">{{healer_message}}</textarea>
+				</div>
+			</fieldset>
+			<div>
+				<br>{{client_name}} will receive all of provider's info
+			</div>
+			<br><input type="checkbox" name="copy_checkbox"> Send me a copy of this referral<br>
+			<hr/>
+			<input type="Submit" value="Send" class="highlight_button" style="float: right;">
+			<input type='hidden' name='csrfmiddlewaretoken' value='randomchars' />
+		{% endif %}
+		{% if check_client %}
+			<form action="/send_save_message_client/{{cilent_id}}" method="get" id="new_message_form" class="uniForm" accept-charset="utf-8">
+				{% csrf_token %}
+				<div>
+					<big class="nav_icon nav_inbox"><b>Refer {{ client_name }} To</b></big>
+				</div>
+				<fieldset class="inlineLabels" style="border:none;">
+					<label for="search_provider">Client:</label>
+					<div class="ctrlHolder ">
+						<input type="text" class="ui-autocomplete-input" id="search_contacts" name="provider_input" required>
+					</div>
+
+					<label for="id_msgbody">Message:</label>
+					<div class="ctrlHolder " id="div_id_body">
+						<textarea class="textarea" name="message_body" cols="20" rows="24" id="id_msgbody">{{healer_message}}</textarea>
+					</div>
+				</fieldset>
+				<div>
+					<br>Your client will receive all of {{ client_name }}'s contact info
+				</div>
+				<br><input type="checkbox" name="copy_checkbox"> Send me a copy of this referral<br>
+				<hr/>
+				<input type="Submit" value="Send" class="highlight_button" style="float: right;">
+				<input type='hidden' name='csrfmiddlewaretoken' value='randomchars' />
+			</form>
+		{% endif %}
+
+	</div>
+{% endif %}

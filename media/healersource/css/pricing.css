@@ -1,0 +1,361 @@
+body {
+	padding: 0;
+}
+
+.content {
+	padding: 0;
+}
+
+.header_top_menu {
+	max-width: 1000px;
+	margin: auto;
+}
+
+.tools_column {
+	width: auto;
+}
+
+.page_content h1 {
+	text-transform: uppercase;
+	text-align: center;
+}
+
+.page_content {
+	text-align: center;
+	max-width: 690px;
+	margin: auto;
+	color: #222;
+	font-size: 21px;
+}
+
+#clouds {
+	height: 238px;
+	background-image: url('../img/pricing/clouds.jpg');
+	box-shadow: 0 0 12px;
+	overflow: hidden;
+	position: relative;
+	z-index: 2;
+}
+
+#avatars {
+	padding: 16px 0;
+	text-align: center;
+}
+
+#avatars img {
+	border-radius: 99px;
+	border: 3px solid #a2a08d;
+	margin: 10px;
+	width: 78px;
+	height: 78px;
+}
+
+.title {
+	text-transform: uppercase;
+	font-weight: bold;
+	text-align: center;
+	font-size: 28px;
+	border: 1px #888 solid;
+	border-width: 0 0 1px 0;
+	padding: 5px 0;
+	margin-top: 30px;
+}
+
+.block_content {
+	max-width: 550px;
+	margin: auto;
+}
+
+.block_content_container {
+	padding: 10px 0;
+	border-radius: 0;
+}
+
+.section {
+	box-shadow: 0 0 12px;
+	border-radius: 0;
+}
+
+.round_top, .round_bottom {
+	border-radius: 0;
+}
+
+#free_tools .block_content {
+	width: 80%;
+	max-width: none;
+	color: #222;
+}
+
+#free_tools .title {
+	color: #420c4e;
+	background-color: #edd8cd;
+}
+
+#free_tools ul {
+	margin: 0;
+	list-style-type: none;
+	list-style-image: url('../img/check.png');
+	padding: 0;
+	font-size: 24px;
+}
+
+#online_scheduling .title {
+	color: #552c0e;
+	background-color: #f9f0be;
+}
+
+#soap_notes .title {
+	color: #1d360c;
+	background-color: #e2ebcc;
+}
+
+#cc_processing .title {
+	color: #28356f;
+	background-color: #d7e4fb;
+}
+
+#free_tools .block_content_container{
+	background-color: #f3ece8;
+}
+
+.block_content_container .image_container {
+	text-align: center;
+	margin: 14px 0;
+}
+
+.block_content_container .image_container img {
+	margin-right: 20px;
+	max-width: 98%;
+}
+
+.block_content_container .image_container img:last-child {
+	margin-right: 0;
+}
+
+.block_content > hr {
+	display: none;
+	margin: 18px 30px 8px 30px;
+}
+
+#free_tools li {
+	margin: 14px;
+}
+
+#online_scheduling .block_content_container{
+	background-color: #fbf5e6;
+}
+
+#soap_notes .block_content_container{
+	background-color: #f0f3e8;
+}
+
+#cc_processing .block_content_container{
+	background-color: #e8ecf3;
+}
+
+#contact_us {
+	text-transform: uppercase;
+	max-width: 400px;
+	padding: 32px 0;
+}
+
+#contact_us h1 {
+	color: #021965;
+}
+
+#contact_us a {
+	color: #7c123d;
+	font-weight: bold;
+	font-size: 27px;
+}
+
+.small_desc {
+	color: #3b3b3b;
+	text-transform: none;
+	font-style: italic;
+	font-size: 21px;
+}
+
+#signup {
+	height: 718px67vw;
+	height: 718px;
+	background-image: url('../img/pricing/francesca-sm.jpg');
+	margin-top: 10px;
+	box-shadow: 0 0 12px black;
+	color: #f2f3f3;
+	font-size: 20px;
+	background-size: 100%;
+	background-repeat: no-repeat;
+	text-shadow: 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black, 0 0 2px black;
+}
+
+.signup_content {
+	padding: 15px;
+}
+
+.signup_button {
+	height: 55px;
+	max-width: 201px;
+	line-height: 56px;
+	border: 1px solid #000;
+	border-radius: 10px;
+	background-color: #f36155;
+	text-align: center;
+	text-shadow: none;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.prices_content {
+	text-transform: uppercase;
+	font-size: 25px;
+}
+
+.prices_title {
+	color: #222;
+	border: 1px #999 solid;
+	border-width: 1px 0;
+	font-weight: bold;
+}
+
+#online_scheduling .prices_title {
+	background-color: #F7F1D0;
+}
+
+#soap_notes .prices_title {
+	background-color: #E0E4D5;
+}
+
+#cc_processing .prices_title {
+	background-color: #CED9EC;
+}
+
+.prices_desc {
+	color: #2d5811;
+	border-left: 0;
+	font-style: italic;
+}
+
+.prices_block_element {
+	padding: 20px;
+	margin: auto;
+}
+
+.price {
+	width: 40%;
+	vertical-align: middle;
+}
+
+textarea {
+	width: 100%;
+}
+
+body {
+	max-width: 1060px;
+	margin: auto;
+}
+
+.join_our_community {
+	background-color: #faf6eb;
+	box-shadow: 0 0 12px black;
+	padding: 18px;
+	position: relative;
+	z-index: 1;
+}
+
+.join_our_community h1 {
+	font-size: 2.6em;
+}
+
+div.join_our_community:first-child {
+	margin-top: 10px;
+}
+
+#cc_processing .image_container > img:nth-child(2) {
+	margin-right: 0;
+}
+
+@media screen and (min-width: 500px) {
+	.signup_content {
+		padding: 30px;
+	}
+
+	.signup_button {
+		height: 80px;
+		max-width: 345px;
+		line-height: 78px;
+	}
+
+	#signup {
+		height: 66vw;
+		background-image: url('../img/pricing/francesca.jpg');
+		font-size: 35px;
+	}
+
+	#free_tools .block_content {
+		display: flex;
+	}
+
+	.tools_column {
+		width: 50%;
+	}
+
+	.prices_block {
+		display: flex;
+	}
+
+	.prices_title {
+		border: 0;
+		width: 35%;
+	}
+
+	#online_scheduling .prices_title {
+		background-color: #fbf5e6;
+	}
+
+	#soap_notes .prices_title {
+		background-color: #f0f3e8;
+	}
+
+	#cc_processing .prices_title {
+		background-color: #e8ecf3;
+	}
+
+	.prices_desc {
+		/*border-left: 1px #000 solid;*/
+		width: 65%;
+	}
+	.round_top {
+		border-radius: 10px 10px 0 0;
+	}
+
+	.section, .round_bottom {
+		border-radius: 0 0 10px 10px;
+	}
+
+	.block_content_container {
+		border-radius: 0 0 10px 10px;
+	}
+	.block_content > hr {
+		display: block;
+	}
+	#cc_processing .image_container > img:nth-child(2) {
+		margin-right: 20px;
+	}
+}
+
+#prices_or {
+	margin: 25px 0;
+	color: #444;
+	font-weight: bold;
+}
+
+#prices_or hr {
+	display: inline-block;
+	width: 50px;
+	margin: 0.3em 0.8em;
+}
+
+#signup_panel {
+	max-width: 555px;
+}

@@ -1,0 +1,16 @@
+{% load client_tags %}
+
+{% if healers %}
+	{% for healer in healers %}
+		<div class="provider-item-container">
+			<div class="provider-item" data-healer-id="{{ healer.id }}">
+				<div class="provider-link">
+					{% avatar healer.user 90 %}<br>
+					{{ healer.user.get_full_name }}
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+{% else %}
+	Sorry, no Providers are available right now. Please check back again later...
+{% endif %}

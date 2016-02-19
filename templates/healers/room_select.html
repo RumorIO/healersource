@@ -1,0 +1,27 @@
+</td></tr>
+<tr id="rooms_row" style="display: none"><th><label for="id_rooms">Rooms:</label></th><td>
+
+	<div id="location_select">
+		<input id="any_room" type="radio" name="location_select" value="any" {% if not values %} checked {% endif %} /><label for="any_room">Any Room</label><br>
+		<input id="selected_room_only" type="radio" name="location_select" value="selected" {% if values %} checked {% endif %} /><label for="selected_room_only">Selected Room(s) Only</label>
+	</div>
+
+	<select multiple="multiple" {{ attrs }} style="display: none">
+		{% for choice in original_choices %}
+			<option value="{{ choice.0 }}"></option>
+		{% endfor %}
+	</select>
+
+	{% for location, rooms in choices.items %}
+		<div class="room_select_location" style="display: none">
+			<ul>
+				<li><span style="text-decoration: underline;">{{ location }}</span>
+					<ul>
+						{% for id, name in rooms %}
+							<li><input class="room_select" type="checkbox" value="{{ id }}" id="room_{{ id }}" {% if id in values %} checked {% endif %}><label for="room_{{ id }}">{{ name }}</label>
+						{% endfor %}
+					</ul>
+				</li>
+			</ul>
+		</div>
+	{% endfor %}

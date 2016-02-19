@@ -1,0 +1,92 @@
+{#treatment_lengths|length {{ treatment_lengths|length }}<br>#}
+{#treatment_types|length {{ treatment_types|length }}#}
+<div id="calendar_container" {% if treatment_lengths|length > 1 and not preview %}style="display: none;"{% endif %}>
+	<div class="not-available-container">
+		<div id="not-available">
+			<div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix">
+				<a href="javascript:void(0)" onclick="$('#calendar').weekCalendar('prevWeek')" class="control_arrow control_arrow_left">&lt;</a>
+				<span>&nbsp;&nbsp;&nbsp;No Availability This Week&nbsp;&nbsp;&nbsp;</span>
+				<a href="javascript:void(0)" onclick="$('#calendar').weekCalendar('nextWeek')" class="control_arrow control_arrow_right">&gt;</a><br>
+				<hr>
+				<a href="javascript:void(0)" onclick="go_to_first_availability();">Go To First Availability »</a>
+			</div>
+		</div>
+	</div>
+	<div id="calendar" class="white_title"></div>
+	{% if locations %}
+		<table id="location_bar"><tr>
+			<td style="font-weight: bold;">{% if healer.location_bar_title %}{{ healer.location_bar_title }}{% else %}Locations: {% endif %}</td>
+			<td><div {# style="line-height: 1.4em; padding-top: 4px;" #}>
+				{% for loc in locations %}
+					{% if not loc.is_deleted %}
+					<span id="{{ loc.id }}">
+						{% with loc.color as color %}{% include "healers/color_box.html" %}{% endwith %}
+						{{ loc.text }}{% if loc.is_address_visible and loc.gmaps_address_text %}: {% autoescape off %}{{ loc.gmaps_address_text }}{% endautoescape %}{% endif %}
+					</span>
+					{% endif %}
+				{% endfor %}
+			</div></td>
+		</tr></table>
+	{% endif %}
+</div>
+
+{% include "healers/booking_dialogs.html" %}
+
+<script type="text/javascript">
+	{% include "healers/location_colors.js" %}
+
+	var healer_username = '{{ healer.user.username }}';
+	var healer_fullname = '{{ healer.user.client|escapejs }}';
+	var client_id = "{{ client_id }}";
+	var bookAheadDays = {{ healer.bookAheadDays }};
+	var First_Bookable_Time = Date.parseExact("{{ first_bookable_time }}", "yyyy-MM-ddTHH:mm:ss");
+	var setupTime = {{ healer.setup_time }};
+	var initSlots = {{ timeslot_list|safe }};
+	var Booking = true;
+
+	var Office_Hours_Start = '{{ healer.office_hours_start|time:"H:i" }}';
+	var Office_Hours_End = '{{ healer.office_hours_end|time:"H:i" }}';
+
+	var Appointment_Dialog_Title = '{{ appt_schedule_or_request }}';
+
+	var Is_Mobile = {{ request.is_mobile|lower }};
+
+	{% if preview %}
+		var Preview = true;
+	{% endif %}
+
+	//	$(document).ready(function() {
+	//		var minutes = First_Bookable_Time.getMinutes();
+	//		var hours = First_Bookable_Time.getHours();
+	//		var start_ceiling_half_hour = StartSlotsDate.clone();
+	//		start_ceiling_half_hour.setHours( (minutes > 30) ? ++hours : hours );
+	//		start_ceiling_half_hour.setMinutes( (Math.round(minutes/30) * 30) % 60 );
+	//
+	//		for (var i=0; i<initSlots.length; i++) {
+	//			if (Booking && (initSlots[i].start < First_Bookable_Time))
+	//				initSlots[i].start = start_ceiling_half_hour.clone();
+	//		}
+	//
+	//
+	//	});
+
+	function showFirstTreatment() {
+		{% if treatment_types %}
+			var treatment_type = {{ treatment_types.0.json_object|safe }};
+			changeTreatmentType(treatment_type);
+			changeTreatment(treatment_type.lengths[0]);
+
+		{% endif %}
+	}
+
+	{% if treatment_types|length == 1 or preview %}
+		$(document).ready(function() {
+			if(!is_smallscreen() && !is_mediumscreen()) {
+				// var treatment_type = {{ treatment_types.0.json_object|safe }};
+				// changeTreatmentType(treatment_type);
+				$('.treatment_title').trigger('click');
+			}
+		});
+	{% endif %}
+
+</script>

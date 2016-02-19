@@ -1,0 +1,79 @@
+<div id="add_timeslot_dlg" class="calendar_dialog">
+	<form>
+		<input type="hidden" />
+		<ul>
+			{% if is_wellness_center %}
+				{% if is_wellness_center.common_availability %}
+					<input type="hidden" value="{{ user.username }}">
+				{% else %}
+					<li id="timeslot_new" style="display: none;"><label for="timeslot_provider">Provider: </label>
+						<select id="timeslot_provider">
+							{% for provider in providers %}
+								{% with healer=provider.healer %}
+									<option value="{{ healer.user.username }}">{{ healer.user.client }}</option>
+								{% endwith %}
+							{% endfor %}
+						</select>
+					</li>
+					<li id="timeslot_edit" style="display: none;"><span>Provider: </span> <span class="healer_name"></span></li>
+				{% endif %}
+			{% endif %}
+			<li><span>Date: </span><span class="date_holder"></span></li>
+			<li><label for="start">Start Time: </label><input name="start" class="timepicker"/></li>
+			<li><label for="end">End Time: </label><input name="end" class="timepicker"/></li>
+			{% if locations|length > 0 %}
+				<li id="timeslot_location_row">
+					<label for="timeslot_location">Location:</label>
+					<select name="timeslot_location" id="timeslot_location">
+						{#							<option value="-1">Default</option>#}
+						{% for loc in locations %}
+							{% if not loc.is_deleted %}
+								<option value="{{ loc.id }}" selected>{{ loc.text }}</option>
+							{% endif %}
+						{% endfor %}
+					</select>
+				</li>
+			{% endif %}
+			<hr />
+			<li>
+				<label><input type="radio" name="weekly" value="1" id="timeslot_weekly1" checked
+							onclick="$('#timeslot_repeat_options').show(); hs_dialog('resize');"> Weekly</label>
+				<label><input type="radio" name="weekly" value="0" id="timeslot_weekly2"
+							onclick="$('#timeslot_repeat_options').hide(); hs_dialog('resize');"> One-Time</label>
+			</li>
+		</ul>
+
+		<div id="timeslot_repeat_options" style="border:1px solid #6CA6D1; padding: 10px; margin-top: 10px; display: none;">
+			<div style="float: left; margin-left: 4px;">Repeat:</div>
+			<div style="margin-left: 60px;">
+				<input type="radio" name="ongoing" id="timeslot_ongoing1" value="0"
+				       onclick="$('#timeslot_start_end_dates').hide(); hs_dialog('resize');"/>
+				<label for="timeslot_ongoing1">Forever</label>
+				<br/>
+				<input type="radio" name="ongoing" id="timeslot_ongoing2" value="1"
+				       onclick="$('#timeslot_start_end_dates').show(); hs_dialog('resize');"/>
+				<label for="timeslot_ongoing2">Limited Dates</label>
+			</div>
+			<ul id="timeslot_start_end_dates">
+				<li><label for="start_date">Start Date: </label><input name="start_date" id="start_date" class="datepicker" style="width: 80px;"/></li>
+				<li><label for="end_date">End Date: </label><input name="end_date" id="end_date" class="datepicker" style="width: 80px;"/></li>
+			</ul>
+		</div>
+
+	</form>
+</div>
+
+<div id="confirm_timeslot_reschedule_all" class="calendar_dialog">
+	<p>This is a Weekly Timeslot</p>
+	<p>Do you want to reschedule all instances of this timeslot or just this one?</p>
+</div>
+
+<div id="confirm_timeslot_delete_all" class="calendar_dialog">
+	<p>This is a Weekly Timeslot</p>
+	<p>Do you want to delete:</p>
+	<ul class="normal_list">
+		<li>All Weeks</li>
+		<li>This and All Future Weeks</li>
+		<li>or Just this One?</li>
+	</ul>
+</div>

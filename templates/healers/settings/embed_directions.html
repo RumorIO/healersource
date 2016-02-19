@@ -1,0 +1,11 @@
+<hr>
+<div class="single_button">
+	<img src="{{ STATIC_URL }}healersource/img/tour/embed.jpg" style="height: 118px; float: right; margin: 11px;" class="border_img" />
+	<h3 style="display: inline-block;">Embed Your Schedule into Your Own Website</h3>
+	<p>Did you know that you can put your HealerSource schedule directly into your own site? Its easy to provide your clients with a seamless and trustworthy experience!</p>
+	<p>Just copy and paste the code below into your page:</p>
+	<div class="clearfix"></div>
+	<textarea style="width: 90%; height: 69px;">&lt;iframe src="https://www.healersource.com/schedule/embed/{{ healer.user.username }}" width="700" height="1111" style="border: 0 !important;" &gt;&lt;/iframe&gt;
+	</textarea>
+	<p style="font-style: italic;">Then <a href="#" class="contact">Contact Us</a> and we will feature your site on our <a href="{% url 'tour' %}">Tour Page.</a> </p>
+</div>

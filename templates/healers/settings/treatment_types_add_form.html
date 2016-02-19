@@ -1,0 +1,34 @@
+{{ treatment_form.media }}
+{{ treatment_length_form.media }}
+
+<div class="add_box">
+	<h3>+
+		{% if is_wellness_center and username != user.username %}
+			Create a Treatment Type for {{ healer_name }}
+		{% else %}
+			Create a New Treatment Type
+		{% endif %}
+	</h3>
+	{% with treatment_form as form %}{% include "form_errors.html" %}{% endwith %}
+	{% with treatment_length_form as form %}{% include "form_errors.html" %}{% endwith %}
+
+	<form action="{% url 'treatment_types' %}" method="post" id="treatment_edit_form">
+		{% csrf_token %}
+		<ul class="errorMessages"></ul>
+		<table class="no_wrap no_wrap1">
+			{{ treatment_form.as_table }}
+			<tr>
+				<th><label for="id_length_minute">Length:</label></th>
+				<td><div>
+					{{ treatment_length_form.length }}
+					&nbsp;&nbsp; <label for="id_cost">Rate $:</label> {{ treatment_length_form.cost }}
+					<br />
+					<span style="font-style: italic; color: #444; ">You can add more Lengths after you click 'Add Treament Type' below</span>
+				</div></td>
+			</tr>
+		</table>
+		<input type="submit" value="Add Treatment Type" />
+		{% if is_wellness_center and username != user.username %}<input type="hidden" name="healer_id" value="{{ healer.pk }}">{% endif %}
+		{% if redirect %}<input type="hidden" name="redirect" value="{{ redirect }}" />{% endif %}
+	</form>
+</div>

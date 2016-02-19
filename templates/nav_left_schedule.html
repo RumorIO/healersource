@@ -1,0 +1,94 @@
+<li>
+	{% if location %}
+		<a class="nav_schedule" href="{% url 'schedule' location.id %}">{{ location }}
+	{% else %}
+		<a class="nav_schedule" href="{% url 'schedule' %}">Schedule
+	{% endif %}
+	{% if not additional_menu %}
+		<span>&gt;</span>
+	{% endif %}
+
+	{% if number_of_unconfirmed_appts > 0 %}
+		<span class="red_bubble" title="New Appointments!">
+				{{ number_of_unconfirmed_appts }}
+			</span>
+	{% endif %}
+	</a>
+	<ul>
+		{% if number_of_unconfirmed_appts > 0 %}
+			<li class="menu_highlighted">
+				{% if location %}
+					<a href="{% url 'appointments' location.id %}">{{ number_of_unconfirmed_appts }} Unconfirmed Appts</a>
+				{% else %}
+					<a href="{% url 'appointments' %}">{{ number_of_unconfirmed_appts }} Unconfirmed Appts</a>
+				{% endif %}
+			</li>
+		{% endif %}
+
+		<li>
+			{% if location %}
+				<a href="{% url 'appointments' location.id %}" class="icon_appointment">
+			{% else %}
+				<a href="{% url 'appointments' %}" class="icon_appointment">
+			{% endif %}
+			Appointments
+			{% if is_wellness_center and healers_in_wcenter_with_schedule_perm %}
+				{% if not additional_menu %}
+					<span>&gt;</span>
+				{% endif %}
+			{% endif%}
+			</a>
+			{% if healers_in_wcenter_with_schedule_perm|length > 0 %}
+				<ul>
+					{% for healer in healers_in_wcenter_with_schedule_perm %}
+						<li>
+							{% if location %}
+								<a href="{% url 'appointments' location.id healer.user.username %}">{{ healer.user.get_full_name }}</a>
+							{% else %}
+								<a href="{% url 'appointments' healer.user.username %}">{{ healer.user.get_full_name }}</a>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</li>
+		<li>
+			{% if location %}
+				<a href="{% url 'availability' location.id %}" class="icon_availability">
+			{% else %}
+				<a href="{% url 'availability' %}" class="icon_availability">
+			{% endif %}
+			Edit Availability
+			{% if is_wellness_center and healers_in_wcenter_with_schedule_perm and not is_wellness_center.common_availability %}
+				{% if not additional_menu %}
+					<span>&gt;</span>
+				{% endif %}
+			{% endif%}
+			</a>
+			{% if is_wellness_center and healers_in_wcenter_with_schedule_perm and not is_wellness_center.common_availability %}
+				<ul>
+					{% for healer in healers_in_wcenter_with_schedule_perm %}
+						<li>
+							{% if location %}
+								<a href="{% url 'availability' location.id healer.user.username %}">{{ healer.user.get_full_name }}</a>
+							{% else %}
+								<a href="{% url 'availability' healer.user.username %}">{{ healer.user.get_full_name }}</a>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</li>
+		<li><a href="{% url 'appointment_history' %}">History</a></li>
+		<li><a href="{% url 'embed_preview' request.user.username %}" class="{% if not request.is_mobile %}floatbox{% endif %} icon_eye" data-fb-options="width:750px height:100% className:naked">Preview Schedule &raquo;</a></li>
+		<li>
+			<a href="{% url 'schedule_settings' %}">
+				Settings
+				{% if not additional_menu %}
+					<span>&gt;</span>
+				{% endif %}
+			</a>
+			{% include 'nav_left_schedule_settings.html' %}
+		</li>
+	</ul>
+</li>

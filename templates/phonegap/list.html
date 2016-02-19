@@ -1,0 +1,120 @@
+{% extends 'base_phonegap2.html' %}
+{% load compress %}
+{% block extra_head %}
+<script>
+	var url_get_list_update = '{% url 'get_list_update' %}';
+	var list_version;
+	var list_new_version_available = localStorage.getItem('list_new_version_available');
+
+	function set_initial_vars(list_version, list_style, list_js, list_content, cache){
+		cache = typeof cache !== 'undefined' ? cache : '';
+		if (cache) {
+			cache = 'cache_';
+			localStorage.setItem('list_new_version_available', true);
+		}
+		localStorage.setItem(cache + 'list_version', list_version);
+		localStorage.setItem(cache + 'list_style', list_style);
+		localStorage.setItem(cache + 'list_js', list_js);
+		localStorage.setItem(cache + 'list_content', list_content);
+	}
+
+	function initialize(){
+		$('#style').html(localStorage.getItem('list_style'));
+		window.eval(localStorage.getItem('list_js'));
+		$('#content').html(localStorage.getItem('list_content'));
+		if (list_new_version_available) {
+			$('#version_update').show();
+		}
+	}
+
+	function update_version(){
+		$('#version_update').hide();
+		localStorage.removeItem('list_new_version_available');
+		list_new_version_available = false;
+		set_initial_vars(localStorage.getItem('cache_list_version'), localStorage.getItem('cache_list_style'), localStorage.getItem('cache_list_js'), localStorage.getItem('cache_list_content'))
+		initialize();
+	}
+
+    function onFacebookInviteError(error) {
+        if(error === 'Messaging unavailable.') {
+            var link;
+            var img;
+            if(device.platform === 'iOS') {
+                link = 'itms-apps://itunes.apple.com/app/id454638411';
+                img = 'site_media/static/healersource/img/landing/Available_on_the_App_Store_black-sm.png';
+            } else if(device.platform === 'Android') {
+                link = 'market://play.google.com/store/apps/details?id=com.facebook.orca';
+                img = 'site_media/static/healersource/img/landing/google-play-logo-sm.png';
+            }
+
+            var error = $('<div/>');
+            error.append($('<div/>').text('Please, install Facebook Messanger to send an invitation.'));
+            error.append($('<a/>').attr('href', link).append(
+                $('<img/>').attr('alt', 'Facebook Messanger').attr('src', img)));
+            showError(error.html());
+        } else if(error === "No active session" && device.platform === 'Android') {
+            facebook_login(facebook_invite);
+        } else {
+            alert(error);
+        }
+    }
+
+    function onFacebookInviteError(error) {
+        if(error === 'Messaging unavailable.') {
+            var link;
+            var img;
+            if(device.platform === 'iOS') {
+                link = 'itms-apps://itunes.apple.com/app/id454638411';
+                img = 'site_media/static/healersource/img/landing/Available_on_the_App_Store_black-sm.png';
+            } else if(device.platform === 'Android') {
+                link = 'market://play.google.com/store/apps/details?id=com.facebook.orca';
+                img = 'site_media/static/healersource/img/landing/google-play-logo-sm.png';
+            }
+
+            var error = $('<div/>');
+            error.append($('<div/>').text('Please, install Facebook Messanger to send an invitation.'));
+            error.append($('<a/>').attr('href', link).append(
+                $('<img/>').attr('alt', 'Facebook Messanger').attr('src', img)));
+            showError(error.html());
+        } else if(error === "No active session" && device.platform === 'Android') {
+            facebook_login(facebook_invite);
+        } else {
+            alert(error);
+        }
+    }
+
+    function facebook_invite(){
+        facebookConnectPlugin.showDialog(
+            {method: 'send',link: 'https://www.healersource.com'},
+            function(){},
+            onFacebookInviteError);
+    }
+
+	$(function(){
+		list_version = localStorage.getItem('list_version');
+		if (!list_version) {
+			set_initial_vars({{ list_version }}, '{{ list_style|safe }}', '{{ list_js|safe }}', '{{ list_content|safe }}');
+			list_version = localStorage.getItem('list_version');
+		}
+
+		if (!list_new_version_available) {
+			rest_ajax_get_request_long_timeout(url_get_list_update, function(response) {
+				if (response.list_version) {
+					set_initial_vars(response.list_version, response.list_style, response.list_js, response.list_content, true);
+					$('#version_update').show();
+				}
+			}, {version: list_version});
+		}
+		initialize();
+	});
+</script>
+{% endblock %}
+
+{% block body %}
+	<style id="style"></style>
+	<div class="application2_container">
+        <div id="menu">
+        	<div id="content"></div>
+        </div>
+	</div>
+{% endblock %}

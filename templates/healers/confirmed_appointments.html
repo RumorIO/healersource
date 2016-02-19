@@ -1,0 +1,154 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load account_tags %}
+{% load healer_tags %}
+{% load compress %}
+
+{#{% load dajaxice_templatetags %}#}
+
+{% block head_title %}{% user_display other_user as other_user_display %}{% blocktrans %}Appointments for {{ other_user_display }}{% endblocktrans %}{% endblock %}
+
+{% block extra_head %}
+<script>
+	var username = '';
+	var schedule_username = '';
+	var is_wellness_center = {% if is_wellness_center %} true {% else %} false {% endif %};
+	var url_error_report = "{% url 'error_report' %}";
+	var url_send_intake_form = "{% url 'send_intake_form' %}";
+	var url_intake_forms_list = "{% url 'intake_forms_list' %}";
+	var url_intake_form_answer = "{% url 'view_intake_form_answer' %}";
+	var url_create_note = "{% url 'notes_create_note_page' %}";
+	var url_view_notes = "{% url 'notes_view_notes_page' %}";
+</script>
+{#{% dajaxice_js_import %}#}
+{# {% jquery_ui_js_import %} #}
+{#<script type="text/javascript" src="{{ STATIC_URL }}pinax/js/avatar.js"></script>#}
+{% compress js %}
+<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/date.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.weekcalendar.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/weekcalendar-common.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/weekcalendar-schedule.js"></script>
+{% endcompress %}
+<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.ba-serializeobject.min.js"></script>
+
+{% compress css %}
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/jquery.weekcalendar.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+{% endcompress %}
+
+{% include 'healers/timepicker_includes.html' %}
+{% endblock %}
+
+{% block page_title %}<h1>{% blocktrans %}Confirmed Appointments{% endblocktrans %}</h1>{% endblock %}
+
+{% block body %}
+
+    {% user_display other_user as other_user_display %}
+
+    <div class="left_panel">
+        <div class="vcard">
+
+			<h3>{{ month|date:"F Y" }}</h3>
+			{% if appointments %}
+				<table width="97%" id="confirmed_appts_list" cellspacing="0">
+					{% regroup appointments by week as week_list%}
+					{% for appts in week_list %}
+						{% if forloop.counter0 %}<tr><td colspan="5"><hr/></td></tr>{% endif %}
+						{% for appt in appts.list %}
+							{%  with appt.json_object as appt_json %}
+							<tr class="appointment_row">
+								<td class="appt_cell_min" style="white-space:nowrap;">{% ifchanged %}{{ appt.date_text }}{% endifchanged %}</td>
+								<td class="appt_cell_min" style="white-space:nowrap;">
+									<span class="ui-icon ui-icon-refresh" style="display:inline; {% if appt.repeat_period %}padding{% else %}margin{% endif %}-left:16px;" ></span>
+									{{ appt.time_range_text }}
+								</td>
+								<td class="appt_cell_min" style="white-space:nowrap;">
+									{{ appt.treatment_length.treatment_type }} - ${{ appt.cost }}
+								</td>
+								<td class="appt_cell_min appt_cell_pointer">
+									<img src='{{ STATIC_URL }}healersource/img/edit.png'
+										title='Edit'
+										onclick='schedule_username = "{{ appt.healer.username }}";dlg_appt_edit(prepareDates({{ appt_json }}), updatedList, {{ appt.healer.id }})' class='edit_appointment_button' />
+								</td>
+								{% if is_wellness_center %}
+									<td>
+										{{ appt.healer.user.get_full_name }}
+									</td>
+								{% endif %}
+								<td class="appt_cell_max"><a href="{% url 'client_detail' appt.client.user.username  %}" class="client_detail floatbox" data-fb-options="type:ajax">{{ appt.client }}</a></td>
+
+								{% if locations|length > 1 %}
+									<td class="appt_cell_max">{{ appt.location.title }}</td>
+								{% endif %}
+
+								<td class="appt_cell_min appt_cell_pointer"><img src='{{ STATIC_URL }}healersource/img/delete.png'
+																				 title='Cancel'
+																				 onclick='schedule_username = "{{ appt.healer.username }}";dlg_appt_delete(prepareDates({{ appt_json }}), updatedList)'
+																				 class='cancel_appointment_button' />
+								</td>
+							</tr>
+							{% endwith %}
+						{% endfor %}
+					{% endfor %}
+				</table>
+			{% endif %}
+			<p>
+				{% if show_previous_month %}
+				<a href="{% url 'confirmed_appointments' previous_month|date:"Y" previous_month|date:"m" %}">&laquo; {{ previous_month|date:"F" }}</a> |
+				{% endif %}
+				<a href="{% url 'confirmed_appointments' next_month|date:"Y" next_month|date:"m" %}">{{ next_month|date:"F" }} &raquo;</a>
+			</p>
+
+        </div><!--/vcard-->
+    </div>
+    {% for healer_id, treatment_lengths in treatment_lengths.items %}
+		{% include "healers/schedule_dialogs.html" %}
+	{% endfor %}
+
+{% endblock %}
+
+{% block extra_body %}
+<script type="text/javascript">
+
+	defaultTimeslotLength = '{{ defaultTimeslotLength }}';
+
+	repeatChoices = [];
+	{% for key,val in repeat_choices %}
+		repeatChoices['{{ key }}'] = '{{ val }}';
+	{% endfor %}
+	var Locations = {{ locations_json|safe }};
+	Treatments = {};
+	    {% for id, treatment_lengths in treatment_lengths.items %}
+			{% for length in treatment_lengths %}
+				Treatments[{{ length.id }}] = {{ length.json_object|safe }};
+			{% endfor %}
+		{% endfor %}
+	var Location_Treatments = {};
+	{% for id, treatment_lengths in treatment_lengths_locations.items %}
+		Location_Treatments[{{ id }}] = {};
+		{% for length in treatment_lengths %}
+			Location_Treatments[{{ id }}][{{ length.id }}] = {{ length.json_object|safe }};
+			Treatments[{{ length.id }}] = {{ length.json_object|safe }};
+		{% endfor %}
+	{% endfor %}
+	var All_Rooms = {{ all_rooms_json|safe }};
+	var Treatments_Rooms = {{ treatments_rooms_json|safe }};
+	var SetupTimes = {{ setup_times_json|safe }};
+	var Names = {{ providers_names_json|safe }};
+
+
+	$(function() {
+		//create empty calendar to generate timeslots
+		$calendar = $('<div></div>').weekCalendar({timeFormat : "G:i", dateFormat : "n/j",
+													businessHours :{start: 0, end: 24, limitDisplay: false },
+													timeslotsPerHour : 2,
+													defaultEventLength : defaultTimeslotLength});
+		{% for healer_id in healer_ids %}
+			initTimesOnChange($("#edit_appointment_container_{{ healer_id }}"));
+		{% endfor %}
+		initDatePicker();
+	});
+
+</script>
+{% endblock %}

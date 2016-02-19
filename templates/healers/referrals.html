@@ -1,0 +1,90 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load healer_tags %}
+{% load compress %}
+
+{% block head_title %}My Referrals{% endblock %}
+{% block extra_head %}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.tipsy.js"></script>
+	{% endcompress %}
+
+	{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/tipsy.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer.css" />
+	{% endcompress %}
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_recommend">My Referrals</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "facebook_init.html" %}
+
+	{% with send_invite_button_text='Send a Referral Invitation' send_invite_button_float='left' invite_provider=1 %}
+		{% include 'healers/send_invite_button.html' %}
+	{% endwith %}
+
+	<div style="float: right;">{% include 'healers/recommend_search_providers_bar.html' %}</div>
+
+	<div class="clearfix" style="margin-bottom: 6px"></div>
+
+	<div class="grey_box recommend_box">
+		{% if friends %}<a id="you_recommend_help_link" href="#" style="float: right; margin: 8px 20px; font-weight: bold;">Help (?)</a>{% endif %}
+		<h3 class="nav_icon nav_recommend">You Refer To</h3>
+		{% with box_template='healers/recommendation_box.html' message='Referrals' friends_per_row=2 %}
+			{% include "clients/friend_loop.html" %}
+		{% endwith %}
+			{% if not friends %}<hr/>{% endif %}
+			<div id="you_recommend_help" style="margin-left: 8px; display: {{ friends|yesno:'none,block' }};" >
+				<u><b>To Refer To Someone</b></u>
+				<ol style=" {{ friends|yesno:',line-height: 1.9em;' }} margin-top: 4px; padding-left: 26px;">
+					<li>
+						If they already have a HealerSource Account
+						<ul><li>Use <b><i>"Refer to an Existing Provider"</i></b> above to find them</li></ul>
+					</li>
+					<li>If they aren't signed up with HealerSource yet
+						<ul><li>Click <b><i>"Send a Referral Invitation"</i></b> above</li></ul>
+					</li>
+					<li>If you have a list of contacts or a spreadsheet
+						<ul>
+							<li>Click <b><i>"Send a Referral Invitation"</i></b> above</li>
+							<li>Click <b><i>"Add people from a list or spreadsheet"</i></b></li>
+							<li>Then just copy and paste straight from your spreadsheet - easy!</li>
+						</ul>
+					<li>You can also import your contacts from <b>Facebook</b> or <b>Gmail</b> using the links below</li>
+				</ol>
+			</div>
+		{% if friends %}
+			<script type="text/javascript">
+				$(document).ready(function() {
+					$('#you_recommend_help_link').attr('original-title', $('#you_recommend_help').html());
+					$('#you_recommend_help_link').tipsy({ html:true, gravity:'ne' });
+				});
+			</script>
+		{% endif %}
+	</div>
+	<hr class="recommend_box" />
+	<div class="grey_box recommend_box">
+		<h3 class="nav_icon nav_recommend_left">Providers who Refer To You</h3>
+        {% with friends=referrals_to_me box_template='healers/recommendation_box.html' to_me=1 message='Providers Refer To You' friends_per_row=2 %}
+            {% include "clients/friend_loop.html" %}
+        {% endwith %}
+		<div class="clearfix"></div>
+	</div>
+	<div style="float:left;"><br />
+	{% with 1 as dont_clear_float %}{% include "friends_app/import_contacts_bar.html" %}{% endwith %}
+	<br>
+	</div>
+	<div>
+	{% if suggested_recommendations %}
+		<div class="single_button suggested_recommendations">
+			{% for user in suggested_recommendations %}
+				{% include "healers/friend_box.html" with recommend_link=1 %}
+			{% endfor %}
+		</div>
+	{% endif %}
+	</div>
+{% endblock %}

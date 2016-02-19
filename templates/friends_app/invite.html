@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}Invite New {{ invite_type|capfirst }}s{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_invite">Invite By Email</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "facebook_init.html" %}
+
+	{% if invitation_sent_to or client_requests or provider_requests %}
+		<div class="single_button">
+			{% if client_requests %}
+				Persons with these emails ({{ client_requests|join:", " }}) are already a members of Healersource. <br />
+				We've added them to your Clients.
+			{% endif %}
+			{% if provider_requests %}
+				Persons with these emails ({{ provider_requests|join:", " }}) are already a members of Healersource. <br />
+				We've added them to your Referrals.
+			{% endif %}
+			{% if  invitation_sent_to %}
+				Your invitation has been sent to {{ invitation_sent_to|join:", " }}.<br />
+			{% endif %}
+		</div>
+		<div class="message">Send another one!</div>
+	{% endif %}
+   {% include "friends_app/invite_form.html" %}
+
+{#	Import contacts from <a href="{% url import_google_contacts %}">Google</a>.<br/>#}
+{#	Import contacts from <a href="#" onclick="importFacebookContacts('{% url import_facebook_contacts %}')">Facebook</a>.#}
+
+{% endblock %}
+

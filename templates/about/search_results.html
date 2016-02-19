@@ -1,0 +1,54 @@
+{% extends phonegap|yesno:'base_phonegap.html,base_new.html' %}
+
+{% load i18n %}
+{% load pagination_tags %}
+{% load healer_tags %}
+
+{% block head_title %}{% if search_form.search_city_or_zipcode.value %}{{ search_form.search_city_or_zipcode.value }} {% endif %}{% if modality %}{{ modality }}{% endif %}{% endblock %}
+{% block extra_head %}
+	{{ block.super }}
+	{% include 'about/search/extra_head.html' %}
+
+	{% if phonegap %}
+		<link rel="stylesheet" href="css/jquery-ui.min.css" />
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/search.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/healer_search_autocomplete.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/healer_search.js"></script>
+
+		<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}healersource/css/healer.css" />
+
+		<link rel="stylesheet" type="text/css" href="site_media/static/tinydropdown/tinydropdown.css" />
+		<script type="text/javascript" src="site_media/static/tinydropdown/tinydropdown.js"></script>
+
+	{% endif %}
+	{% include 'search_vars.html' %}
+{% endblock %}
+
+{% block inner_content %}
+	{% include 'about/search/content.html' %}
+
+	{% if concierge %}
+		<div id="concierge">
+			<div class="concierge_info">
+				<a href="{{ concierge.healer_profile_url }}" target="_blank">
+				{% featured_image concierge.user %}<br>
+				{{ concierge }}</a><br>
+				{% include "healers/reviews.html" with healer=concierge %}
+			</div>
+			<div class="concierge_content">
+				<div class="concierge_title">Would you like a FREE Holistic Health Evaluation?</div>
+				<div class="concierge_text">Enter your contact information below and one of our specialists in {{ concierge_city }} will be in touch.</div>
+				<form action="" method="post">
+					{% csrf_token %}
+					{% with concierge_form as form %}
+						{% include "form_errors.html" %}
+					{% endwith %}
+					{{ concierge_form.name }}<br/>
+					{{ concierge_form.phone }}<br/>
+					{{ concierge_form.email }}<br/>
+					<div class="homepage_button" onclick="$(this).closest('form').find('input[type=submit]').trigger('click');">Get Started &raquo;</div>
+					<input type="submit" class="hidden-submit">
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}

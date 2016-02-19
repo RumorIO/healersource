@@ -1,0 +1,74 @@
+{% if modalities|length > 50 %}
+
+	{% regroup modalities by first_letter as letter_list %}
+	{% for letter in letter_list %}
+		<div class="letter_category">{{ letter.grouper }}</div>
+		{% for modality in letter.list %}
+			{#			{% include "modality/modality_list_row.html" %} Performance Improvement #}
+			<span style="{{ modality.visible|yesno:' ,color: #5f5f5f;' }}">
+				&bull;&nbsp;<a href="{% url 'modality_description' modality.id %}" class="modality_link floatbox" data-fb-options="type:ajax width:800">{{ modality.title }}</a>
+				{% if not modality.approved and request.user.is_staff %}
+					&nbsp;|&nbsp;
+					<a href="{% url 'modality_approve' modality.id %}">approve</a>
+                    {% if not modality.rejected %}/ <a href="{% url 'modality_reject' modality.id %}">reject</a>{% endif %}
+				{% endif %}
+
+				{#				<span style="display: none;">#}
+{#					&nbsp;&nbsp;-&nbsp;&nbsp;#}
+{#					<a href="{% url modality_description modality.id %}" class="modality_link floatbox" data-fb-options="type:ajax width:800"#}
+{#								>description</a>&nbsp;|&nbsp;#}
+{#					<a href="{% url modality_providers modality.id %}" class="find_providers_link floatbox" data-fb-options="type:ajax">find providers</a>#}
+{#					{% if not modality.approved and request.user.is_staff %}#}
+{#						&nbsp;|&nbsp;#}
+{#						<a href="{% url modality_approve modality.id %}">approve</a></li>#}
+{#					{% endif %}#}
+{#				</span>#}
+			</span>&nbsp;
+			<br />
+		{% endfor %}
+	{% endfor %}
+
+{% else %}
+
+	{% for modality in modalities %}
+		{#		{% include "modality/modality_list_row.html" %} Performance Improvement #}
+		<span style="{{ modality.visible|yesno:' ,color: #5f5f5f;' }} ">
+			&bull;&nbsp;<a href="{% url 'modality_description' modality.id %}" class="modality_link floatbox" data-fb-options="type:ajax width:800">{{ modality.title }}</a>
+			{% if not modality.approved and request.user.is_staff %}
+				&nbsp;|&nbsp;
+				<a href="{% url 'modality_approve' modality.id %}">approve</a>
+                {% if not modality.rejected %} / <a href="{% url 'modality_reject' modality.id %}">reject</a>{% endif %}
+			{% endif %}
+			{#			<span style="display: none;">#}
+{#				&nbsp;&nbsp;-&nbsp;&nbsp;#}
+{#				<a href="{% url modality_description modality.id %}" class="modality_link floatbox" data-fb-options="type:ajax width:800"#}
+{#							>description</a>&nbsp;|&nbsp;#}
+{#				<a href="{% url modality_providers modality.id %}" class="find_providers_link floatbox" data-fb-options="type:ajax">find providers</a>#}
+{#				{% if not modality.approved and request.user.is_staff %}#}
+{#					&nbsp;|&nbsp;#}
+{#					<a href="{% url modality_approve modality.id %}">approve</a></li>#}
+{#				{% endif %}#}
+{#			</span>#}
+		</span>&nbsp;
+		<br />
+	{% endfor %}
+
+{% endif %}
+
+<script type="text/javascript">
+	$(document).ready(function() {
+
+		$('.modality_list span').unbind('click');
+		{##}
+		{#		$('.modality_list > span').mouseenter(function( ) {#}
+		{#			$(this).css({'paddingRight': '0px'});#}
+		{#			$(this).find('span').show();#}
+		{#		});#}
+		{##}
+		{#		$('.modality_list > span').mouseleave(function( ) {#}
+		{#			$(this).css({'paddingRight': '99px'});#}
+		{#			$(this).find('span').hide();#}
+		{#		});#}
+		fb.activate('modality_list');
+	});
+</script>

@@ -1,0 +1,9 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+	{% if treatment_types|length == 0 %}
+		<p class='message'>Add One or More Services that you will be providing</p>
+	{% endif %}
+	{% with 1 as dont_show_no_treatment_types_warning %}{% include "healers/settings/treatment_types_content.html" %}{% endwith %}
+	{% include "healers/setup/setup_controls.html" %}
+{% endblock %}

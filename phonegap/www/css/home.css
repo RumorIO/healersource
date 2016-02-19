@@ -1,0 +1,29 @@
+.logo {
+	text-align: center;
+}
+.ghp_title {
+	text-align: center;
+	font-size: 2em;
+	font-weight: bold;
+}
+
+/*.hr_container {*/
+	/*margin: auto;*/
+	/*width: 80%;*/
+/*}*/
+
+.hr_80 {
+	margin: auto;
+}
+
+.hr_80 hr {
+	width: 80%;
+}
+
+.get_started {
+	margin: 12px;
+}
+
+.login {
+	color: #666;
+}

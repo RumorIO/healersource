@@ -1,0 +1,62 @@
+.loading {
+	background-image: none;
+	width: auto;
+	height: auto;
+	float: none;
+}
+
+#settings_content {
+	min-height: 300px;
+}
+
+.treatment_length { margin-left: 12px;}
+.treatment_length_add_box div, .add_room div { margin: 4px; }
+.treatment_length_add_box, .add_room { margin: 5px 0;}
+.add_room { display: inline-block; }
+.add_room a { font-weight: bold;}
+
+#id_booking_healersource_fee {
+	list-style: none;
+	display: inline-table;
+	padding: 0;
+}
+
+#total {
+	font-weight: bold;
+}
+
+.payment_heading {
+	border: 0;
+	line-height: 31px;
+}
+
+.payment_heading span.button_container {
+	float: right;
+}
+
+.payment_heading span.button_container span.selected > a,
+.payment_heading span.button_container > span:hover > a {
+	color: #273272;
+}
+
+.settings_menu {
+	display: inline-block;
+}
+
+.settings_menu > li > ul { margin-top: 24px; }
+
+.settings_menu a {
+	max-width: 200px;
+	overflow: hidden;
+}
+
+.settings_menu > li > span > a {
+	padding: 2px 6px;
+}
+
+.settings_menu > li > span {
+	border: 0 !important;
+	background-color: #fff !important;
+	padding: 0;
+	margin: 0;
+}

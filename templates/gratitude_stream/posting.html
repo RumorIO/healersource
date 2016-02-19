@@ -1,0 +1,12 @@
+{% load gratitude_tags %}
+
+<div class="{{ posting.type }}" data-id="{{ posting.pk }}" data-type="{{ posting.type }}">
+	{{ posting.content }}<br>
+	Posted by: {{ posting.user.get_full_name }} on {{ posting.submit_date }}<br>
+	Likes: <span id="posting_{{ posting.pk }}_likes">{{ posting.get_likes }}</span><br>
+	{% if user != posting.user %}
+		{% if posting.type == 'post' and not user.spamminguser %}<a href="javascript:void(0);" class="add_comment action_item">Add Comment</a>{% endif %}
+		{% like_action posting user %}
+		{% report_action posting user %}
+	{% endif %}
+</div>

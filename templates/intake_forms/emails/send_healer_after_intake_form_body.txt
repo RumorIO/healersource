@@ -1,0 +1,10 @@
+{% for key in qa %}
+{{ key.question }}
+
+    {{ key.answer }}
+
+{% endfor %}
+
+To send {{ client }} a message, {{ inbox_link }}.
+
+See your schedule, {{ schedule_link }}.

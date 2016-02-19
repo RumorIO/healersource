@@ -1,0 +1,52 @@
+{% extends "base_common.html" %}
+
+{% load i18n humanize pagination_tags tagging_ext_tags blog_tags markup switchcase restructuredtext %}
+
+{% block head_title %}{% if blog_user %}{{ blog_user.client }}'s Blog{% else %}{% trans "Articles" %}{% endif %}{% endblock %}
+
+{% block extra_head %}
+	<link rel="alternate" type="application/atom+xml" title="Blog Post Feed for All Users" href="/feeds/posts/all/" />
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}infinite_scroll/css/jquery.ias.css" />
+	<script type="text/javascript" src="{{ STATIC_URL }}infinite_scroll/jquery-ias.js"></script>
+	<script>
+		$(function() {
+			$.ias({
+				container: '.blog_post_list',
+				item: '.blog_post',
+				pagination: '.pagination',
+				next: '.pagination .next',
+				loader: '<img src="{{ STATIC_URL }}infinite_scroll/images/loader.gif"/>',
+				onRenderComplete: function() { fb.activate();},
+			});
+			$('.learn').addClass('selected');
+		});
+	</script>
+{% endblock %}
+
+{% block panel_class %}articles_panel{% endblock %}
+{% block content_title %}{% if blog_user %}{{ blog_user.client }}'s Blog{% else %}{% trans "Articles" %}{% endif %}{% endblock %}
+
+{% block body %}
+	{% if blog_user %}<a href="{{ blog_user.client.healer.healer_profile_url }}" style="float: right;">&laquo; Back to {{ blog_user.first_name }}'s Profile</a>{% endif %}
+
+	{% if blogs %}
+		{% autopaginate blogs 10 %}
+		<div class="blog_post_list">
+			{% for blog_post in blogs %}
+				{% with 1 as in_posts_list %}
+					{% include "blog/blog_item.html" %}
+				{% endwith %}
+			{% endfor %}
+		</div>
+
+		{% paginate %}
+
+	{% else %}
+		{% trans "No blog posts yet." %}
+	{% endif %}
+
+{% endblock %}
+
+{% block footer %}
+	{% include 'nav_bottom.html' %}
+{% endblock %}

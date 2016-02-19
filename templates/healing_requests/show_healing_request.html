@@ -1,0 +1,12 @@
+{% extends request.BASE_TEMPLATE %}
+{% load strip_tags common_tags compress %}
+
+{% compress js %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/healing_requests.js"></script>
+{% endcompress %}
+
+{% block page_title %}<h1>Healing Request</h1>{% endblock %}
+
+{% block body %}
+	{% include 'healing_requests/healing_request_block.html' with hide_full_link=True %}
+{% endblock %}

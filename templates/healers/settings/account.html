@@ -1,0 +1,118 @@
+{% extends "healers/settings/settings_base.html" %}
+
+{% block head_title %}Account{% endblock %}
+{% block title %}Account{% endblock %}
+
+{% block extra_head %}
+	{{ block.super }}
+	<script>
+		{% if is_wellness_center %}
+			var number_of_providers = {{ healers_in_wcenter_with_schedule_perm.count }};
+			var payment_schedule_setting = {{ user.client.healer.wellnesscenter.payment_schedule_setting }};
+		{% else %}
+			var number_of_providers = 1;
+			{% if user.customer.payment_schedule and user.customer.payment_schedule > 0 %}
+				var payment_schedule_setting = 3; // enable schedule
+			{% else %}
+				var payment_schedule_setting = 1; // disable schedule
+			{% endif %}
+		{% endif %}
+
+		var url_save_account_settings = "{% url 'payments_save_account_settings' %}";
+		var url_delete_account = '{% url 'delete_account' %}';
+		var can_charge = {{ user.customer.can_charge|yesno:'true, false' }};
+		var healer_account_setting_page = true;
+		var default_payment_notes = {{ payment_notes }};
+
+		{% if user.customer.payment_schedule and user.customer.payment_schedule > 0 %}
+			var payment_schedule = {{ user.customer.payment_schedule }};
+		{% else %}
+			var payment_schedule = {{ payment_schedule }};
+		{% endif %}
+
+		{% if user.customer.payment_notes and user.customer.payment_notes > 0 %}
+			var payment_notes = {{ user.customer.payment_notes }};
+		{% else %}
+			var payment_notes = 0;
+		{% endif %}
+
+		var payment_schedule_unlim = {{ payment_schedule_unlim }};
+	</script>
+	<script type="text/javascript" src="https://checkout.stripe.com/v2/checkout.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/card_settings.js"></script>
+
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/confirm_delete.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/settings_account.js"></script>
+{% endblock %}
+
+{% block settings_content %}
+{% include "payments/checkout.html" %}
+<div id="tabs_account">
+{#	{% if is_schedule_option_visible or is_notes_option_visible %}#}
+{#		<div class="single_button" style="padding: 0 18px; font-weight: bold; overflow: hidden;">#}
+{#			<img src="{{ STATIC_URL }}healersource/img/icons/lab.png" style="float: left; padding: 28px 16px 0 0;" />#}
+{#			<p style="font-style: italic;">We're doing a little experiment here at HealerSource.. </p><p>We're now offering all our premium services at a sliding scale so anyone can use them regardless of their financial situation. </p><p>If you are able, please <span class="payment_block_high">Pay it Forward &raquo;</span> so we can continue the sliding scale and everyone can benefit more!</p>#}
+{#			</div>#}
+{#		<hr>#}
+{#	{% endif %}#}
+
+	{% if error %}
+	    <div class="error_list">{{ error }}</div>
+	{% endif %}
+
+	<div id="card_settings">
+		{% include 'payments/card_settings_history.html' with history=True %}
+	</div>
+
+	<form>
+		{% if is_schedule_option_visible %}
+			<div class="grey_box">
+				{% if is_wellness_center %} <h3>Schedule</h3> {% endif %}
+				{% if user.customer.is_custom_schedule_plan %}
+					<p class="message">Custom Plan. <a class="contact">Contact Us</a> to make changes.</p>
+				{% else %}
+					{% if is_wellness_center %}
+						<input id="payment_schedule_setting_1" type="radio" name="payment_schedule_setting" value="1">
+						<label for="payment_schedule_setting_1">Disable schedule</label><br>
+
+						<input id="payment_schedule_setting_2" type="radio" name="payment_schedule_setting" value="2">
+						<label for="payment_schedule_setting_2">Each Provider pays individually for their schedule</label><br>
+
+						<input id="payment_schedule_setting_3" type="radio" name="payment_schedule_setting" value="3">
+						<label for="payment_schedule_setting_3">{{ user.client }} pays for everyone</label>
+						<br><br>
+						<div id="payment_block_schedule" class="payment_block">
+								<span id="schedule_value"></span> / mo
+								{% if is_wellness_center %}
+									x {{ healers_in_wcenter_with_schedule_perm.count }} Providers
+									<hr>
+									<div id="total"></div>
+								{% endif %}
+						</div>
+						<br>
+					{% else %}
+						<h3 class="payment_heading">Schedule - ${{ payment_schedule }}
+						<span class="highlight_container button_container combined_button_container">
+							<span id="schedule_on" class="on_button"><a href="javascript:void(0)">On</a></span><span id="schedule_off" class="off_button"><a href="javascript:void(0)">Off</a></span>
+						</span></h3>
+					{% endif %}
+				{% endif %}
+			</div>
+			<hr>
+		{% endif %}
+		{% if is_notes_option_visible %}
+			<div class="grey_box" id="notes">
+				<h3 class="payment_heading">Client Notes - ${{ payment_notes }}
+				<span class="highlight_container button_container combined_button_container">
+					<span id="notes_on" class="on_button"><a href="javascript:void(0)">On</a></span><span id="notes_off" class="off_button"><a href="javascript:void(0)">Off</a></span>
+				</span></h3>
+			</div>
+			<br>
+		{% endif %}
+		<div id="loading" class="loading">
+			<div class="loading_icon"></div>Updating your subscription, take a few breaths...
+		</div>
+		<p><a href="javascript:confirm_delete();">Delete My Account</a></p>
+	</form>
+</div>
+{% endblock %}

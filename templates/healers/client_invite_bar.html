@@ -1,0 +1,36 @@
+{% load i18n %}
+{% load uni_form_tags %}
+{% load account_tags %}
+
+{% user_display other_user as other_user_display %}
+
+
+{% if not is_me %}
+
+<div style="float:right; text-align:right;">
+	{% if is_client %}
+		{{ other_user.client }} is one of your {{ page_title }}s.
+		<a href="{% url 'friend_remove' friend_type other_user.id  %}">(x)</a>
+		<!--<a href="{1% url messages_compose %}{1{ other_user }}/">{1% trans "Send a message" %}</a>.-->
+
+	{% else %}
+{#		{% if previous_invitation_to %}#}
+{#			{{ page_title }} request sent#}
+{#		{% else %}#}
+{#			{% if previous_invitation_from %}#}
+{#				{{ previous_invitation_from.client }} has requested to be a {{ page_title }}:#}
+{#				<a href="{% url friend_accept friend_type previous_invitation_from.id  %}">Accept</a> or#}
+{#				<a href="{% url friend_decline friend_type previous_invitation_from.id  %}">Decline</a>#}
+{#			{% else %}#}
+				<a href="{% url 'friend_invite' friend_type other_user.id  %}">Add to My {{ page_title }}s</a>
+{#				&nbsp;<span class="ui-icon ui-icon-person" style="float:right;"></span><br />#}
+{#				<a href="{% url friend_invite friend_type other_user.id  %}">Send a Message</a>&nbsp;<span class="ui-icon ui-icon-mail-closed" style="float:right;"></span>#}
+{#			{% endif %}#}
+{#		{% endif %} {# previous_invitation_to #}
+	{% endif %} {# is_friend #}
+
+</div>
+<div class="clearfix"></div>
+
+{% endif %} {# is me #}
+

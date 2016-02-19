@@ -1,0 +1,25 @@
+{% extends "blog/base.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% blocktrans %}Import Your Blog{% endblocktrans %}{% endblock %}
+
+{% block extra_head %}{{ blog_form.media }}{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_blog">{% blocktrans %}Import Your Blog{% endblocktrans %}</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "blog/blog_nav.html" %}
+
+	{% if error %}
+		<p class="message">Could not import your blog, please try again.</p>
+	{% endif %}
+
+	<p>Copy and Paste the link to your site in the box below. Then click 'Submit'</p>
+
+	<form action="." method="post">{% csrf_token %}
+		Your Website: <input type="text" name="url" value="{{ url }}" placeholder="" style="width: 300px;"/>
+		<input type="submit"/>
+	</form>
+{% endblock %}

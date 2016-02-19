@@ -1,0 +1,11 @@
+{% load uni_form_tags %}
+
+<form action="" method="post" id="gift_certificate_purchase" class="uniForm">
+	{% csrf_token %}
+	<fieldset class="inlineLabels">
+		{{ form|as_uni_form }}
+		<div class="form_block">
+			<input type="button" value="Continue »" onclick="checkout();"/>
+		</div>
+	</fieldset>
+</form>

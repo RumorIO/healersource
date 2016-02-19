@@ -1,0 +1,51 @@
+{% if treatment_lengths %}
+	<div style="margin-bottom: 4px;"> {# Treatment Type Table #}
+		<div class="treatment_label">1. Select Treatment: </div>
+		<div class="highlight_container button_container" id="treatment_types">
+			{% if treatment_length_bar %}
+				{% for treatment in treatment_types %}
+					{% include "healers/treatment_type_button.html" with treatment_title=treatment center_treatment_mode=True %}
+				{% endfor %}
+				</div></div> {# END Treatment Type Table #}
+				<div class="clearfix"></div>
+				<div id="treatment_type_select_length" style="display: none; margin-bottom: 4px"><hr />
+					<div class="treatment_label">2. Select Length:</div>
+					<div class="highlight_container button_container" id="treatment_length"></div>
+				</div>
+
+				<div id="locations_select" style="display: none;" class="highlight_container button_container">
+					<hr />
+					<div class="treatment_label">3. Select Location:
+					</div>
+					{% for location in locations_objects %}
+						{% include "healers/location_button.html" %}
+					{% endfor %}
+				</div>
+
+				<div id="provider_select" style="display: none; margin-bottom: 4px"><hr />
+					<div class="treatment_label">4. Select Provider:</div>
+					<div id="provider_list"></div>
+				</div>
+				<p id="no_availability_message" class="hidden single_button">Sorry, no availability right now. Please check back again later...</p>
+			{% else %}
+				{% for treatment in treatment_lengths %}
+					{% include "healers/treatment_type_button.html" with treatment_title=treatment.full_title center_treatment_mode=True %}
+				{% endfor %}
+				</div></div> {# END Treatment Type Table #}
+					<div class="clearfix"></div>
+					<div id="locations_select" style="display: none;" class="highlight_container button_container">
+						<hr />
+						<div class="treatment_label">2. Select Location:
+						</div>
+						{% for location in locations_objects %}
+							{% include "healers/location_button.html" %}
+						{% endfor %}
+					</div>
+					<div id="provider_select" style="display: none; margin-bottom: 4px"><hr />
+						<div class="treatment_label">3. Select Provider:</div>
+						<div id="provider_list"></div>
+					</div>
+			{% endif %}
+	<div class="clearfix"></div>
+	{% include "healers/location_map_include.html" %}
+{% endif %}

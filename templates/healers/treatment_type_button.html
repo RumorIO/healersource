@@ -1,0 +1,17 @@
+{# BE REALLY CAREFUL TOUCHING THIS -- ITS REALLY PICKY ABOUT SPACING - ESP ON DIFFERENT BROWSERS #}
+{#					{% ifequal treatment.id default_treatment.treatment_type.id %}selected{% endifequal %}#}
+
+
+<span id="{{ treatment.id }}"
+      class="treatment_title {% if treatment_types|length == 1 %} selected{% endif %} "
+      onclick="changeTreatmentType({{ treatment.json_object }}{% if center_treatment_mode %},true{% else %},false{% endif %}{% if provider_mode %},true, {{ healer_id }}{% endif %});"
+      {% if treatment.description and not request.is_mobile %} original-title="{{ treatment.description|linebreaksbr }}"{% endif %}
+					      ><a href="javascript:void(0)" onclick="if(is_smallscreen()) return false;">{{ treatment_title }}</a></span>&nbsp;{# this &nbsp; is critical - DONT TOUCH #}
+{% if treatment.description and not request.is_mobile %}
+	<script>
+		$("#{{ treatment.id }}").tipsy({
+			'gravity': $.fn.tipsy.autoBounds(150, 'n'),
+			html: true
+		});
+	</script>
+{% endif %}

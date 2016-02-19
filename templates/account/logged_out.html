@@ -1,0 +1,32 @@
+{% extends "base_new_box.html" %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "Logged out" %}{% endblock %}
+
+
+{% block page_title %}<h1>{% trans "Logged out" %}</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "account/facebook_init.html" %}
+
+	<div id="logged_out">
+
+		<div>
+			<h2 style="font-size: 1.4em; margin: 6px 0;">{% trans "Thanks for spending some quality time with HealerSource today!" %}</h2>
+
+			<a href="{% url 'home' %}">{% trans 'Go to the Homepage' %} &raquo;</a>
+			<br>
+			<a href="{% url 'login_page' %}">{% trans 'Log in again' %} &raquo;</a>
+		</div>
+	</div>
+{% endblock %}
+
+{% block extra_body %}
+	<script>
+		$(document).ready(function() {
+			FB.getLoginStatus(function(response) {if(response.authResponse) {FB.logout();}});
+		});
+	</script>
+{% endblock %}

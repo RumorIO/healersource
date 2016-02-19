@@ -1,0 +1,132 @@
+{% load i18n %}
+{% load dajaxice_templatetags %}
+{% load healer_tags %}
+{% load compress %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}" xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}">
+<head>
+	﻿<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700' rel='stylesheet' type='text/css'>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>www.HealerSource.com Calendar</title>
+	{#	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />#}
+	{% jquery_js_import %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.placeholder.js"></script>
+
+	<script>
+		var STATIC_URL = "{{ STATIC_URL }}";
+		$(document).ready(function(){ $(':input[placeholder]').placeholder(); });
+		var url_error_report = "{% url 'error_report' %}";
+	</script>
+
+	{% dajaxice_js_import %}
+	{% jquery_ui_js_import %}
+	{#	<script type="text/javascript" src="{{ STATIC_URL }}pinax/js/avatar.js"></script>#}
+
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/underscore-min.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/date.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/util.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.weekcalendar.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/weekcalendar-common.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/weekcalendar-readonly.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/weekcalendar-embed.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}dajax/jquery.dajax.core.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.tipsy.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/csrf.js"></script>
+		{% if wcenter_id %}
+			<script>
+					var wcenter_id = {{ wcenter_id }};
+					var embedded_separate_center_provider_schedule = $.parseJSON('{{ embedded_separate_center_provider_schedule|safe }}');
+					var healer_id = {{ healer.pk }};
+					var available_treatment_lengths_treatment_mode = $.parseJSON('{{ available_treatment_lengths|safe }}');
+					var is_skip_provider_step = {{ is_skip_provider_step|yesno:'true,false' }};
+					var center_username = '{{ healer.user.username }}';
+			</script>
+			<script src="{{ STATIC_URL }}healersource/js/wellness_center_profile.js"></script>
+		{% endif %}
+	{% endcompress %}
+
+	{% if is_deposit_required %}
+		{% include "payments/checkout.html" %}
+		<script>
+			var stripe_app_public_key = '{{ STRIPE_APP_PUBLIC_KEY }}';
+		</script>
+	{% endif %}
+	{% include 'common_js_vars.html' %}
+
+	<script>
+		var start_from_sunday = {{ healer.schedule_start_from_sunday_setting|yesno:'true, false' }};
+		var is_deposit_required = {{ is_deposit_required|yesno:'true, false' }};
+		var url_ajax_signup_client = '{% url "ajax_signup_client" %}';
+		var url_ajax_login = '{% url "ajax_login" %}';
+		var url_intake_form = '{% url "intake_forms_list" %}';
+	</script>
+
+	<script type="text/javascript" src="{{ STATIC_URL }}floatbox/floatbox_6.js"></script>
+	<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}floatbox/floatbox.css" />
+
+	{% jquery_ui_css_import %}
+
+	{% compress css %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/embed_schedule.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/jquery.weekcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/tipsy.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/wcenter_profile.css" />
+	{% endcompress %}
+</head>
+
+<body {% if include_name %} style="padding: 10px"{% endif %}>
+{% include 'downtime.html' %}
+
+{% include "healers/contact_box.html" %}
+{% include "healers/unreg_send_msg_dlg.html" %}
+
+{% if is_schedule_visible %}
+
+	{% if preview %}
+		<h3 class="nav_icon nav_schedule" style="margin-bottom: 10px;">Preview Schedule: This is What Your Clients Will See</h3>
+	{% else %}
+		{% if healer.scheduleVisibility == healer.VISIBLE_DISABLED %}
+			<p class="single_button"><span class="icon_eye_crossed_out red_text">Preview Mode - Your Schedule is <b>not</b> Currently Visible to the Public</span></p>
+		{% endif %}
+	{% endif %}
+	{% if include_name %}
+		<h2>{{ healer }}</h2>
+	{% endif %}
+
+	{% include "account/facebook_init.html" %}
+	<div class="grey_box">
+		{% if treatment_lengths %}
+			{% if wcenter_id %}
+				{% include "healers/center_treatment_mode_treatment_types_bar.html" %}
+			{% else %}
+				{% include "healers/treatment_types_bar.html" %}
+			{% endif %}
+
+			<div class="clearfix"></div>
+			<div class="loading"></div>
+			{% include "healers/calendar_container.html" %}
+		{% else %}
+			<p class="message">Unfortunately there's no availability right now. Please try again later or contact the provider directly.</p>
+		{% endif %}
+
+		{% if not preview %}
+			<hr>
+			<div class="bold">To Reschedule or Cancel an Existing Appointment,
+				<a href="{% url 'receiving_appointments' %}" target="_blank">Click Here</a></div>
+		{% endif %}
+	</div>
+	{% include "healers/book_at_centers.html" %}
+
+	{% if not preview %}
+		{% include "healers/embed_logo.html" %}
+	{% endif %}
+{% endif %}
+{% include 'payments/save_card_dialog.html' %}
+</body>
+</html>
+

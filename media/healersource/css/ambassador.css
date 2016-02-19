@@ -1,0 +1,11 @@
+.ambassador_form {
+	margin-bottom: 1em;
+}
+
+.ambassador_form ul {
+	padding: 0;
+}
+
+.ambassador_form ul > li {
+	list-style: none;
+}

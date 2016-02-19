@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<widget id="{{ id }}" version="{{ version }}" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
+	<name>Healer Source</name>
+	<description>
+		{{ description }}
+	</description>
+	<author email="daniel@Healersource.com" href="https://www.healersource.com">
+		Daniel Levin
+	</author>
+	<content src="index.html" />
+	<access origin="*" />
+	<gap:platform name="ios" />
+	<gap:platform name="android" />
+
+	<gap:plugin name="com.phonegap.plugins.facebookconnect" version="0.9.0">
+		<param name="APP_ID" value="{{ FACEBOOK_KEY }}" />
+		<param name="APP_NAME" value="Healersource" />
+	</gap:plugin>
+{#	<gap:plugin name="com.cmackay.plugins.googleanalytics" />#}
+	<gap:plugin name="cordova-plugin-device"  />
+	<gap:plugin name="cordova-plugin-network-information" />
+	{% if app_version == 1 %}<gap:plugin name="ionic-plugin-keyboard" />{% endif %}
+	{% if app_version == 2 %}<gap:plugin name="cordova-plugin-camera" />{% endif %}
+
+	<preference name="fullscreen" value="false" />
+	<allow-intent href="*://*.healersource.com/*" />
+</widget>

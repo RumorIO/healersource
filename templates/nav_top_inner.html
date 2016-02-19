@@ -1,0 +1,11 @@
+{#<div class="buttons">#}
+{#	<a href="{{ home_url }}#tab_find" class="find {% if selected == 'find' %}selected{% endif %}">Find</a>#}
+{#	<a href="{{ home_url }}#tab_healers" class="healers">Healers</a>#}
+{#	<a href="{{ home_url }}#tab_articles" class="articles">Articles</a>#}
+{#	<a href="{{ home_url }}#tab_tour_benefits" class="tour">Tour</a>#}
+{#	{% if request.user.is_authenticated %}#}
+{#	<a href="{% if is_healer %}{% url 'what_next' %}{% else %}{% url 'receiving_appointments' %}{% endif %}" class="nav_my_profile" style="padding-left: 36px;">Me</a>#}
+{#	{% else %}#}
+{#	<a href="{{ home_url }}#tab_login" class="login">Login</a>#}
+{#	{% endif %}#}
+{#</div>#}

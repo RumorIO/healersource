@@ -1,0 +1,49 @@
+{% extends 'dashboard/base.html' %}
+
+
+{% block extra_head %}
+<script>
+	var url_autocomplete_search_name_delete_account = '{% url 'autocomplete_search_name_delete_account' %}';
+	var url_delete_account = '{% url 'delete_account' %}';
+
+	$(function(){
+		$(".search_name_or_email").autocomplete({
+			// source: "/autocomplete/search_name_or_email/",
+			source: url_autocomplete_search_name_delete_account,
+			minLength: 2,
+			html: true,
+			autoFocus: true,
+			select: function(event, ui) {
+				var profile_link = '<a href="' + ui.item.id + '" target="_blank">' + ui.item.value + '</a>';
+				var delete_account_link = '<a href="' + url_delete_account + ui.item.username + '/">Delete Account</a>';
+				open_delete_account_dlg(profile_link, delete_account_link, ui.item.status);
+			}
+		});
+	});
+
+	function open_delete_account_dlg(profile_link, delete_account_link, status){
+		hs_dialog($('#delete_account_dlg'), {
+			fixed_width: 300,
+			open: function () {
+				$('#profile_link').html(profile_link);
+				$('#status').html(status);
+				$('#delete_account_link').html(delete_account_link);
+			},
+		});
+	}
+
+</script>
+{% endblock %}
+
+
+{% block head_title %}Delete Account{% endblock %}
+{% block page_title %}<h1>Delete Account</h1>{% endblock %}
+
+{% block body %}
+	<input class="search_name_or_email" type="text" />
+	<div id="delete_account_dlg" style="display: none;">
+		<div id="profile_link"></div>
+		<div>Status: <span id="status"></span></div>
+		<div id="delete_account_link"></div>
+	</div>
+{% endblock %}

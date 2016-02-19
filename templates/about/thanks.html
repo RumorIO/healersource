@@ -1,0 +1,25 @@
+<div class="panel">
+	<div class="panel_title" id="panel_title_signup">{% if thanks_title %}{{ thanks_title }}{% else %}Thanks!{% endif %}</div>
+	<div class="content panel_content_signup thank_you_panel">
+		{% if signup %}
+			<img src="{{ STATIC_URL }}healersource/img/home/signup_celebration.png" class="border_img" style="max-width: 100%;" />
+		{% endif %}
+		<div>
+			{% if thanks_message %}
+				{{ thanks_message }}
+				<hr>
+				{% if signup and not phonegap and type != 'client' %}
+					<p><a class="single_button orange_button thank_you_continue_button" href="{% url 'what_next' %}">Continue to Account Setup &raquo;</a></p>
+				{% endif %}
+			{% else %}
+				{% if signup %}
+					{% if phonegap %}
+						<p><a class="single_button orange_button thank_you_continue_button" href="javascript:void(0)" onclick="fb_login_continue();">Continue &raquo;</a></p>
+					{% elif not embed %}
+						<p><a class="single_button orange_button thank_you_continue_button" href="{% url 'what_next' %}">Continue to Account Setup &raquo;</a></p>
+					{% endif %}
+				{% endif %}
+			{% endif %}
+		</div>
+	</div>
+</div>

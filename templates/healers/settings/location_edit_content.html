@@ -1,0 +1,16 @@
+{% include "form_errors.html" %}
+
+<form action="{% if is_healer %}{% url 'location_edit' location.id %}{% else %}{% url 'client_location_edit' location.id %}{% endif %}" method="post" class="location_settings">{% csrf_token %}
+	<table class="no_wrap no_wrap1" id="edit_location">
+		{{ form.as_table }}
+	</table>
+	<p><input type="submit" value="Save Location" /></p>
+</form>
+
+{% include 'healers/settings/location_postal_code_warning.html' %}
+
+{% include 'healers/settings/location_map_content.html' %}
+
+<p><a href="{% if is_healer %}{% url 'location' %}{% else %}{% url 'clients_profile' %}{% endif %}">&laquo; Back to Location List</a></p>
+
+<p class="clearfix">&nbsp;</p>

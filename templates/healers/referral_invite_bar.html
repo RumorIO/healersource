@@ -1,0 +1,47 @@
+{% load i18n %}
+{% load uni_form_tags %}
+{% load account_tags %}
+
+{% if is_healer %}
+
+	<span class="{% if is_wellness_center %}icon_providers{% else %}icon_recommend{% endif %}">
+		{% if referal_to %}
+			<em>{% if is_wellness_center %}Our Provider{% else %}Referral{% endif %}&nbsp;
+				<a href="{% url 'friend_remove_referral' friend_type request.user.id other_user.id  %}">(x)</a></em>
+		{% else %}
+			<a href="{% url 'friend_add' friend_type other_user.id  %}">{% if is_wellness_center %}Add to Providers{% else %}Add Referral{% endif %}</a>
+		{% endif %}
+	</span>
+
+	<br />
+
+	{% if not is_wellness_center %}
+		<span class="icon_users">
+			{% if is_client %}
+				<em>My Client&nbsp;{% if not referal_to %}<a href="{% url 'friend_remove' 'clients' other_user.id  %}">(x)</a>{% endif %}</em>
+			{% else %}
+				<a href="{% url 'friend_add' 'clients' other_user.id  %}">Add to My Clients</a>
+			{% endif %}
+		</span>
+	{% endif %}
+
+	{% if referal_from %}
+		<div class="divider">&nbsp;</div>
+		<span class="icon_recommend_left"><em>{{ other_user.first_name|capfirst }} Refers To You&nbsp;<a href="{% url 'friend_remove_referral' friend_type other_user.id request.user.id  %}">(x)</a></em></span>
+	{% endif %}
+
+{% else %}
+
+	<span class="icon_heart">
+		{% if is_client %}
+			<em>My Provider&nbsp;<a href="{% url 'friend_remove' 'clients' other_user.id  %}">(x)</a></em>
+		{% else %}
+			{% if previous_invitation_to %}
+				<em style="color: #555;">Approval Pending</em>
+			{% else %}
+				<a href="{% url 'friend_invite' 'clients' other_user.id  %}">Add to My Providers</a>
+			{% endif %}
+		{% endif %}
+	</span>
+
+{% endif %}

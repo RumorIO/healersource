@@ -1,0 +1,28 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "Wellness Center Lists" %}{% endblock %}
+
+{% block body %}
+
+	<br>
+	<table>
+		<tr style="font-weight: bold; border-bottom: 1px solid #555;">
+			<td>Name</td>
+			<td>Providers</td>
+			<td>Registration date</td>
+		</tr>
+	{% for wellness_center in wellness_centers %}
+			<tr>
+				<td>
+					<a href="{{ wellness_center.url }}" target="_blank">{{ wellness_center.title }}</a>
+				</td>
+				<td style="text-align: center;">{{ wellness_center.providers }}</td>
+				<td>{{ wellness_center.date }}</td>
+			</tr>
+	{% endfor %}
+	</table>
+
+{% endblock %}

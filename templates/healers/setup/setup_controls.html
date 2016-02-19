@@ -1,0 +1,23 @@
+<div id="setup_controls">
+	<div>
+		{% if prev_step > -1 %}
+			<a class="highlight_button"href="{% url 'provider_setup' prev_step %}">&laquo; Back</a>
+		{% endif %}
+
+		{% if next_step %}<a class="highlight_button"
+					{% if save_form %}
+						{% if custom_next_onclick %}
+							onclick="{{ custom_next_onclick }}"
+						{% else %}
+							onclick="setup_save_and_next('{% url 'provider_setup' next_step %}');"
+						{% endif %}
+					{% else %}
+							href="{% url 'provider_setup' next_step %}"
+					{% endif %}
+					>Next &raquo;</a>
+		{% endif %}
+	</div>
+	Jump to Step:&nbsp;
+	{% include 'healers/setup/step_selector.html' %}
+</div>
+<div class="clearfix">&nbsp;</div>

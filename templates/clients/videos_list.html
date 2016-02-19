@@ -1,0 +1,21 @@
+{% extends "base_common.html" %}
+
+{% block head_title %}{% if client %}{{ client }}'s {% endif %}Videos{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}infinite_scroll/css/jquery.ias.css" />
+	<script type="text/javascript" src="{{ STATIC_URL }}infinite_scroll/jquery-ias.js"></script>
+{% endblock %}
+
+
+{% block panel_class %}videos_panel{% endblock %}
+{% block content_title %}{% if client.user.username != 'healersource_tv' %}{% if client %}{{ client }}'s {% endif %}Videos{% else %}HealerSource TV{% endif %}{% endblock %}
+
+{% block body %}
+	{% if client.user and client.user.username != 'healersource_tv' %}<a href="{% url 'healer_my_profile' client.user.username %}" style="float: right;">&laquo; Back to {{ client.user.first_name }}'s Profile</a>{% endif %}
+
+	{% with top_video_width=650 top_video_height=420 content_video_width=303 %}{% include 'clients/videos_list_contents.html' %}{% endwith %}
+{% endblock %}
+{% block footer %}
+	{% include 'nav_bottom.html' %}
+{% endblock %}

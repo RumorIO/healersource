@@ -1,0 +1,6 @@
+{{ mail_message }}
+
+{{ client }}
+
+{% if client.contact_info %}Client Information:
+{{ client.contact_info }}{% endif %}

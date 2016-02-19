@@ -1,0 +1,12 @@
+<h3>Enter Your Zipcode</h3>
+<input type="text" size="5" id="modality_providers_zipcode" />&nbsp;
+	<a href="{% url 'modality_providers_zipcode' modality_id 0 %}" onclick="fix_modality_providers_href($(this)); return false;">Search &raquo;</a>
+
+<script type="text/javascript">
+	function fix_modality_providers_href(a) {
+		fb.end();
+		var href = a.attr('href');
+		href = href.substring(0, href.length-2);
+		fb.start(href + $('#modality_providers_zipcode').val());
+	}
+</script>

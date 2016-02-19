@@ -1,0 +1,9 @@
+{% load i18n %}{% blocktrans with message.recipient as recipient and message.sender.client as sender%}
+
+	You received a message from {{ sender }} on {{ SITE_NAME }}
+{% endblocktrans %}
+
+{{ message.body|safe }}
+
+--
+{% trans "To Reply, Click Here" %}: {{ site_url }}{% url 'messages_reply' message.pk %}

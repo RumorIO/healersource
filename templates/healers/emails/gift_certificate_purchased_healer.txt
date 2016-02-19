@@ -1,0 +1,9 @@
+Congratulations! {{ certificate.purchased_by }} has purchased a Gift Certificate from you.
+
+Purchased For: {{ certificate.purchased_for }}
+Amount: {{ certificate.discount_code.amount }}
+Code: {{ certificate.discount_code.code }}
+Purchase Date: {{ certificate.purchase_date }}
+Expiry Date: {{ certificate.expiry_date }}
+
+To Manage your Gift Certificates, {% include "email_link.html" %}.

@@ -1,0 +1,54 @@
+{% extends "base_common.html" %}
+
+{% load compress %}
+
+{% block head_title %}Healing Requests{% endblock %}
+
+{% block extra_head %}
+	{{ request_form.media }}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/invite.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/healing_requests.js"></script>
+	{% endcompress %}
+
+	<script type="text/javascript">
+		$(function(){
+			$("#accordion").accordion({
+				collapsible: true,
+				heightStyle: 'content'
+			});
+
+			{% if request_form.errors or client_signup_form.errors %}
+				$("#new_request_title").trigger("click");
+			{% else %}
+				{% if not is_healer %}
+					{% if my_requests.count %}
+						$("#my_requests_title").trigger("click");
+					{% elif 'search' in request.GET or 'show_search' in request.GET %}
+						$("#search_title").trigger("click");
+					{% else %}
+						$('#search_title').next().show();
+						$("#new_request_title").next().show();
+					{% endif %}
+				{% endif %}
+			{% endif %}
+			$('.request').addClass('selected');
+		});
+	</script>
+
+	<style type="text/css">
+		.ui-accordion .ui-accordion-content {
+			padding: 10px 14px !important;
+		}
+	</style>
+{% endblock %}
+
+{% block panel_class %}request_panel{% endblock %}
+{% block content_title %}Healing Requests{% endblock %}
+
+{% block body %}
+	{% include 'healing_requests/home_content.html' %}
+	{% include 'facebook_init.html' %}
+{% endblock %}

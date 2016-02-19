@@ -1,0 +1,15 @@
+{% include "form_errors.html" with form=event_form %}
+{% include "form_errors.html" with form=event_location_date_form %}
+{% include "form_errors.html" with form=location_form %}
+
+<form action="" method="post" enctype="multipart/form-data" class="event_form">
+	{% csrf_token %}
+	<table class="no_wrap no_wrap1">
+		{{ event_form.as_table }}
+		{{ event_location_date_form.as_table }}
+	</table>
+	<table id="location_form" class="no_wrap no_wrap1">
+		{{ location_form.as_table }}
+	</table>
+	<input type="button" value="Add Event" onclick="submit_form()" />
+</form>

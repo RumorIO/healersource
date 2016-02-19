@@ -1,0 +1,53 @@
+{% extends "site_base.html" %}
+
+{% load compress %}
+
+{% block extra_head %}
+	{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/ambassador.css" />
+	{% endcompress %}
+{% endblock %}
+
+{% block head_title %}Ambassador Settings{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_ambassador">Ambassador Settings</h1>{% endblock %}
+
+{% block body %}
+
+	<div id="switch_help" {% if form.plan.value %}style="display:none;"{% endif %}>
+		<p>Next step is to choose your commission plan. We offer 3 different options to choose from:</p>
+		<ul>
+			<li><b>9-month Plan:</b> You earn 50% of all fees for the first 9 months of the person or center's membership</li>
+			<li><b>18-month Plan:</b> You earn 25% of all fees for the first 18 months</li>
+			<li><b>Lifetime Plan:</b> You earn 15% of all fees forever.</li>
+		</ul>
+		<p style="padding-right:70px;">
+			You can switch at any time, but all of your existing members will stay on the same plan as when they signed up. For example, lets say you are on the 9-month option and sign up Susan. Then a few weeks later, you decide to switch to the 18-month plan. Your commissions for Susan would stay on the 9-month plan, but any new people who sign up will now be on the 18-month plan.
+		</p>
+	</div>
+	<div class="grey_box">
+		<div style="float: right; margin: 4px 8px;" class="look_like_link" onclick="$('#switch_help').toggle();">help ?</div>
+		<h3>Choose Your Plan</h3>
+		<form class="ambassador_form" action="." method="post">{% csrf_token %}
+			{{ forms.ambassador.as_p }}
+			<input name="form_name" value="ambassador" type="hidden" />
+			<input type="submit" value="Save" />
+		</form>
+	</div>
+
+	<p><hr></p>
+	<div class="single_button">
+		<h3>Your Links</h3>
+		<p>Here are your own unique personal links to our Homepage, Signup, Tour and Landing pages. Share them with your prospective members, and you will be credited for all signups that come through these links.</p>
+		<p>These links set a cookie on the user's computer or phone to remember your Ambassador code.</p>
+		<p>So when your prospects click on any of the links, then leave HealerSource, and then come back a week later to sign up - you will still be credited for those signups.</p>
+		<ul>
+			{% for link in links %}
+				<li><a href="{{link}}">{{link}}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+
+	{% include 'ambassador/embed_plugin.html' %}
+
+{% endblock %}

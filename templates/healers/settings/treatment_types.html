@@ -1,0 +1,19 @@
+{% extends "healers/settings/settings_base.html" %}
+
+{% block head_title %}Treatment Types{% endblock %}
+{% block title %}Treatment Types{% endblock %}
+
+{% block extra_head %}
+	{{ block.super }}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/treatment_type.js"></script>
+	<script>
+		var url_copy_my_treatment_types = "{% url 'copy_my_treatment_types' %}";
+		var url_add_treatment_type_length = "{% url 'add_treatment_type_length' %}";
+	</script>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/treatment_types.css" />
+{% endblock %}
+
+{% block settings_content %}
+	{% include "healers/settings/treatment_types_content.html" %}
+{% endblock %}
+

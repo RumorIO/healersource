@@ -1,0 +1,10 @@
+{% if not request.user.is_authenticated %}
+	<div id="compose_message_dlg" class="calendar_dialog calendar_dialog_list">
+		<form method="post" id="new_message_form" accept-charset="utf-8">
+			<div class="form-errors ui-helper-hidden"></div>
+			{{ compose_form.as_ul }}
+		</form>
+		<div id="id_send_result_msg">Message Sent Successfully!</div>
+	</div>
+	<script type="text/javascript">$('#id_msg_security_verification_1').attr('placeholder', 'Type the letters in the image above')</script>
+{% endif %}

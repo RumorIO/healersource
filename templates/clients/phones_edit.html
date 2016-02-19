@@ -1,0 +1,48 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Edit Phone Numbers{% endblock %}
+{% block extra_head %}
+{% endblock %}
+
+{% load uni_form_tags %}
+
+
+{% block page_title %}<h1>Edit Phone Numbers</h1>{% endblock %}
+
+{% block body %}
+
+    {% if client.phone_numbers.all %}
+        <table class="email_list">
+            {% for phone in client.phone_numbers.all %}
+                <tr>
+                    <td>{{ phone.type }}:</td>
+					<td>{{ phone.number }}</td>
+                    <td>
+						<form style="display: none;" id="remove_{{ forloop.counter }}" method="post" action="">
+							{% csrf_token %}
+							<input type="hidden" name="phone_id" value="{{ phone.id }}"/>
+							<input type="hidden" name="action" value="remove"/>
+						</form>
+						<a class="remove" href="#" onclick="$('#remove_{{ forloop.counter }}').submit()">remove</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p><span class="warning">None</span>.</p>
+    {% endif %}
+    
+    <h3>Add Phone Number</h3>
+    
+    <form method="post" action="" class="uniForm">
+        {% csrf_token %}
+        <fieldset class="inlineLabels">
+            {{ phone_form|as_uni_form }}
+             <div class = "form_block">
+                 <input type="hidden" name="action" value="add"/>
+                 <input type="submit" value="add"/>
+            </div>
+        </fieldset>
+    </form>
+    
+{% endblock %}

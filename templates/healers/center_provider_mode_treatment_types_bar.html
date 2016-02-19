@@ -1,0 +1,9 @@
+<div style="margin-bottom: 4px;"> {# Treatment Type Table #}
+	<div class="treatment_label">1. Select Provider:</div>
+	<div id="provider_list">
+		{% include "healers/wcenter_providers_provider_mode.html" with healers=providers %}
+		<div id="back_to_provider">| <a href="javascript:void(0);" onclick="set_schedule_appointment_mode('provider')">Show All Providers</a></div>
+	</div>
+	<div id="treatments_content"></div>
+	<div class="clearfix"></div>
+</div>

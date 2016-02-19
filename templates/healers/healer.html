@@ -1,0 +1,170 @@
+{% extends "base_common.html" %}
+
+{% load i18n account_tags client_tags healer_tags compress %}
+
+{% block head_title %}{{ healer.default_location }} {{ healer.default_modality }} {{ healer.user.client }}{% endblock %}
+
+{% block og-image %}<meta property="og:image" content="{% avatar healer.user 100 True True %}" />{% endblock %}
+
+{% block extra_head_last %}
+	{{ block.super }}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/date.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.weekcalendar.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/weekcalendar-common.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/weekcalendar-readonly.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.tipsy.js"></script>
+	{% endcompress %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.scrollTo.min.js"></script>
+
+	{% if is_deposit_required %}
+		{% include "payments/checkout.html" %}
+		<script>
+			var stripe_app_public_key = '{{ STRIPE_APP_PUBLIC_KEY }}';
+		</script>
+	{% endif %}
+
+	<script>
+		var start_from_sunday = {{ healer.schedule_start_from_sunday_setting|yesno:'true, false' }};
+		var is_deposit_required = {{ is_deposit_required|yesno:'true, false' }};
+		var url_ajax_signup_client = '{% url "ajax_signup_client" %}';
+		var url_ajax_login = '{% url "ajax_login" %}';
+		var url_error_report = "{% url 'error_report' %}";
+		var url_intake_form = '{% url "intake_forms_list" %}';
+	</script>
+
+	{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/jquery.weekcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer-weekcalendar.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/tipsy.css" />
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/healer.css" />
+	{% endcompress %}
+
+{% endblock %}
+
+{% block panel_class %}{% if not is_me %}healers_panel{% endif %}{% endblock %}
+{% block content_title %}
+	{{ healer.user.client|capfirst }}
+	{% if is_me and not info_only %}
+		<a href="{% url 'healer_edit' %}" class="single_button orange_button" style="float: right; margin-top: 2px; font-weight: bold; font-size: 0.6em;">Edit {{ is_wellness_center|yesno:',My ' }}Profile &raquo;</a>
+	{% endif %}
+{% endblock %}
+
+{% block body %}
+	{% include 'healers/healer_sidebars.html' with healer_page=True %}
+
+	{% if is_schedule_visible and treatment_types|length > 0 %}
+		{% include "account/facebook_init.html" %}
+		<a href="#schedule_content" class="floatbox single_button orange_button nav_icon nav_schedule book_online_button" id="schedule_button" data-fb-options="width:100% height:100% measureHTML:no {% if treatment_lengths|length == 1 %}afterItemStart:showFirstTreatment{% endif %}">
+			Book Online
+		</a>
+		<div class="grey_box pale_yellow_box" id="schedule">
+			<div id="schedule_content">
+				<table><tr><td>
+					<img src="{{ STATIC_URL }}healersource/img/what_next/schedule_yellow.png" class="what_next_icon" />
+				</td><td>
+					<h3>{{ appt_schedule_or_request }} an Appointment</h3>
+					{% include "healers/treatment_types_bar.html" %}
+				</td></tr></table>
+				<div class="clearfix"></div>
+				{% include "healers/calendar_container.html" %}
+			</div>
+		</div>
+		<hr>
+	{% endif %}
+	{% include "healers/book_at_centers.html" %}
+	{% include "review/review_short_list.html" %}
+
+	<div class="short_posts_videos">
+		{% include "about/homepage_contents/blog_and_videos.html" %}
+	</div>
+
+	<div class="clearfix"></div>
+
+	{% if referrals_from_me or is_me %}
+		<div class="grey_box" style="overflow: hidden;">
+			<h3 class="nav_icon nav_recommend">{{ healer.user.first_name|capfirst }} Refers To</h3>
+			<div class="friend_box_zoom_contents">
+				{% for user in referrals_from_me %}
+					{% with location=user.client.healer.clientlocation_set.all.0.location avatar_size=94 modalities=user.client.healer.modality_set.all %}
+						{% include "healers/friend_box.html" %}
+					{% endwith %}
+				{% endfor %}
+				{% if is_me %}
+					{% for i in empty_avatars %}
+						<div class="friend_box">
+							<a href="{% url 'invite_postcard' %}?provider=1" class="floatbox empty_avatar_link" data-fb-options="width:710px; afterBoxEnd:`window.location.reload()`">
+								<div class="avatar empty_avatar">
+									<img src="{{ STATIC_URL }}healersource/img/hs_avatar.png" width="94" height="94"/>
+								</div>
+								<div class="avatar empty_avatar_text">
+									<span>&nbsp;+ Add Referral</span>
+								</div>
+							</a>
+						</div>
+					{% endfor %}
+					<div class="clearfix"></div>
+				{% endif %}
+			</div>
+		</div>
+	{% endif %}
+
+	<br>
+	{% include 'events/events_list_content.html' %}
+	{% include 'payments/save_card_dialog.html' %}
+{% endblock %}
+
+{% block extra_body %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('a[href^="http://"]').attr("target", "_blank");
+			$('a[href^="https://"]').attr("target", "_blank");
+
+			var $about_div = $('#healer_about');
+			var $about_text = $('#healer_about_content');
+			if ($('#healer_about_content')[0].scrollHeight > 300) {
+				$about_text.addClass('healer_about_limit_height');
+				$("<p class='message healer_about look_like_link' id='read_more_link'>Read More &raquo;</p>")
+						.click(function () {
+							$about_text.removeClass('healer_about_limit_height');
+							$('#read_more_link').hide();
+							$('#read_less_link').show();
+							position_not_available(true);
+						})
+						.insertAfter($about_div);
+
+				$("<p class='message healer_about look_like_link' id='read_less_link'>Read Less &laquo;</p>")
+						.click(function () {
+							$about_text.addClass('healer_about_limit_height');
+							$('#read_more_link').show();
+							$('#read_less_link').hide();
+							position_not_available(true);
+						})
+						.insertAfter($about_div)
+						.hide();
+			}
+
+			function avatar_img_show() {
+				var link = $(this);
+				var text = $('.empty_avatar_text', link);
+				var img = $('.empty_avatar', link);
+				text.slideUp(400);
+				img.slideDown(400);
+			}
+			function avatar_img_hide() {
+				var link = $(this);
+				var text = $('.empty_avatar_text', link);
+				var img = $('.empty_avatar', link);
+				img.slideUp(400);
+				text.slideDown(400);
+			}
+			$('.empty_avatar_link').mouseenter(avatar_img_hide);
+			$('.empty_avatar_link').mouseleave(avatar_img_show);
+
+		});
+	</script>
+{% endblock %}
+
+{% block footer %}
+	{% include 'nav_bottom.html' %}
+{% endblock %}

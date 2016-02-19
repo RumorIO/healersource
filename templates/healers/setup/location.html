@@ -1,0 +1,98 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block extra_head %}
+	{{ block.super }}
+	{{ location_form.media }}
+	<script src="{{ STATIC_URL }}healersource/js/settings_location.js"></script>
+{% endblock %}
+
+{% block setup_body %}
+
+	<div id='zip_msg' class='message single_button'>Make sure to set your location so New Clients can find you!</div>
+
+	{% with location_form as form %}
+		{% include "form_errors.html" %}
+	{% endwith %}
+	<form action="" method="post" class="location_settings">
+		{% csrf_token %}
+		<table class="no_wrap no_wrap1" id="edit_location">
+			<tr>
+				<th>{{ location_form.city.label_tag }}</th>
+				<td>{{ location_form.city }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.state_province.label_tag }}</th>
+				<td>{{ location_form.state_province }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.postal_code.label_tag }}</th>
+				<td>{{ location_form.postal_code }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.country.label_tag }}</th>
+				<td>{{ location_form.country }}</td>
+			</tr>
+		</table>
+			<hr>
+			<span class="bold">Do you want to Schedule Online at this Location? </span>
+			<span class="highlight_container button_container combined_button_container">
+				<span class="tour_appointments">
+					<a href="#" class="icon_earth"
+					onclick="show_additional_form()">Yes</a>
+				</span><span
+					class="selected tour_availability">
+				<a href="#" class="icon_eye_crossed_out"
+				   onclick="hide_additional_form()">No</a>
+				</span>
+			</span>
+			<br><br>
+
+		<table id="additional_form" style="display: none;">
+			<tr>
+				<th>{{ location_form.address_line1.label_tag }}</th>
+				<td>{{ location_form.address_line1 }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.address_line2.label_tag }}</th>
+				<td>{{ location_form.address_line2 }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.title.label_tag }}</th>
+				<td>{{ location_form.title }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.addressVisibility.label_tag }}</th>
+				<td>{{ location_form.addressVisibility }}</td>
+			</tr>
+			<tr>
+				<th>{{ location_form.book_online.label_tag }}</th>
+				<td>{{ location_form.book_online }}</td>
+			</tr>
+		</table>
+		<hr>
+		<div class="grey_box remote_sessions_option">
+			{% include "healers/settings/remote_sessions_option.html" with form=remote_sessions_form bold_label=True %}
+		</div>
+	</form>
+
+	{% include 'healers/settings/location_postal_code_warning.html' %}
+
+	{% include "healers/setup/setup_controls.html" with custom_next_onclick="add_location(true);" save_form=1 %}
+
+	<div style="display: none;" id='dialog_check_address'>
+		{% include "healers/settings/location_check.html" %}
+	</div>
+
+	<script type="text/javascript">
+		function show_additional_form(){
+			additional_form_is_visible = true;
+			$('#additional_form').show();
+		}
+
+		function hide_additional_form(){
+			additional_form_is_visible = false;
+			$('#additional_form').hide();
+		}
+
+	</script>
+{% endblock %}

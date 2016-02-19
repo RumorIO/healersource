@@ -1,0 +1,18 @@
+<form method="POST" action="" class="hide_form_errors">
+	{% with blog_form as form %}{% include "form_errors.html" %}{% endwith %}
+	{% csrf_token %}
+	<div style="float: right;">
+	{% if post %}
+		{% include 'blog/post_status_button.html' %}
+	{% else %}
+	<span class="button_container highlight_container combined_button_container">
+				<span class="{% if not post or post.status == 2 %}selected{% endif %}" onclick="$('#id_status').val(2);"><a href="#" class="icon_earth">Published</a></span><span class="{% if post.status == 1 %}selected{% endif %}" onclick="$('#id_status').val(1);"><a href="#" class="icon_eye_crossed_out">Draft</a></span>
+			</span>
+	{% endif %}
+	</div>	
+	{{ blog_form.as_p }}
+	<p class="form_block">
+		<input type="hidden" name="action" value="{% if blog_action %}update{% else %}create{% endif %}" />
+		<input type="submit" value="{{ submit_button_text }}"/>
+	</p>
+</form>

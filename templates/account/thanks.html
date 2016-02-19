@@ -1,0 +1,23 @@
+{% extends phonegap|yesno:'base_phonegap.html,base_new_box.html' %}
+
+{% load i18n %}
+
+{% block head_title %}Thank you.{% endblock %}
+
+{% block inner_content %}
+	{% include 'about/thanks.html' %}
+{% endblock %}
+
+{% block extra_head %}
+	{{ block.super }}
+	{% include 'tracking.html' %}
+	{% if tracking_code.optimizely %}
+		<script src="http://cdn.optimizely.com/js/{{ tracking_code.optimizely.experiment_id }}.js"></script>
+		<script>
+			$(function(){
+				window['optimizely'] = window['optimizely'] || [];
+				window.optimizely.push(['trackEvent', '{{ tracking_code.optimizely.event_name }}']);
+			});
+		</script>
+	{% endif %}
+{% endblock %}

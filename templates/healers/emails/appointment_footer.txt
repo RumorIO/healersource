@@ -1,0 +1,10 @@
+{% autoescape off %}{% if additional_text_for_email %}{{ additional_text_for_email }}
+
+{% endif %}{% if cancellation_policy %}Cancellation Policy:
+{{ cancellation_policy }}
+
+{% endif %}{% if appointments_manage_url %}To reschedule or cancel this appointment, {% with appointments_manage_url as link %}{% include "email_link.html" %}{% endwith %}
+
+{% endif %}{% if healer_link %}To contact {{ from_user_name }}, {% with healer_link as link %}{% include "email_link.html" %}{% endwith %}{% endif %}
+
+{% endautoescape %}

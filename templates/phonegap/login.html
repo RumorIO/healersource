@@ -1,0 +1,29 @@
+{% extends 'base_phonegap.html' %}
+{% load compress %}
+
+{% block extra_head %}
+	{% compress js %}
+		<script src="js/login.js"></script>
+	{% endcompress %}
+
+	{% compress css %}
+		<link rel="stylesheet" href="css/login.css" />
+	{% endcompress %}
+{% endblock %}
+
+{% block body %}
+	<div id="login" class="panel">
+		<div class="title panel_title panel_title_login">Log In</div>
+		<div class="content panel_content_login" style="display: block;">
+			<form>
+				{{ login_form.email }}<br/>
+				{{ login_form.password }}<br/>
+				<div class="homepage_button" onclick="login();" style="padding:6px 14px 6px 8px;">Log In &raquo;</div>
+				<div class="clearfix"></div>
+				<hr>
+				<div class="bold center">or</div>
+				<div class="facebook_login" onclick="facebook_login();">Login with Facebook</div>
+			</form>
+		</div>
+	</div>
+{% endblock %}

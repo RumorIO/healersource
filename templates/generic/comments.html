@@ -1,0 +1,9 @@
+{% extends "site_base.html" %}
+
+{% load mezzanine_tags comment_tags keyword_tags %}
+
+{% block head_title %}{{ obj }}{% endblock %}
+
+{% block body %}
+{% comments_for obj %}
+{% endblock %}

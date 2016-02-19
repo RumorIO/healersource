@@ -1,0 +1,27 @@
+<h3>{{ client }}</h3>
+<table class="contact_info">
+	<tr>
+		{% if client_info %}
+			<td style="padding-right: 5px; border-right: 1px solid #777;">
+				<div class="contact_info_header">{{ client }}'s Info:</div>
+				{{ client_info|safe }}
+				{% if healer_link %}<p><a href="{{ healer_link }}">Go To {{ client }}'s Profile &raquo;</a></p>{% endif %}
+			</td>
+		{% endif %}
+		<td style="padding-left: 5px;">
+			{% if client_info %}<div class="contact_info_header">Your Info:</div>{% endif %}
+			{% if contact_info_text %}{{ contact_info_text|safe }}{% endif %}
+			<br><br>
+			{% if answered_intake_form %}
+				<a href="{% url 'view_intake_form_answer' user.username client.user.username %}" class='floatbox' data-fb-options="type:ajax">View Intake Form »</a>
+			{% else %}
+				{% if client.user.email and has_intake_form %}
+				<a href="javascript:void(0);" onclick="send_intake_form(client.pk)">Send Intake Form »</a>
+				{% endif %}
+			{% endif %}
+			<p><a id="contact_edit" href="{% url 'edit_contact' client.user.username %}"
+			      class="floatbox" data-fb-options="type:ajax">(edit)</a></p>
+		</td>
+	</tr>
+</table>
+<script type="text/javascript">fb.resize(0,0);</script>

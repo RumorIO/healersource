@@ -1,0 +1,11 @@
+{% extends 'healers/setup/setup_base.html' %}
+
+{% block setup_body %}
+	{% include 'healers/timepicker_includes.html' %}
+	<div class="grey_box">
+		{% with dont_show_footer_and_save_button=True save_to_current=True %}
+			{% include 'healers/settings/schedule_content.html' %}
+		{% endwith %}
+	</div>
+	{% include 'healers/setup/setup_controls.html' with save_form=True %}
+{% endblock %}

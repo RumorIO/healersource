@@ -1,0 +1,26 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+			"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>HealerSource</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	{% block head %}
+	{% endblock %}
+</head>
+<body dir="ltr" style="margin: 0; padding: 0;">
+<div style="border: 1px solid #ddd; background-color: #F2F3F3; max-width: 640px; border-radius: 8px; font-family: Calibri,'Trebuchet MS',Helvetica,sans-serif;"><a
+			style="border-bottom: 1px solid #ddd; display: block; border-radius: 8px 8px 0 0;
+			background-color: #ededed; padding: 12px 22px; text-align: center;"
+			href="{% if email_template_header_url %}{{ email_template_header_url }}{% else %}https://www.healersource.com{% endif %}"><img
+			src="https://www.healersource.com/static/default/healersource/img/email/email_template_header_new.png"
+			alt="www.HealerSource.com" /></a><div
+			style="padding: 22px 42px;">
+	{% block body %}
+		{{ body|safe }}
+	{% endblock %}
+</div><div
+			style="border-top: 1px solid #ddd; padding: 10px 12px; border-radius: 0 0 8px 8px;
+			background-color: #ededed; text-align: center;">
+		Find the best Healers at <a href="https://www.healersource.com" style="color:#777;">www.HealerSource.com</a></div></div>
+</body>
+</html>

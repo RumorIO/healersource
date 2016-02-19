@@ -1,0 +1,231 @@
+{% extends "base_landing.html" %}
+
+{% load client_tags %}
+{% load compress %}
+{% load jquery_validation %}
+
+{% block head_title %}Pricing{% endblock %}
+
+{% block extra_head_last %}
+	{{ block.super }}
+
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/pricing.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/visibility.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.validate.min.js"></script>
+	{% endcompress %}
+
+	{% compress css %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/pricing.css" />
+	{% endcompress %}
+	{# {% include_validation %} #}
+	<script>
+		var url_contact_us = "{% url 'contact_us' %}";
+	</script>
+{% endblock %}
+
+{% block body %}
+	<div class="join_our_community round_top" style="padding-top: 4px;">
+		<div class="page_content">
+			<h1>join our community</h1>
+			Our mission at HealerSource is to create a global database of<br>Wellness Providers so everyone everywhere has access to Healing
+		</div>
+	</div>
+
+	<div id="clouds">
+		<div id="avatars">
+			{% for healer in healers %}
+				<a href="{% url 'healer_info' healer.user.username %}" class="floatbox avatar_image" data-fb-options="type:ajax width:765">{% avatar healer.user 100 %}</a>
+			{% endfor %}
+		</div>
+	</div>
+
+	<div class="join_our_community round_bottom">
+		<div class="page_content">
+			We give you state-of-the-art marketing &amp; business tools for Healers.<br>
+			So you can focus on your Craft and your Clients.<br>
+			And more people can benefit.
+		</div>
+	</div>
+
+	<div id="free_tools" class="section">
+		<div class="title">100% free tools</div>
+		<div class="block_content_container">
+			<div class="image_container">
+				<img src="{{ STATIC_URL }}healersource/img/what_next/wand.png" width="52" height="52" />
+				<img src="{{ STATIC_URL }}healersource/img/what_next/schedule.png" width="52" height="52" />
+				<img src="{{ STATIC_URL }}healersource/img/what_next/my_profile.png" width="52" height="52" />
+				<img src="{{ STATIC_URL }}healersource/img/hand.png" width="64" height="64" />
+				<img src="{{ STATIC_URL }}healersource/img/what_next/photo.png" width="52" height="52" />
+				<img src="{{ STATIC_URL }}healersource/img/what_next/clients.png" width="52" height="52" />
+				<img src="{{ STATIC_URL }}healersource/img/what_next/location.png" width="52" height="52" />
+				<img src="{{ STATIC_URL }}healersource/img/what_next/recommend.png" width="52" height="52" />
+			</div>
+			<hr>
+			<div class="block_content">
+				<div class="tools_column">
+					<ul>
+						<li>Your Own Personal Profile Page</li>
+						<li>Quick 10-minute Setup</li>
+						<li>Client Management</li>
+						<li>Built-in Blog and Videos</li>
+						<li>Email &amp; SMS Appointment Reminders</li>
+						<li>Intake Forms</li>
+					</ul>
+				</div>
+				<div class="tools_column">
+					<ul>
+						<li>SEO Marketing</li>
+						<li>Referral Tracking</li>
+						<li>Client Screening</li>
+						<li>Healing Requests</li>
+						<li>Import Contacts</li>
+						<li style="list-style-image: none; font-style: italic; text-decoration: underline;"><a href="{% url 'tour' %}">And More &raquo;</a></li>
+					</ul>
+				</div>
+			</div>
+			<br>
+		</div>
+	</div>
+
+	<div id="online_scheduling" class="section">
+		<div class="title">online scheduling</div>
+		<div class="block_content_container">
+			<div class="image_container">
+				<img src="{{ STATIC_URL }}healersource/img/pricing/schedule.png" class="border_img" width="714" height="237" />
+			</div>
+			<br>
+			<div class="block_content prices_content">
+				<div class="prices_block">
+					<div class="prices_title prices_block_element">
+						individual
+					</div>
+					<div class="prices_desc prices_block_element">
+						<strong>completely free</strong>
+					</div>
+				</div>
+				<hr>
+				<div class="prices_block">
+					<div class="prices_title prices_block_element">
+						spa &amp; wellness center
+					</div>
+					<div class="prices_desc prices_block_element">
+						$7 / provider<br>
+						<span class="small_desc">center can pay for everyone or each provider pays for themself</span>
+						<div id="prices_or"><hr>OR<hr></div>
+						<table>
+							<tr>
+								<td class="price">
+									<span class="crossed_out">$149</span> $49 /<br>
+								</td>
+								<td>
+									unlimited providers
+								</td>
+							</tr>
+						</table>
+						<span class="small_desc">
+							limited time offer - $49 monthly<br>
+							for first 100 Spas / Centers only<br>
+							<a href="{% url 'signup' %}"><u>Try it Free &amp;<br>Lock in your price today &raquo;</u></a>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="soap_notes" class="section">
+		<div class="title">soap notes</div>
+		<div class="block_content_container">
+			<div class="image_container">
+				<img src="{{ STATIC_URL }}healersource/img/notes/diagrams/thumbs/muscular_full_front.png" width="59" height="100" />
+				<img src="{{ STATIC_URL }}healersource/img/notes/diagrams/thumbs/muscular_side_right.png" width="42" height="101" />
+				<img src="{{ STATIC_URL }}healersource/img/notes/diagrams/thumbs/muscular_hand_left.png" width="58" height="100" />
+				<img src="{{ STATIC_URL }}healersource/img/notes/diagrams/thumbs/skeleton_front.png" width="43" height="100" />
+				<img src="{{ STATIC_URL }}healersource/img/notes/diagrams/thumbs/skeleton_side_right.png" width="41" height="100" />
+				<img src="{{ STATIC_URL }}healersource/img/notes/diagrams/thumbs/skull_profile_right.png" width="80" height="97" />
+				<img src="{{ STATIC_URL }}healersource/img/notes/diagrams/thumbs/energetic_aura.png" width="58" height="101" />
+				<img src="{{ STATIC_URL }}healersource/img/notes/diagrams/thumbs/reflexology_foot_left.png" width="58" height="101" />
+			</div>
+			<div class="block_content prices_content">
+				<div class="prices_block">
+					<div class="prices_title prices_block_element">
+						individual
+					</div>
+					<div class="prices_desc prices_block_element">
+						$15 / month
+					</div>
+				</div>
+				<hr>
+				<div class="prices_block">
+					<div class="prices_title prices_block_element">
+						spa &amp; wellness center
+					</div>
+					<div class="prices_desc prices_block_element">
+						included free with scheduling
+					</div>
+				</div>
+				<hr>
+				<p style="margin-left: 20px;"><a href="{% url 'landing_page_notes' %}" style="font-style: italic; font-weight: bold; text-decoration: underline;">Learn More about our SOAP Notes &raquo;</a></p>
+			</div>
+		</div>
+	</div>
+
+	<div id="cc_processing" class="section">
+		<div class="title">credit card processing</div>
+		<div class="block_content_container">
+			<div class="image_container border_img_container">
+					<img src="{{ STATIC_URL }}healersource/img/tour/cc/mc.gif" width="96" height="53" />
+					<img src="{{ STATIC_URL }}healersource/img/tour/cc/visa.gif" width="96" height="53" />
+					<img src="{{ STATIC_URL }}healersource/img/tour/cc/amex.gif" width="96" height="53" />
+					<img src="{{ STATIC_URL }}healersource/img/tour/cc/discover.gif" width="96" height="53" />
+			</div>
+			<div class="block_content prices_content">
+				<div class="prices_block">
+					<div class="prices_title prices_block_element">
+						stripe connect
+					</div>
+					<div class="prices_desc prices_block_element">
+						1% of transactions<br>or $15 / month
+					</div>
+				</div>
+				<hr>
+				<div class="prices_block">
+					<div class="prices_title prices_block_element">
+						paypal
+					</div>
+					<div class="prices_desc prices_block_element">
+						$15 / month<br>
+						<span class="small_desc">coming soon</span>
+					</div>
+				</div>
+				<div class="center small_desc">does not include Stripe or PayPal fees</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="page_content" id="contact_us">
+		<h1>Have questions?</h1>
+		<a href="javascript:void(0);" onclick="show_contact_us_dlg()">&raquo;&nbsp;&nbsp;Contact us&nbsp;&nbsp;&laquo;</a><br>
+		<span class="small_desc">lets talk on the phone</span>
+	</div>
+
+	{% if not request.user.is_authenticated %}
+		<hr>
+		{% include 'account/signup_content.html' %}
+	{% endif %}
+{% endblock %}
+
+{% block extra_body %}
+	<div id="contact_us_dlg" class="hidden">
+		<div id="signup_panel" class="panel_content_signup">
+			<form id="contact_us_form" method="post">
+				<input name="name" type="text" placeholder="Full Name">
+				<input name="email" type="email" placeholder="Email">
+				<textarea name="message" placeholder="Optional Message" rows="6" style="width:98%;"></textarea>
+				<input type="submit" class="hidden-submit">
+			</form>
+		</div>
+	</div>
+	{% include 'account/signup_content_additional.html' with signup_form=client_signup_form %}
+{% endblock %}

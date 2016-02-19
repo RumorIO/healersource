@@ -1,0 +1,5 @@
+{{ provider_name }} is now Referring clients to you on {{ SITE_NAME }}.
+
+To see {{ provider_name }}'s profile, {% with provider_profile_url as link %}{% include "email_link.html" %}{% endwith %}
+
+{% if recommend_url %}To Refer back to {{ provider_name }}, {% with recommend_url as link %}{% include "email_link.html" %}{% endwith %}{% endif %}

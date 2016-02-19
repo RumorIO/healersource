@@ -1,0 +1,31 @@
+{% load pagination_tags %}
+{% if not homepage_featured_centers %}
+	{% autopaginate found_providers 24 %}
+{% endif %}
+
+{% with homepage_featured=True %}
+<div class="friends">
+	{% for provider in found_providers %}
+		{% with provider.clientlocation_set.all.0.location as location %}
+		{% with provider.distance as distance %}
+		{% with provider.user as user %}
+		{% with provider.modality_set.all as modalities %}
+		{% with 140 as avatar_size %}
+			<div class="grid_box grey_box">
+			{% include "healers/friend_box.html" %}
+			</div>
+		{% endwith %}
+		{% endwith %}
+		{% endwith %}
+		{% endwith %}
+		{% endwith %}
+	{% endfor %}
+	{% if not homepage_featured_centers %}
+		<div class="search_results_pagination">
+			{% paginate %}
+		</div>
+	{% endif %}
+</div>
+{% include 'about/search/results_not_found.html' %}
+
+{% endwith %}

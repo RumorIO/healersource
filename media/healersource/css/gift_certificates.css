@@ -1,0 +1,66 @@
+#id_gift_certificates_expiration_period {
+	width: 30px;
+}
+
+#id_gift_certificates, #stripe_connect_required {
+	display: none;
+}
+
+#gift_certificate_form {
+	clear: both;
+}
+
+#gift_certificate {
+	margin-bottom: 10px;
+}
+
+#gift_certificate_purchase fieldset {
+	border: 0;
+}
+
+#gift_certificate_purchase #id_message {
+	width: 50%;
+	height: auto;
+}
+
+#gift_certificate_purchase #id_amount {
+	width: auto;
+	margin-left: 5px;
+}
+
+.gift_certificate_avatar {
+	text-align: center;
+}
+
+.gift_certificate_avatar img{
+	max-width: 100%;
+	height: auto !important;
+}
+
+.expired {
+	color: darkred;
+}
+
+#gift_certificates td {
+	vertical-align: middle;
+}
+
+#gift_certificates .menu_selection_submenu li, .menu_selection {
+	width: 107px !important;
+}
+
+@media screen and (min-width: 36.25em) {
+	#gift_certificate {
+		display: flex;
+	}
+
+	.gift_certificate_details {
+		float: left;
+		margin-left: 20px;
+		width: 100%;
+	}
+
+	.gift_certificate_avatar {
+		float: left;
+	}
+}

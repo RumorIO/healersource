@@ -1,0 +1,72 @@
+{% if is_mobile %}
+	{% for note in notes %}
+		<div onclick="edit_note({{ note.id }})" class="edit_note_link arrow">&gt;</div>
+		<div onclick="show_note_menu({{ note.id }})" class="show_note_menu_button">
+			{{ note.created_date_formated }} | <strong>{{ note.client }}</strong>
+		</div>
+		<div class="clearfix"></div>
+		<div id="note_menu_{{ note.id }}" class="hidden">
+			<table class="note_menu">
+				<tr>
+					<td width="{{ client_filter|yesno:'50,33' }}%">
+						<a href="javascript:void(0);" onclick="edit_note({{ note.id }})">
+							<div class="small_icon_button {{ note.is_finalized|yesno:'view,edit' }}_button"></div>
+							{{ note.is_finalized|yesno:'View,Edit' }}
+						</a>
+					</td>
+					<td width="{{ client_filter|yesno:'50,33' }}%">
+						<a href="javascript:void(0);" onclick="duplicate_note({{ note.id }})">
+							<div class="small_icon_button duplicate_button"></div>
+							Duplicate
+						</a>
+					</td>
+					{% if not client_filter %}
+						<td width="{{ client_filter|yesno:'50,33' }}%">
+							<a href="javascript:void(0);">
+								<div class="small_icon_button new_button" onclick="new_note({{ note.client.id }})"></div>
+								New
+							</a>
+						</td>
+					{% endif %}
+					{% if complete_forms %}
+						{% for answer in complete_forms %}
+							{% if note.client == answer.client %}
+							<td width="{{ client_filter|yesno:'50,33' }}%">
+								<a class="floatbox" data-fb-options="type:ajax" href="{% url 'view_intake_form_answer' healer_username answer.client.user.username %}">
+									<div class="small_icon_button intake_button"></div>
+									Intake
+								</a>
+							</td>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</tr>
+			</table>
+		</div>
+		<div class="clearfix bottom_border"></div>
+	{% endfor %}
+{% else %}
+	<table class="client_list responsive_table">
+	{% for note in notes %}
+		<tr>
+			<td>{{ note.created_date_formated }} | <strong>{{ note.client }}</strong></td>
+			<td class="align-right">
+				<a href="javascript:void(0);" onclick="edit_note({{ note.id }})">{{ note.is_finalized|yesno:'View,Edit' }}</a>
+				|
+				<a href="javascript:void(0);" onclick="duplicate_note({{ note.id }})">Duplicate</a>
+				{% if not client_filter %}
+					| <a href="javascript:void(0);" onclick="new_note({{ note.client.id }})">New</a>
+				{% endif %}
+					{% if complete_forms %}
+						{% for answer in complete_forms %}
+							{% if note.client == answer.client %}
+								| <a class='floatbox' data-fb-options='type:ajax' href="{% url 'view_intake_form_answer' healer_username answer.client.user.username %}">Intake</a>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+
+			</td>
+		</tr>
+	{% endfor %}
+	</table>
+{% endif %}

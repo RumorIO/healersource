@@ -1,0 +1,121 @@
+{% extends "site_base.html" %}
+
+{% load i18n %}
+{% load ifsetting_tag %}
+
+{% block head_title %}{% trans "What Next?" %}{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_home">{% trans "Welcome" %}</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "facebook_init.html" %}
+
+	{% if number_of_unconfirmed_appts < 0 or client_invitations_count > 0 %}
+		<div class="single_button">
+			You have
+			{% if number_of_unconfirmed_appts > 0 %}
+				<a href="{% if is_healer %}{% url 'schedule' %}{% else %}{% url 'receiving_appointments' %}{% endif %}">
+					<span class="bold_red">{{ number_of_unconfirmed_appts }}</span>
+					Unconfirmed Appointment{{ number_of_unconfirmed_appts|pluralize }}
+				</a>
+			{% endif %}
+			{% if number_of_unconfirmed_appts > 0 and client_invitations_count > 0 %} and {% endif %}
+			{% if client_invitations_count > 0 %}
+				<a href="{% url 'friends' "clients" %}">
+					<span class="bold_red">{{ client_invitations_count }}</span>
+					New Client{{ client_invitations_count|pluralize }} Pending Approval
+				</a>
+			{% endif %}
+		</div>
+		<br />
+	{% endif %}
+
+	{% include "healers/healer_profile_incomplete_warning.html" %}
+
+	<table class="what_next">
+		{% if not healer.is_completed_setup %}
+			<tr><td><img src="{{ STATIC_URL }}healersource/img/what_next/wand.png" class="what_next_icon" /></td>
+				<td>
+					<a href="{% url 'provider_setup' healer.setup_step %}">
+						{% if healer.setup_step == 0 %}Start{% else %}Resume{% endif %} Account Setup &raquo;
+					</a>
+					<div style="margin-top: 8px;">
+						or jump to step&nbsp;{% include 'healers/setup/step_selector.html' %}<br />
+					</div>
+				</td></tr>
+		{% endif %}
+
+		{% if not fill_warning_links.about %}
+			<tr><td><img src="{{ STATIC_URL }}healersource/img/what_next/schedule.png" class="what_next_icon" /></td>
+				<td>
+					<a href="{% url 'schedule' %}">Go to Your Schedule</a>
+					<div>
+						manage your appointments and availability<br />
+					</div>
+				</td></tr>
+		{% endif %}
+
+		{% if is_wellness_center %}
+			<tr><td><img src="{{ STATIC_URL }}healersource/img/hand.png" class="what_next_icon" /></td>
+				<td>
+					<a href="{% url 'friends' 'providers' %}">Add Your Providers</a>
+					<div>list all of the providers at your spa or wellness center</div>
+				</td></tr>
+		{% endif %}
+
+		{% if fill_warning_links.avatar %}
+			<tr><td><img src="{{ STATIC_URL }}healersource/img/what_next/photo.png" class="what_next_icon" /></td>
+				<td>
+					<a href="{% url 'avatar_change' %}">Change Your Photo</a>{# {% if fill_warning_links.avatar %}<span class="warning_asterisk">&lowast;</span>{% endif %} #}
+					<div>people love to see {% if is_wellness_center %}photos of your center{% else %}your smiling face{% endif %}</div>
+				</td></tr>
+		{% endif %}
+
+		{% if fill_warning_links.location %}
+			<tr><td><img src="{{ STATIC_URL }}healersource/img/what_next/location.png" class="what_next_icon" /></td>
+				<td>
+					<a href="{% url 'location' %}">Enter Your Location</a>{# {% if fill_warning_links.location %}{# <span class="warning_asterisk">&lowast;</span>{% endif %} #}
+					<div>so people will know where to come</div>
+				</td></tr>
+		{% endif %}
+
+		{% if not is_wellness_center %}
+			<tr><td><img src="{{ STATIC_URL }}healersource/img/what_next/availability.png" class="what_next_icon" /></td>
+				<td>
+					<a href="{% url 'availability' %}">Set Your Availability</a>
+					<div>
+						save yourself a whole bunch of time<br />
+					</div>
+				</td></tr>
+		{% endif %}
+
+		<tr><td><img src="{{ STATIC_URL }}healersource/img/what_next/my_profile.png" class="what_next_icon" /></td>
+			<td>
+				<a href="{% url 'healer_edit' %}">{% if fill_warning_links.about %}Fill In{% else %}Edit{% endif %} Your Profile</a>{# {% if fill_warning_links.about %}<span class="warning_asterisk">&lowast;</span>{% endif %} #}
+				<div>tell the world a bit about {% if is_wellness_center %}your center{% else %}yourself{% endif %}</div>
+			</td></tr>
+
+		<tr><td><img src="{{ STATIC_URL }}healersource/img/what_next/clients.png" class="what_next_icon" /></td>
+			<td>
+				<a href="{% url 'friends' "clients" %}">Invite Your Clients</a>
+				<div>so you can do what you do best</div>
+			</td></tr>
+
+		{% if not is_wellness_center %}
+			<tr><td><img src="{{ STATIC_URL }}healersource/img/what_next/recommend.png" class="what_next_icon" /></td>
+				<td>
+					<a href="{% url 'friends' 'referrals' %}">Refer To Other Practitioners</a>
+					<div>your friends will love you!</div>
+				</td></tr>
+		{% endif %}
+
+		<tr><td><img src="{{ STATIC_URL }}healersource/img/what_next/import_contacts.png" class="what_next_icon" /></td>
+			<td>
+				<a href="#">Import your Contacts</a>
+				{% with 1 as hide_contact_import_header %}{% include "friends_app/import_contacts_bar.html" %}{% endwith %}
+			</td></tr>
+
+	</table>
+
+{% endblock %}

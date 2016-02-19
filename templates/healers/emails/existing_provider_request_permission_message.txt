@@ -1,0 +1,3 @@
+{{ wellness_center }} has requested to edit your profile and schedule on HealerSource.
+
+To allow, {% with wcenter_permission_url as link %}{% include "email_link.html" %}{% endwith %}

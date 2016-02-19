@@ -1,0 +1,52 @@
+{% extends 'pdf_base.html' %}
+
+{% load client_tags %}
+
+{% block extra_head %}
+	<style>
+	/* Some css isn't working properly when put in css */
+	.gift_certificate_avatar {
+		text-align: center;
+		width: 20%;
+	}
+
+	.gift_certificate_details {
+		margin-left: 20px;
+		width: 65%
+	}
+
+	.logo {
+		margin-left: 20px;
+		width: 15%;
+		vertical-align: bottom;
+	}
+
+	@page {
+		size: a4 landscape;
+		margin: 1in 1.25in;
+	}
+
+	td {
+		padding:10px;
+	}
+
+</style>
+{% endblock %}
+
+{% block body %}
+	{# Used tables because pdf export module doesn't support floats #}
+	<table>
+		<tr>
+			<td class="gift_certificate_avatar">
+				{% avatar healer.user 148 %}<br>
+				{{ healer }}
+			</td>
+			<td class="gift_certificate_details">
+				{% include "healers/gift_certificate_details.html" with clickable_link=True %}
+			</td>
+			<td class="logo">
+				<img src="{{ STATIC_URL }}healersource/img/hs_logo.png" width="80">
+			</td>
+		</tr>
+	</table>
+{% endblock %}

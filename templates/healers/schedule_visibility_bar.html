@@ -1,0 +1,36 @@
+{#<div>#}
+{#	Your Schedule is Visible To:#}
+{#	<div class="highlight_container button_container" style="display: inline-block;">#}
+{#		<span {% if healer.scheduleVisibility == healer.VISIBLE_DISABLED %}class="selected"{% endif %}><a class="icon_eye_crossed_out">#}
+{#			Only Me (Preview)</a></span>#}
+{#		<span {% if healer.scheduleVisibility == healer.VISIBLE_CLIENTS %}class="selected"{% endif %}><a class="icon_users">#}
+{#			My Clients Only</a></span>#}
+{#		<span {% if healer.scheduleVisibility == healer.VISIBLE_EVERYONE %}class="selected"{% endif %}><a class="icon_earth">#}
+{#			Everyone</a></span>#}
+{#	</div>#}
+{#</div>#}
+
+{% if healer.scheduleVisibility == healer.VISIBLE_DISABLED %}
+	<div class="single_button pale_button" style="margin-bottom: 12px;">
+	<div class="red_text icon_eye_crossed_out" style="text-decoration1: underline">
+		{% if is_wellness_center %}{{healer.user.client }}'s{% else %}Your{% endif %} Schedule is Not Currently Visible to the Public</div>
+	{% if help_text %}<div style="margin-left: 24px; color: #444444;">First, set {% if is_wellness_center %}{{healer.user.client }}'s{% else %}your{% endif %} availability to your liking. Then you can make {% if is_wellness_center %}{{healer.user.client }}'s{% else %}your{% endif %} schedule visible by using the buttons below </div>{% endif %}
+{% endif %}
+
+<div style="margin: 16px 0;">
+	<span class="tour_visibility_bar">Set Schedule Visibility:</span>
+	<div style="display: inline-block;" id="schedule_visiblity_selector" class="button_container highlight_container">
+			<span class="{% if healer.scheduleVisibility == healer.VISIBLE_EVERYONE %}selected green_button_selected{% else %}green_button{% endif %}"
+						><a href="{% url 'set_schedule_visibility' username 'everyone' %}" class="icon_earth">Everyone</a></span>
+
+		<span class="my_clients_only {% if healer.scheduleVisibility == healer.VISIBLE_CLIENTS %}selected{% endif %}"
+					><a href="{% url 'set_schedule_visibility' username 'clients' %}" class="icon_users_gold">My Clients Only</a></span>
+
+		<span class="{% if healer.scheduleVisibility == healer.VISIBLE_DISABLED %}selected red_button_selected{% endif %}"
+					><a href="{% url 'set_schedule_visibility' username 'disabled' %}" class="icon_eye_crossed_out">Only Me (Preview)</a></span>
+
+	</div>
+
+	{% if healer.scheduleVisibility == healer.VISIBLE_DISABLED %}</div>{% endif %}
+
+</div>

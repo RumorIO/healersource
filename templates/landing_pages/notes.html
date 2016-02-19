@@ -1,0 +1,216 @@
+{% extends phonegap|yesno:'base_phonegap.html,base_landing.html' %}
+
+{% load compress %}
+{% load client_tags %}
+
+{% block head_title %}Massage Therapist SOAP Notes{% endblock %}
+
+{% block extra_head %}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/landing_notes.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.validate.min.js"></script>
+	{% endcompress %}
+
+	{% compress css %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/landing_notes.css" />
+	{% endcompress %}
+
+	<style type="text/css">
+		/* for phonegap */
+		.body_content { margin: 0;}
+	</style>
+
+{% endblock %}
+
+{% block body %}
+	<div class="header2">
+		<div class="header_left_block">
+			<div class="header_title mobile_header_title">
+				<div class="header_header_title">Eliminate Paper Notes</div>
+				<div class="header_description">Secure &amp; Easy SOAP Notes on your Computer, Tablet and Phone</div>
+			</div>
+			<div class="images">
+				{% for image in images %}
+					<div class="rotate" {% if forloop.counter > 1 %} style="display: none;" {% endif %}><img src="{{ MEDIA_URL }}landing_notes/{{ image }}"></div>
+				{% endfor %}
+			</div>
+			<div class="learn_more"><a href="#dedicated_apps_dlg">LEARN MORE &raquo;</a></div>
+		</div>
+		<div class="header_right_block">
+			<div class="header_title desktop_header_title">
+				<div class="header_header_title">Eliminate Paper Notes</div>
+				<div class="header_description">Secure &amp; Easy SOAP Notes on your Computer, Tablet and Phone</div>
+			</div>
+			<div id="benefits">
+				&middot; Store Your Notes Securely Online<br>
+				&middot; Access Them from Everywhere<br>
+				&middot; Stay Organized<br>
+				&middot; Fast + Easy Entry<br>
+				{% include 'about/landing_start_using_notes_button.html' %}
+			</div>
+		</div>
+	</div>
+	<div class="testimonials">
+		<ul>
+			<li>
+				{% avatar 'sparrowbodywork' 100 False False phonegap %}
+				Im usually not very good with computers. But I was using HS Notes in just a few minutes. Its really easy.
+				<div>- Ariel Sheldon, LMT</div>
+			</li>
+			<li>
+				{% avatar 'elevinson' 100 False False phonegap %}
+				I used to waste client time digging for papers and filing. Now I can find notes from years ago in seconds. Perfect!
+				<div>- Eric Levinson, Coach</div>
+			</li>
+			<li>
+				{% avatar 'integratewellness' 100 False False phonegap %}
+				I love taking notes right from my iPad. Its very professional.
+				<div>- David Murphy, Rolfer</div>
+			</li>
+			<li>
+				{% avatar 'windhorse' 100 False False phonegap %}
+				HealerSource makes my life convenient. ...Online scheduling, payments, intake forms, and SOAP notes - all in one place.
+				<div>- Ellen Sokolow, Reiki Master</div>
+			</li>
+		</ul>
+		<div class="clearfix"></div>
+	</div>
+	<div class="features">
+		<ul>
+			<li class="feature">
+				<div class="feature_content">
+					<div class="title">
+						<div class="feature_image">
+							<a href="{% url 'hipaa_content' %}" class="floatbox" data-fb-options="type:ajax"><img src="{{ STATIC_URL }}healersource/img/landing/features/hipaa.png" alt="HIPAA Compliant"></a>
+						</div>
+						HIPAA Compliant
+					</div>
+					Military Grade Encryption plus an IBM data center<br>keep your notes safe.<br>
+					<a href="{% url 'hipaa_content' %}" class="floatbox" data-fb-options="type:ajax">&raquo; HIPAA Compliance</a>
+				</div>
+			</li>
+			<li class="feature">
+				<div class="feature_content">
+					<div class="title">
+						<div class="feature_image">
+							<img src="{{ STATIC_URL }}healersource/img/landing/features/easy_to_use.png" alt="Easy To Use">
+						</div>
+						Easy To Use
+					</div>
+					We worked closely with Healers like you to make notes simple &amp; intuitive.
+				</div>
+			</li>
+			<li class="feature">
+				<div class="feature_content">
+					<div class="title">
+						<div class="feature_image" style="line-height: 1em;">
+							<a href="https://itunes.apple.com/us/app/healersource/id966154338?ls=1&mt=8" target="_blank"><img src="{{ STATIC_URL }}healersource/img/landing/Available_on_the_App_Store_black-sm.png" alt="Available on the App Store" style="height:60px; margin: 12px 0;"></a>
+							<br>
+							<a href="https://play.google.com/store/apps/details?id=com.healersource.www" target="_blank"><img src="{{ STATIC_URL }}healersource/img/landing/google-play-logo-sm.png" alt="Google Play" style="height:60px; margin-bottom: 10px;"></a>
+						</div>
+						Dedicated Apps
+					</div>
+					100% real apps for<br><a href="javascript:void(0)" onclick="app_availability_dlg();">iPhone</a>, <a href="javascript:void(0)" onclick="app_availability_dlg();">iPad</a> and <a href="https://play.google.com/store/apps/details?id=com.healersource.www" target="_blank">Android</a>.
+				</div>
+			</li>
+			<li class="feature clearfix">
+				<div class="feature_content">
+					<div class="title">
+						<div class="feature_image">
+							<img src="{{ STATIC_URL }}healersource/img/landing/features/rabbit.png" alt="Blazing Fast" />
+						</div>
+						Blazing Fast
+					</div>
+					Breeze through note entry.<br>Spend more time<br>with your clients.
+				</div>
+			</li>
+			<li class="feature">
+				<div class="feature_content">
+					<div class="title">
+						<div class="feature_image">
+							<img src="{{ STATIC_URL }}healersource/img/landing/features/scheduling_and_payments.png" alt="Scheduling &amp; Payments">
+						</div>
+						Scheduling &amp; Payments
+					</div>
+					Online Scheduling and Credit Card Processing Baked right in.
+				</div>
+			</li>
+			<li class="feature">
+				<div class="feature_content">
+					<div class="title">
+						<div class="feature_image">
+							<img src="{{ STATIC_URL }}healersource/img/tour/intake.gif" alt="Intake Forms" class="border_img" style="box-shadow: 3px 3px 11px #888;"/>
+						</div>
+						Intake Forms
+					</div>
+					Send Intake Forms to your clients before you meet.<br>Save Time.
+				</div>
+			</li>
+			<li class="feature clearfix">
+				<div class="feature_content">
+					<div class="title">
+						<div class="feature_image">
+							<img src="{{ STATIC_URL }}healersource/img/landing/features/print_your_notes.png" alt="Print Your Notes">
+						</div>
+						Print Your Notes
+					</div>
+					Download your notes as pdf. Print them any time.<br>Share with your Clients.
+				</div>
+			</li>
+			<li class="feature">
+				<div class="feature_content">
+					<div class="title">
+						<div class="feature_image">
+							<img src="{{ STATIC_URL }}healersource/img/landing/features/all_your_devices.png" alt="Print Your Notes">
+						</div>
+						Cloud Backup
+					</div>
+					Your notes are automatically synced and backed up securely on our servers.
+				</div>
+			</li>
+			<li class="feature">
+				<div class="feature_content">
+					<div class="title">
+						<div class="feature_image">
+							<img src="{{ STATIC_URL }}healersource/img/landing/features/free_online_profile.jpg" alt="Free Online Profile" class="border_img" style="box-shadow: 3px 3px 11px #888;">
+						</div>
+						Free Online Profile
+					</div>
+					Get a free listing in our Nationwide Healer Directory. Priceless.
+				</div>
+			</li>
+		</ul>
+	</div>
+	<div class="partners">
+		<div>TRUSTED BY</div>
+		<ul>
+			<li><img src="{{ STATIC_URL }}healersource/img/landing/partners/heal_center.png" alt="Heal Center">
+			<li><img src="{{ STATIC_URL }}healersource/img/landing/partners/sparrow_salon_spa_and_sundries.png" alt="Sparrow. Salon, spa &amp; Sundries">
+			<li><img src="{{ STATIC_URL }}healersource/img/landing/partners/shuniya_yoga_meditation_sound.png" alt="Shuniya. Yoga. Meditation. Sound">
+			<li><img src="{{ STATIC_URL }}healersource/img/landing/partners/conscious_sol_healing_and_wellness.png" alt="Conscious Sol. Healing &amp; Wellness">
+			<li><img src="{{ STATIC_URL }}healersource/img/landing/partners/eastover_estate_and_retreat.png" alt="Eastover. Estate &amp; Retreat">
+			<li><img src="{{ STATIC_URL }}healersource/img/landing/partners/flower.png" alt="Flower">
+		</ul>
+	</div>
+	<div class="footer">
+		{% include 'about/landing_start_using_notes_button.html' %}
+	</div>
+	<div id="bottom_links">
+		HealerSource &copy; 2015&nbsp;&middot;&nbsp;
+		<a href="{% url 'terms' %}">Terms of Service</a>&nbsp;&middot;&nbsp;
+		<a href="{% url 'privacy' %}">Privacy Policy</a>&nbsp;&middot;&nbsp;
+		<a href="{% url 'hipaa' %}">HIPAA</a>&nbsp;&middot;&nbsp;
+		<a href="" class="contact" title="Contact HealerSource">Contact Us</a>
+	</div>
+	<div id="dedicated_apps_dlg" class="dedicated_apps_dlg">
+		<h3 class="app_links_title">Get Your Apps</h3>
+		<div class="app_links">
+			<div class="app_link"><a href="https://itunes.apple.com/us/app/healersource/id966154338?ls=1&mt=8" target="_blank"><img src="{{ STATIC_URL }}healersource/img/landing/Available_on_the_App_Store_black-sm.png" alt="Available on the App Store"></a></div>
+			<div class="app_link"><a href="https://play.google.com/store/apps/details?id=com.healersource.www" target="_blank"><img src="{{ STATIC_URL }}healersource/img/landing/google-play-logo-sm.png" alt="Google Play"></a></div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block extra_body %}
+	{% include 'account/signup_content_additional.html' %}
+{% endblock %}

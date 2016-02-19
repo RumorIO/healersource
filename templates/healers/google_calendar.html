@@ -1,0 +1,62 @@
+{% extends "site_base.html" %}
+{% load compress %}
+
+{% block head_title %}Google Calendar Sync{% endblock %}
+
+{% block extra_head %}
+	{% compress js %}
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/google_sync.js"></script>
+	{% endcompress %}
+		<script>
+			var url_google_login = "{% url 'oauth2_google_login' %}";
+			var url_google_calendar_sync = "{% url 'google_calendar_run_sync' %}";
+			var url_google_calendar_hard_reset = "{% url 'google_calendar_hard_reset' %}";
+			var url_google_calendar_soft_reset = "{% url 'google_calendar_soft_reset' %}";
+		</script>
+{% endblock %}
+
+{% block page_title %}<h1>Google Calendar Sync</h1>{% endblock %}
+
+{% block body %}
+
+	{% if impersonate and request.user.username != impersonate or user.is_superuser %}
+		<div id="debug"></div>
+	{% endif %}
+	{% if healer.is_google_calendar_sync_enabled %}
+		<p>
+			Google Calendar Sync enabled with {{ healer.google_email }}.
+			<a href="{% url 'google_calendar_change' %}">change</a> | <a href="{% url 'google_calendar_disable' %}">disable</a>
+		</p>
+
+		<p>Automatic Sync takes place every 5 minutes. You can also click here to <a href="#" id="sync_button" onclick="googleSync()">Manual Sync Now &raquo;</a>
+		</p>
+		{% if form %}
+			<form action="." method="POST" id="gcal_calendar_list">
+				{% csrf_token %}
+				{{ form.as_p }}
+				<p><input type="submit" value="Save"></p>
+			</form>
+		{% endif %}
+		<p><a href="javascript:void(0);" onclick="show_reset_links();">Having trouble with sync?</a></p>
+		<div id="reset_links" class="hidden">
+			<p class="italic">Try option 1 first. If that doesn’t work, then try option 2.</p>
+			<ol>
+				<li><a href="#" onclick="googleReset(this)" data-soft-reset="true">Delete all events in your gCal HealerSource Calendar and recreate them >></a></li>
+				<li><a href="#" onclick="googleReset(this)">Delete your HealerSource Calendar from gCal and start over >></a></li>
+			</ol>
+		</div>
+	{% else %}
+		<form action="{% url 'google_calendar_sync' %}" method="POST">
+			<p><strong>How it works:</strong> A calendar named <strong>"HealerSource Appointments"</strong> will be created on your Google account.<br /> Appointments from HealerSource will be visible in Google, but its a one-way sync. In other words, you <em><strong>cannot</strong></em> add new appointments to HealerSource from Google Calendar.</p>
+			<p>{# You will now be redirected to Google to grant access to your Google Calendar. <br /> #}On the next page, enter your login information and click on the <a href="javascript:void(0);" onclick="$('#sync_continue_button').trigger('click');"><img src="{{ STATIC_URL }}healersource/img/google_accept_button.png" style="vertical-align: middle;" /></a> button.</p>
+			<p><strong><em>HealerSource does not see your credentials at any point.</em></strong></p>
+			<p>Please be patient, this process may be very slow the first time.</p>
+
+			{% csrf_token %}
+			{{ form.as_p }}
+			<p><input type="submit" id="sync_continue_button" value="Continue &raquo;"></p>
+		</form>
+		{#		<p><a href="{% url google_calendar_sync %}">Continue &raquo;</a></p>#}
+	{% endif %}
+
+{% endblock %}

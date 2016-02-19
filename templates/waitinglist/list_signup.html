@@ -1,0 +1,12 @@
+{% extends "blank_page_base.html" %}
+
+{% block content %}
+<img src="{{ STATIC_URL }}healersource/img/by_invite_only.png" />
+<div style="color: #AF4C4C; padding: 4px;">{{ form.email.errors.0 }}</div>
+<form class="uniForm" method="POST" action="." style="padding-left:30px; " name="signup">{% csrf_token %}
+	<input id="id_email" name="email" type="text" placeholder="Enter Email Here"
+	       style="height:28px; width:320px; border:2px solid gray; font-size:22px; padding-top:3px; color:#444;"/>
+	<img src="{{ STATIC_URL }}healersource/img/green_arrow.png" style="vertical-align:top; cursor:pointer;" onclick="document.forms.signup.submit();" />
+<p><a href="{% url 'login_page' %}">Log In</a> if you have an account<br/>or <a href="" class="contact" title="Contact HealerSource">Contact Us</a></p>
+</form>
+{% endblock %}

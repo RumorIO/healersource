@@ -1,0 +1,9 @@
+<select id='step_selector' onchange="window.location.href = '{% url 'provider_setup_intro' %}' + (parseInt(this.selectedIndex)+1);">
+	{% for step in request.step_names %}<option
+				onclick="window.location.href = '{% url 'provider_setup' forloop.counter %}'"
+				{% if forloop.counter == request.step or forloop.counter == healer.setup_step %}selected="selected"{% endif %}
+				>{{ step }}</option>{% endfor %}
+</select>
+<input type="button" value="Go &raquo;"
+			onclick="window.location.href = '{% url 'provider_setup_intro' %}'+(parseInt($('#step_selector').prop('selectedIndex'))+1);"
+			/>

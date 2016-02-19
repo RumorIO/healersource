@@ -1,0 +1,15 @@
+{% extends "site_base.html" %}
+{% block head_title %}Create Event{% endblock %}
+{% block extra_head %}
+	{% include 'healers/timepicker_includes.html' %}
+	{{ event_form.media }}
+	{{ event_location_date_form.media }}
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/events.css" />
+	<script src="{{ STATIC_URL }}healersource/js/event_create.js"></script>
+{% endblock %}
+{% block page_title %}<h1 class="nav_icon nav_events">Create Event</h1>{% endblock %}
+
+{% block body %}
+	{% include 'events/create_form.html' %}
+	<p><a href="{% url 'list_events' %}">&laquo; Event List</a></p>
+{% endblock %}

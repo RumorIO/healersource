@@ -1,0 +1,45 @@
+.application2_container {
+    margin-top: 15px;
+}
+
+.back_arrow {
+	margin-right: auto;
+}
+
+.back_arrow_container {
+    display: table-cell;
+    vertical-align: middle;
+    cursor: pointer;
+    padding: 0 10px 0 5px;
+}
+
+.error_button {
+	color: #b00000;
+	font-style: italic;
+}
+
+.header_title {
+	vertical-align: middle;
+	display: table-cell;
+	font-weight: bold;
+	width: 100%;
+}
+
+.header_logo {
+	background-image: url(../img/hs_logo.png);
+	background-position: right;
+	background-repeat: no-repeat;
+    width: 39px;
+    height: 36px;
+    background-size: cover;
+}
+
+.header_logo_container {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.answer_link {
+	margin-left: 8px;
+	font-weight: bold;
+}

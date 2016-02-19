@@ -1,0 +1,4 @@
+{% for treatment_type in treatment_types %}{{ treatment_type }}{% for length in treatment_type.lengths.all %}
+    {{ length }}{% endfor %}
+
+{% endfor %}

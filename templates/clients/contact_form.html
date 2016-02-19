@@ -1,0 +1,26 @@
+<h3>Edit {{ client_name }}</h3>
+<div id="contact_detail_dialog" class="edit_contact_dialog">
+	<form id="contact_detail_form" method="post">{% csrf_token %}
+		<table>{{ contact_form.as_table }}</table>
+		<input type="submit" value="Save" style="float: right; margin-top: 6px;" />
+	</form>
+	<script type="text/javascript">
+		$("#contact_detail_form").bind("submit", function() {
+
+			fb.end(1);
+
+			$.ajax({
+				type		: "POST",
+				cache		: false,
+				url			: "{% url 'edit_contact' contact.client.user.username %}",
+				data		: $(this).serializeArray(),
+				success: function(data) {
+					fb.reload(0);
+					parent.fb.loadPageOnClose = 'self';
+				}
+			});
+
+			return false;
+		});
+	</script>
+</div>

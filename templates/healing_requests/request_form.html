@@ -1,0 +1,45 @@
+<p><span class="section_header">Request Title:</span> {{ request_form.title }}</p>
+Write a bit about yourself, your condition, and what you are looking for:<br>
+{{ request_form.description }}
+<br>
+<div class="float_block_left white_box">
+	<div class="section_header">Location</div>
+	<label>{{ request_form.accept_location }} Near  {{ request_form.search_city_or_zipcode }}</label>
+	<br>
+	<label>{{ request_form.remote_healing }} Remote Healing</label>
+</div>
+<div class='float_block_right white_box specialities_block'>
+	<div class="section_header">Specialties</div>
+	{{ request_form.specialities }}
+</div>
+<div class='clearfix'>&nbsp;</div>
+
+<div class='float_block_left white_box'>
+	<div class="section_header">Exchange</div>
+	<label>{{ request_form.accept_cost_per_session }} I can pay $ {{ request_form.cost_per_session }} per session<br></label>
+	<label>{{ request_form.trade_for_services }} Trade for services</label>
+
+</div>
+<div class='float_block_right white_box'>
+	<div class="section_header" style="margin-bottom: 7px;">Options</div>
+	<div style="float: left;">
+		<label><input type="radio" name='{{ request_form.show_full_name.html_name }}' {% if request_form.show_full_name.value %} checked {% endif %} value='True'>Show my full name</label>
+		<br>
+		<label><input type="radio" name='{{ request_form.show_full_name.html_name }}'  {% if not request_form.show_full_name.value %} checked {% endif %} value='False'>Show my initials only</label>
+	</div>
+	<div style="float: left; margin-left: 18px; padding-left: 12px; border-left: 1px solid #ccc;">
+		<label><input type="radio" name='{{ request_form.show_photo.html_name }}' {% if request_form.show_photo.value %} checked {% endif %} value='True'>Show my photo</label>
+		<br>
+		<label><input type="radio" name='{{ request_form.show_photo.html_name }}' {% if not request_form.show_photo.value %} checked {% endif %} value='False'>No photo</label>
+		<br>
+	</div>
+</div>
+
+
+
+<div class='clearfix'></div>
+<br>
+<input type="submit" value="{{ edit_request|yesno:'Save, Create' }} Request" />
+
+{% csrf_token %}
+{{ request_form.zipcode }}

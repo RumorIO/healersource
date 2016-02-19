@@ -1,0 +1,12 @@
+{% if not dont_clear_float %}<div class="clearfix"></div>{% endif %}
+
+{% if not hide_contact_import_header %}<div style="margin-left: 16px;"><h3 style="width: 280px;">Import Your Contacts</h3>{% endif %}
+
+<div style="margin-top: 4px;">
+	<a href="{% url 'import_facebook_contacts' %}"><img src="{{ STATIC_URL }}healersource/img/icons/social/facebook_big.png" class="social_import_button" /></a>
+	<span style="margin: 0 7px 0 14px;">and</span>
+	<a href="{% url 'import_google_contacts' %}"><img src="{{ STATIC_URL }}healersource/img/icons/social/google_big.png" class="social_import_button" /></a>
+</div>
+<div class="what_next_subtext">you can decide who to invite individually</div>
+
+{% if not hide_contact_import_header %}</div>{% endif %}

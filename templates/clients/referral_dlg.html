@@ -1,0 +1,112 @@
+{% extends 'base_floatbox.html' %}
+{% block body %}
+	{#<script type="text/javascript">#}
+	{#	$(document).ready(function() {#}
+	{#		$("#search_provider").val('');#}
+	{#		$("#search_provider").autocomplete({#}
+	{#			source: "/autocomplete/search_name_healer/",#}
+	{#			html: true#}
+	{#		});#}
+	{##}
+	{#	});#}
+	{#</script>#}
+	<script type="text/javascript">
+		var url_send_referral = "{% url 'send_referral' %}";
+
+		$(function() {
+			$('#submit_referral').click(function() {
+				var data = $('#referral_form').serialize(true);
+				{#				data += '&recipient_username=' + to_username;#}
+				rest_ajax_post_request_no_timeout(url_send_referral, function(response){
+					function send_referral_success(msg) {
+						var msg_div = $('#id_referral_result_msg');
+						msg_div.html(msg);
+						show_message_send_result($('#referral_form'), msg_div);
+					}
+
+					$('#referral_form').find('input,textarea').removeClass('error');
+					if (response.errors) {
+						response.errors.forEach(function(error_element){
+							$(error_element).addClass('error');
+						});
+					} else {
+						send_referral_success(response);
+					}
+				}, {data: data});
+			});
+
+			$("#referral_to_username").autocomplete({
+				source: {% if client_or_healer_val %}"/autocomplete/search_name_or_email_username/?limit=5"{% else %}"/autocomplete/first_last/"{% endif %},
+				position: {collision: 'fit'},
+				minLength: 2,
+				html: true,
+{#				autoFocus: true,#}
+				select: function(event, ui) {
+					$('#to_username').val(ui.item.id);
+				}
+			});
+
+			$('#referral_to_username').focus();
+		});
+	</script>
+
+	{% with to_user_name=to_user.client %}
+		<form action="" method="get" id="referral_form" class="uniForm message_form" accept-charset="utf-8">
+			{% csrf_token %}
+			<h3 class="nav_icon nav_recommend">Refer {{ to_user_name }} To</h3>
+			<fieldset class="inlineLabels" style="border:none;">
+
+				<label for="search_provider">{{ client_or_healer|capfirst }}:</label>
+				<div class="ctrlHolder ">
+					<input type="text" class="ui-autocomplete-input" id="referral_to_username" name="provider_input" required>
+				</div>
+
+				<input type="hidden" id="to_username" name="to_username">
+				<input type="hidden" id="from_username" name="from_username" value="{{ to_user.username }}">
+				<input type="hidden" id="client_or_healer" name="client_or_healer" value="{{ client_or_healer_val }}">
+
+				<label for="id_msgbody">Message:</label>
+				<div class="ctrlHolder " id="div_id_body">
+					<textarea class="textarea" name="message" cols="20" rows="24" id="referral_message">{{ message }}</textarea>
+				</div>
+				<p class="message" style="color: grey;">
+					{{ to_user_name }} will receive this {{ client_or_healer }}'s contact info
+				</p>
+			</fieldset>
+			{#	<br><input type="checkbox" name="copy_checkbox"> Send me a copy of this referral<br>#}
+			<hr/>
+			<div id="submit_referral" class="highlight_button" style="font-weight: bold; font-style: italic; float: right; margin: 0 12px 8px;" >Send</div>
+			{#	<input type='hidden' name='csrfmiddlewaretoken' value='randomchars' />#}
+		</form>
+		<div id="id_referral_result_msg"></div>
+{#		<div class="clearfix"></div>#}
+	{% endwith %}
+
+{% endblock %}
+
+{#{% if check_client %}#}
+{#	<form action="/send_save_message_client/{{cilent_id}}" method="get" id="new_message_form" class="uniForm" accept-charset="utf-8">#}
+{#		{% csrf_token %}#}
+{#		<div>#}
+{#			<big class="nav_icon nav_inbox"><b>Refer {{ client_name }} To</b></big>#}
+{#		</div>#}
+{#		<fieldset class="inlineLabels" style="border:none;">#}
+{#			<label for="search_provider">Client:</label>#}
+{#			<div class="ctrlHolder ">#}
+{#				<input type="text" class="ui-autocomplete-input" id="search_contacts" name="provider_input" required>#}
+{#			</div>#}
+{##}
+{#			<label for="id_msgbody">Message:</label>#}
+{#			<div class="ctrlHolder " id="div_id_body">#}
+{#				<textarea class="textarea" name="message_body" cols="20" rows="24" id="id_msgbody">{{healer_message}}</textarea>#}
+{#			</div>#}
+{#		</fieldset>#}
+{#		<div>#}
+{#			<br>Your client will receive all of {{ client_name }}'s contact info#}
+{#		</div>#}
+{#		<br><input type="checkbox" name="copy_checkbox"> Send me a copy of this referral<br>#}
+{#		<hr/>#}
+{#		<input type="Submit" value="Send" class="highlight_button" style="float: right;">#}
+{#		<input type='hidden' name='csrfmiddlewaretoken' value='randomchars' />#}
+{#	</form>#}
+{#{% endif %}#}

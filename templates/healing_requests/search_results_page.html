@@ -1,0 +1,9 @@
+{% load endless %}
+
+{% lazy_paginate search_results using 'search_results_page' %}
+
+{% for result in search_results %}
+	{% include 'healing_requests/healing_request_block.html' with healing_request=result %}
+{% endfor %}
+
+{% show_more 'Load more &raquo;' %}

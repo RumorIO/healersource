@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<div class="highlight_container button_container" id="inbox_nav">
+	<span><a href="{% url 'messages_inbox' %} ">{% trans "Inbox" %} ({{ messages_inbox_count }})</a></span>
+	<span><a href="{% url 'messages_outbox' %} ">{% trans "Sent" %}</a></span>
+	<span><a href="{% url 'messages_trash' %}">{% trans "Trash" %}</a></span>
+	<span class="highlight_button nav_icon icon_email_new look_like_link" id="new_msg_button" onclick="show_compose_message_dlg();">{% trans "New Message" %}</span>
+</div>
+
+<hr class="clearfix" />
+
+<script type="text/javascript">
+	var current_page = '{{ request.build_absolute_uri }}';
+	select_current_menu_item($('#inbox_nav > span > a'));
+</script>

@@ -1,0 +1,25 @@
+{% load healer_tags compress %}
+<html>
+<head>
+	{% compress css %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/hs.css" />
+	<link rel="stylesheet" href="{{ STATIC_URL }}tinydropdown/tinydropdown.css" type="text/css" />
+	{% endcompress %}
+	{% jquery_ui_css_import %}
+
+	{% jquery_js_import %}
+	{% compress js %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/util.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}tinydropdown/tinydropdown.js"></script>
+	{% include 'common_js_vars.html' %}
+	{% endcompress %}
+	{% jquery_ui_js_import %}
+
+	{% block extra_head %}{% endblock %}
+</head>
+
+<body style="height: 400px;">
+{% include "review/review_form_content.html" %}
+</body>
+
+</html>

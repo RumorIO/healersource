@@ -1,0 +1,5 @@
+{% if not found_providers %}
+	{% if name_or_email or modality or request.GET.search_city_or_zipcode %} {# Did the user actually search or did they just browse to /search/ directly? #}
+		<p class="message">Unfortunately, there are no {% if modality %}{{ modality }} {% endif %}Practitioners {% if request.GET.search_city_or_zipcode %}within 50 miles of {{ request.GET.search_city_or_zipcode }}{% endif %} yet.. Be the first to <a href="{% url 'signup' %}">Sign Up</a></p>
+	{% endif %}
+{% endif %}

@@ -1,0 +1,14 @@
+{% load compress %}
+{% compress js %}
+<script type="text/javascript">
+	var Modality_Autocomplete_Url = "{% url 'autocomplete_modality_or_category' %}";
+	var modality_id = {% if modality_id %}{{ modality_id }}{% else %} '' {% endif %};
+	var modality_category_id = {% if modality_category_id %}{{ modality_category_id }}{% else %} '' {% endif %};
+	var is_concierge_found = {{ concierge|yesno:"true,false" }};
+	var no_find_popup = true;
+	var remote_sessions = {{ remote_sessions|yesno:'true,false' }};
+	var embed_user = '{% if embed %}{{ embed.username }}{% endif %}';
+</script>
+<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/search_page.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+{% endcompress %}

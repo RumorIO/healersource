@@ -1,0 +1,24 @@
+
+{% include "form_errors.html" %}
+<form id="video_form" action="" method="post">{% csrf_token %}
+	{{ form.videotype }}
+	<table><tbody>
+	<tr>
+		<td>
+			<img valign="top" alt="See Us on YouTube" src="{{ STATIC_URL }}healersource/img/icons/youtube.gif" style="width: 70px;">
+		</td>
+		<td>
+			<input type="text" name="video_url" id="video_url">&nbsp;<input value="Add Video" type="submit">
+			<br>
+			<div style="color: rgb(85, 85, 85); font-style: italic;"><span style="font-style: normal;">Enter a link to a YouTube video. <br>You can just copy it from your browser's address bar. </span><br> The link should look similar to this: <br><span style="font-style: normal; font-weight: bold; color: rgb(34, 34, 34);"><a href="http://www.youtube.com/watch?v=iOavbyDKSi0" target="_blank">http://www.youtube.com/watch?v=iOavbyDKSi0</a></span></div>
+		</td>
+		{% if form.videotype.value|add:0 != VIDEO_TYPE_GALLERY %}
+			<td style="text-align: right; vertical-align: top;">
+				<a class="highlight_button" style="white-space: nowrap;" href="{% url 'videos_import' %}">Import Multiple Videos</a>
+			</td>
+		{% endif %}
+	</tr>
+	</tbody></table>
+</form>
+
+

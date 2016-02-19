@@ -1,0 +1,33 @@
+{% extends "base_common.html" %}
+
+{% block head_title %}Events{% endblock %}
+{% block panel_class %}articles_panel{% endblock %}
+{% block content_title %}Events{% endblock %}
+
+{% block body %}
+	<form action="">
+		{% csrf_token %}
+		{{ form.type.label }}: {{ form.type }}
+		{{ form.text.label }}: {{ form.text }}
+		<input type="submit" value="Filter" />
+	</form>
+	<br>
+	{% if events %}
+		{% for event in events %}
+			<div class="blog_post">
+				{% if event.photo %}<div class="blog_post_avatar_container">{% include 'events/event_photo.html' %}</div>{% endif %}
+				<div class="post">
+					<div class="blog_post_title"><a href="{% url 'event' event.pk %}">{{ event }}</a></div>
+					<div class="content">
+						{% include 'events/event_content.html' with without_photo=True %}
+						<br>
+						<a href="{% url 'event' event.pk %}" class="italic">Read more</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	{% else %}
+		<p>There are no upcoming events.</p>
+	{% endif %}
+{% endblock %}
+

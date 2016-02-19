@@ -1,0 +1,45 @@
+{% extends base_template_name %}
+
+{% load i18n %}
+
+{% block head_title %}Import Status{% endblock %}
+
+{% block page_title %}<h1>Import Status</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "facebook_init.html" %}
+
+	{% if import_status_list %}
+		{% for import_status in import_status_list %}
+			<div {% if import_status.is_running %}id="import_status"{% endif %}>{{ import_status.message|safe }}</div>
+		{% endfor %}
+	{% else %}
+		{% include "friends_app/import_contacts_links.html" %}
+	{% endif %}
+
+	{% if not is_floatbox %}
+	<p><a href="#" onclick="history.back();return false;">&laquo; Go Back</a>&nbsp;|&nbsp;<a href="{% url 'provider_setup' 8 %}">Resume Account Setup &raquo;</a></p>
+	{% endif %}
+
+{% endblock %}
+
+{% block extra_body %}
+	<script type="text/javascript">
+		var url_import_status_check = "{% url 'import_status_check' %}";
+
+		function checkImportStatus() {
+			rest_ajax_post_request_long_timeout(url_import_status_check, importStatusCallback);
+		}
+
+		function importStatusCallback(result) {
+			if(result == '') return;
+			$('#import_status').html(result.message);
+			if(result.status == 0) setTimeout(checkImportStatus, 5000);
+		}
+
+		{% if is_running %}
+			$(document).ready(checkImportStatus);
+		{% endif %}
+	</script>
+{% endblock %}

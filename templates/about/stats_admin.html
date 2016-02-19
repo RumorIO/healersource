@@ -1,0 +1,742 @@
+{% if all  %}
+	{% with weekstat=stats.weekstat %}
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th style="text-align: right; padding-right: 8px;">Week:</th>
+
+			<th>current<br>{{ weekstat.week_0.0 }} - {{ weekstat.week_0.1 }}</th>
+			<th>previous<br>{{ weekstat.week_1.0 }} - {{ weekstat.week_1.1 }}</th>
+			<th>-2<br>{{ weekstat.week_2.0 }} - {{ weekstat.week_2.1 }}</th>
+			<th>-3<br>{{ weekstat.week_3.0 }} - {{ weekstat.week_3.1 }}</th>
+			<th>-4<br>{{ weekstat.week_4.0 }} - {{ weekstat.week_4.1 }}</th>
+		</tr>
+		<tr>
+			<td>All new providers</td>
+
+			<td>{{ weekstat.week_0_all }}</td>
+			<td>{{ weekstat.week_1_all }}</td>
+			<td>{{ weekstat.week_2_all }}</td>
+			<td>{{ weekstat.week_3_all }}</td>
+			<td>{{ weekstat.week_4_all }}</td>
+		</tr>
+		<tr>
+			<td>Complete new providers</td>
+
+			<td>{{ weekstat.week_0_complete }}</td>
+			<td>{{ weekstat.week_1_complete }}</td>
+			<td>{{ weekstat.week_2_complete }}</td>
+			<td>{{ weekstat.week_3_complete }}</td>
+			<td>{{ weekstat.week_4_complete }}</td>
+		</tr>
+		<tr>
+			<td>Registered clients</td>
+
+			<td>{{ weekstat.week_0_clients }}</td>
+			<td>{{ weekstat.week_1_clients }}</td>
+			<td>{{ weekstat.week_2_clients }}</td>
+			<td>{{ weekstat.week_3_clients }}</td>
+			<td>{{ weekstat.week_4_clients }}</td>
+		</tr>
+		<tr>
+			<td>Appointments</td>
+
+			<td>{{ weekstat.week_0_appointments }}</td>
+			<td>{{ weekstat.week_1_appointments }}</td>
+			<td>{{ weekstat.week_2_appointments }}</td>
+			<td>{{ weekstat.week_3_appointments }}</td>
+			<td>{{ weekstat.week_4_appointments }}</td>
+		</tr>
+		</thead>
+	</table>
+	{% endwith %}
+
+	{% with users_daystat=stats.users_daystat %}
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th style="text-align: right; padding-right: 8px;">Day:</th>
+			{% for n in users_daystat.n %}
+				<th>{{ n }}</th>
+			{% endfor %}
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>All new providers</td>
+			{% for all in users_daystat.all %}
+				<td>{{ all }}</td>
+			{% endfor %}
+		</tr>
+		<tr>
+			<td>Complete new providers</td>
+			{% for complete in users_daystat.complete %}
+				<td>{{ complete }}</td>
+			{% endfor %}
+		</tr>
+		<tr>
+			<td>Registered clients</td>
+			{% for clients in users_daystat.clients %}
+				<td>{{ clients }}</td>
+			{% endfor %}
+		</tr>
+		<tr>
+			<td>Appointments</td>
+			{% for appointments in users_daystat.appointments %}
+				<td>{{ appointments }}</td>
+			{% endfor %}
+		</tr>
+		</tbody>
+	</table>
+	{% endwith %}
+
+	<table class="stats_table">
+	<thead>
+	<tr>
+		<th style="text-align: right; padding-right: 8px; padding-right:8px;">Days:</th>
+		<th>1</th>
+		<th>2</th>
+		<th>3</th>
+		<th>7</th>
+		<th>14</th>
+		<th>30</th>
+		<th>60</th>
+		<th>90</th>
+		<th>180</th>
+		<th>365</th>
+		<th>Total</th>
+	</tr>
+	</thead>
+	<tbody>
+	<tr>
+		<td>Total Providers:</td>
+		<td>{{ stats.providers_all.dated.day1 }}</td>
+		<td>{{ stats.providers_all.dated.day2 }}</td>
+		<td>{{ stats.providers_all.dated.day3 }}</td>
+		<td>{{ stats.providers_all.dated.day7 }}</td>
+		<td>{{ stats.providers_all.dated.day14 }}</td>
+		<td>{{ stats.providers_all.dated.day30 }}</td>
+		<td>{{ stats.providers_all.dated.day60 }}</td>
+		<td>{{ stats.providers_all.dated.day90 }}</td>
+		<td>{{ stats.providers_all.dated.day180 }}</td>
+		<td>{{ stats.providers_all.dated.day365 }}</td>
+		<td>{{ stats.providers_all.count }}</td>
+	</tr>
+	<tr>
+		<td>Complete Providers:</td>
+		<td>{{ stats.providers_complete.dated.day1 }}</td>
+		<td>{{ stats.providers_complete.dated.day2 }}</td>
+		<td>{{ stats.providers_complete.dated.day3 }}</td>
+		<td>{{ stats.providers_complete.dated.day7 }}</td>
+		<td>{{ stats.providers_complete.dated.day14 }}</td>
+		<td>{{ stats.providers_complete.dated.day30 }}</td>
+		<td>{{ stats.providers_complete.dated.day60 }}</td>
+		<td>{{ stats.providers_complete.dated.day90 }}</td>
+		<td>{{ stats.providers_complete.dated.day180 }}</td>
+		<td>{{ stats.providers_complete.dated.day365 }}</td>
+		<td>{{ stats.providers_complete.count }}</td>
+	</tr>
+	<tr>
+		<td>Total Wellness Centers:</td>
+		<td>{{ stats.wellness_centers_all.dated.day1 }}</td>
+		<td>{{ stats.wellness_centers_all.dated.day2 }}</td>
+		<td>{{ stats.wellness_centers_all.dated.day3 }}</td>
+		<td>{{ stats.wellness_centers_all.dated.day7 }}</td>
+		<td>{{ stats.wellness_centers_all.dated.day14 }}</td>
+		<td>{{ stats.wellness_centers_all.dated.day30 }}</td>
+		<td>{{ stats.wellness_centers_all.dated.day60 }}</td>
+		<td>{{ stats.wellness_centers_all.dated.day90 }}</td>
+		<td>{{ stats.wellness_centers_all.dated.day180 }}</td>
+		<td>{{ stats.wellness_centers_all.dated.day365 }}</td>
+		<td>{{ stats.wellness_centers_all.count }}</td>
+	</tr>
+	<tr>
+		<td>Complete Wellness Centers:</td>
+		<td>{{ stats.wellness_centers_complete.dated.day1 }}</td>
+		<td>{{ stats.wellness_centers_complete.dated.day2 }}</td>
+		<td>{{ stats.wellness_centers_complete.dated.day3 }}</td>
+		<td>{{ stats.wellness_centers_complete.dated.day7 }}</td>
+		<td>{{ stats.wellness_centers_complete.dated.day14 }}</td>
+		<td>{{ stats.wellness_centers_complete.dated.day30 }}</td>
+		<td>{{ stats.wellness_centers_complete.dated.day60 }}</td>
+		<td>{{ stats.wellness_centers_complete.dated.day90 }}</td>
+		<td>{{ stats.wellness_centers_complete.dated.day180 }}</td>
+		<td>{{ stats.wellness_centers_complete.dated.day365 }}</td>
+		<td>{{ stats.wellness_centers_complete.count }}</td>
+	</tr>
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	{% with invs=stats.invs %}
+	<tr>
+		<td>Total invitations sent:</td>
+		<td>{{ invs.all_dated.day1 }}</td>
+		<td>{{ invs.all_dated.day2 }}</td>
+		<td>{{ invs.all_dated.day3 }}</td>
+		<td>{{ invs.all_dated.day7 }}</td>
+		<td>{{ invs.all_dated.day14 }}</td>
+		<td>{{ invs.all_dated.day30 }}</td>
+		<td>{{ invs.all_dated.day60 }}</td>
+		<td>{{ invs.all_dated.day90 }}</td>
+		<td>{{ invs.all_dated.day180 }}</td>
+		<td>{{ invs.all_dated.day365 }}</td>
+		<td>{{ invs.all_total }}</td>
+	</tr>
+	<tr>
+		<td>Total client invitations sent:</td>
+		<td>{{ invs.client_dated.day1 }}</td>
+		<td>{{ invs.client_dated.day2 }}</td>
+		<td>{{ invs.client_dated.day3 }}</td>
+		<td>{{ invs.client_dated.day7 }}</td>
+		<td>{{ invs.client_dated.day14 }}</td>
+		<td>{{ invs.client_dated.day30 }}</td>
+		<td>{{ invs.client_dated.day60 }}</td>
+		<td>{{ invs.client_dated.day90 }}</td>
+		<td>{{ invs.client_dated.day180 }}</td>
+		<td>{{ invs.client_dated.day365 }}</td>
+		<td>{{ invs.client_total }}</td>
+	</tr>
+	<tr>
+		<td>Total provider invitations sent:</td>
+		<td>{{ invs.provider_inv_dated.day1|add:invs.provider_rec_dated.day1 }}</td>
+		<td>{{ invs.provider_inv_dated.day2|add:invs.provider_rec_dated.day2 }}</td>
+		<td>{{ invs.provider_inv_dated.day3|add:invs.provider_rec_dated.day3 }}</td>
+		<td>{{ invs.provider_inv_dated.day7|add:invs.provider_rec_dated.day7 }}</td>
+		<td>{{ invs.provider_inv_dated.day14|add:invs.provider_rec_dated.day14 }}</td>
+		<td>{{ invs.provider_inv_dated.day30|add:invs.provider_rec_dated.day30 }}</td>
+		<td>{{ invs.provider_inv_dated.day60|add:invs.provider_rec_dated.day60 }}</td>
+		<td>{{ invs.provider_inv_dated.day90|add:invs.provider_rec_dated.day90 }}</td>
+		<td>{{ invs.provider_inv_dated.day180|add:invs.provider_rec_dated.day180 }}</td>
+		<td>{{ invs.provider_inv_dated.day365|add:invs.provider_rec_dated.day365 }}</td>
+		<td>{{ invs.provider_inv_total|add:invs.provider_rec_total }}</td>
+	</tr>
+	<tr>
+		<td>Provider invitations sent (invite only):</td>
+		<td>{{ invs.provider_inv_dated.day1 }}</td>
+		<td>{{ invs.provider_inv_dated.day2 }}</td>
+		<td>{{ invs.provider_inv_dated.day3 }}</td>
+		<td>{{ invs.provider_inv_dated.day7 }}</td>
+		<td>{{ invs.provider_inv_dated.day14 }}</td>
+		<td>{{ invs.provider_inv_dated.day30 }}</td>
+		<td>{{ invs.provider_inv_dated.day60 }}</td>
+		<td>{{ invs.provider_inv_dated.day90 }}</td>
+		<td>{{ invs.provider_inv_dated.day180 }}</td>
+		<td>{{ invs.provider_inv_dated.day365 }}</td>
+		<td>{{ invs.provider_inv_total }}</td>
+	</tr>
+	<tr>
+		<td>Provider invitations sent (recommend):</td>
+		<td>{{ invs.provider_rec_dated.day1 }}</td>
+		<td>{{ invs.provider_rec_dated.day2 }}</td>
+		<td>{{ invs.provider_rec_dated.day3 }}</td>
+		<td>{{ invs.provider_rec_dated.day7 }}</td>
+		<td>{{ invs.provider_rec_dated.day14 }}</td>
+		<td>{{ invs.provider_rec_dated.day30 }}</td>
+		<td>{{ invs.provider_rec_dated.day60 }}</td>
+		<td>{{ invs.provider_rec_dated.day90 }}</td>
+		<td>{{ invs.provider_rec_dated.day180 }}</td>
+		<td>{{ invs.provider_rec_dated.day365 }}</td>
+		<td>{{ invs.provider_rec_total }}</td>
+	</tr>
+	<tr>
+		<td>Total of Referrals sent:</td>
+		<td>{{ invs.referrals.day1 }}</td>
+		<td>{{ invs.referrals.day2 }}</td>
+		<td>{{ invs.referrals.day3 }}</td>
+		<td>{{ invs.referrals.day7 }}</td>
+		<td>{{ invs.referrals.day14 }}</td>
+		<td>{{ invs.referrals.day30 }}</td>
+		<td>{{ invs.referrals.day60 }}</td>
+		<td>{{ invs.referrals.day90 }}</td>
+		<td>{{ invs.referrals.day180 }}</td>
+		<td>{{ invs.referrals.day365 }}</td>
+		<td>{{ invs.referrals_total }}</td>
+	</tr>
+	{% endwith %}
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Blank About:</td>
+		<td>{{ stats.providers_blank_about.dated.day1 }}</td>
+		<td>{{ stats.providers_blank_about.dated.day2 }}</td>
+		<td>{{ stats.providers_blank_about.dated.day3 }}</td>
+		<td>{{ stats.providers_blank_about.dated.day7 }}</td>
+		<td>{{ stats.providers_blank_about.dated.day14 }}</td>
+		<td>{{ stats.providers_blank_about.dated.day30 }}</td>
+		<td>{{ stats.providers_blank_about.dated.day60 }}</td>
+		<td>{{ stats.providers_blank_about.dated.day90 }}</td>
+		<td>{{ stats.providers_blank_about.dated.day180 }}</td>
+		<td>{{ stats.providers_blank_about.dated.day365 }}</td>
+		<td>{{ stats.providers_blank_about.count }}</td>
+	</tr>
+	<tr>
+		<td>No Location:</td>
+		<td>{{ stats.providers_blank_location.dated.day1 }}</td>
+		<td>{{ stats.providers_blank_location.dated.day2 }}</td>
+		<td>{{ stats.providers_blank_location.dated.day3 }}</td>
+		<td>{{ stats.providers_blank_location.dated.day7 }}</td>
+		<td>{{ stats.providers_blank_location.dated.day14 }}</td>
+		<td>{{ stats.providers_blank_location.dated.day30 }}</td>
+		<td>{{ stats.providers_blank_location.dated.day60 }}</td>
+		<td>{{ stats.providers_blank_location.dated.day90 }}</td>
+		<td>{{ stats.providers_blank_location.dated.day180 }}</td>
+		<td>{{ stats.providers_blank_location.dated.day365 }}</td>
+		<td>{{ stats.providers_blank_location.count }}</td>
+	</tr>
+	<tr>
+		<td>No Photo:</td>
+		<td>{{ stats.providers_blank_avatar.dated.day1 }}</td>
+		<td>{{ stats.providers_blank_avatar.dated.day2 }}</td>
+		<td>{{ stats.providers_blank_avatar.dated.day3 }}</td>
+		<td>{{ stats.providers_blank_avatar.dated.day7 }}</td>
+		<td>{{ stats.providers_blank_avatar.dated.day14 }}</td>
+		<td>{{ stats.providers_blank_avatar.dated.day30 }}</td>
+		<td>{{ stats.providers_blank_avatar.dated.day60 }}</td>
+		<td>{{ stats.providers_blank_avatar.dated.day90 }}</td>
+		<td>{{ stats.providers_blank_avatar.dated.day180 }}</td>
+		<td>{{ stats.providers_blank_avatar.dated.day365 }}</td>
+		<td>{{ stats.providers_blank_avatar.count }}</td>
+	</tr>
+	<tr>
+		<td>Using Schedule:</td>
+		<td>{{ stats.providers_using_schedule.dated.day1 }}</td>
+		<td>{{ stats.providers_using_schedule.dated.day2 }}</td>
+		<td>{{ stats.providers_using_schedule.dated.day3 }}</td>
+		<td>{{ stats.providers_using_schedule.dated.day7 }}</td>
+		<td>{{ stats.providers_using_schedule.dated.day14 }}</td>
+		<td>{{ stats.providers_using_schedule.dated.day30 }}</td>
+		<td>{{ stats.providers_using_schedule.dated.day60 }}</td>
+		<td>{{ stats.providers_using_schedule.dated.day90 }}</td>
+		<td>{{ stats.providers_using_schedule.dated.day180 }}</td>
+		<td>{{ stats.providers_using_schedule.dated.day365 }}</td>
+		<td>{{ stats.providers_using_schedule.count }}</td>
+	</tr>
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Referrals:</td>
+		<td>{{ stats.recommendations.dated.day1 }}</td>
+		<td>{{ stats.recommendations.dated.day2 }}</td>
+		<td>{{ stats.recommendations.dated.day3 }}</td>
+		<td>{{ stats.recommendations.dated.day7 }}</td>
+		<td>{{ stats.recommendations.dated.day14 }}</td>
+		<td>{{ stats.recommendations.dated.day30 }}</td>
+		<td>{{ stats.recommendations.dated.day60 }}</td>
+		<td>{{ stats.recommendations.dated.day90 }}</td>
+		<td>{{ stats.recommendations.dated.day180 }}</td>
+		<td>{{ stats.recommendations.dated.day365 }}</td>
+		<td>{{ stats.recommendations.count }}</td>
+	</tr>
+	<tr>
+		<td># of Providers Who Imported Contacts from Facebook:</td>
+		<td>{{ stats.facebook_imports.dated.day1 }}</td>
+		<td>{{ stats.facebook_imports.dated.day2 }}</td>
+		<td>{{ stats.facebook_imports.dated.day3 }}</td>
+		<td>{{ stats.facebook_imports.dated.day7 }}</td>
+		<td>{{ stats.facebook_imports.dated.day14 }}</td>
+		<td>{{ stats.facebook_imports.dated.day30 }}</td>
+		<td>{{ stats.facebook_imports.dated.day60 }}</td>
+		<td>{{ stats.facebook_imports.dated.day90 }}</td>
+		<td>{{ stats.facebook_imports.dated.day180 }}</td>
+		<td>{{ stats.facebook_imports.dated.day365 }}</td>
+		<td>{{ stats.facebook_imports.count }}</td>
+	</tr>
+	<tr>
+		<td># of Providers Who Imported Contacts from Google:</td>
+		<td>{{ stats.google_imports.dated.day1 }}</td>
+		<td>{{ stats.google_imports.dated.day2 }}</td>
+		<td>{{ stats.google_imports.dated.day3 }}</td>
+		<td>{{ stats.google_imports.dated.day7 }}</td>
+		<td>{{ stats.google_imports.dated.day14 }}</td>
+		<td>{{ stats.google_imports.dated.day30 }}</td>
+		<td>{{ stats.google_imports.dated.day60 }}</td>
+		<td>{{ stats.google_imports.dated.day90 }}</td>
+		<td>{{ stats.google_imports.dated.day180 }}</td>
+		<td>{{ stats.google_imports.dated.day365 }}</td>
+		<td>{{ stats.google_imports.count }}</td>
+	</tr>
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Registered Clients:</td>
+		<td>{{ stats.clients.dated.day1 }}</td>
+		<td>{{ stats.clients.dated.day2 }}</td>
+		<td>{{ stats.clients.dated.day3 }}</td>
+		<td>{{ stats.clients.dated.day7 }}</td>
+		<td>{{ stats.clients.dated.day14 }}</td>
+		<td>{{ stats.clients.dated.day30 }}</td>
+		<td>{{ stats.clients.dated.day60 }}</td>
+		<td>{{ stats.clients.dated.day90 }}</td>
+		<td>{{ stats.clients.dated.day180 }}</td>
+		<td>{{ stats.clients.dated.day365 }}</td>
+		<td>{{ stats.clients.count }}</td>
+	</tr>
+	<tr>
+		<td>Appointments:</td>
+		<td>{{ stats.appointments.dated.day1 }}</td>
+		<td>{{ stats.appointments.dated.day2 }}</td>
+		<td>{{ stats.appointments.dated.day3 }}</td>
+		<td>{{ stats.appointments.dated.day7 }}</td>
+		<td>{{ stats.appointments.dated.day14 }}</td>
+		<td>{{ stats.appointments.dated.day30 }}</td>
+		<td>{{ stats.appointments.dated.day60 }}</td>
+		<td>{{ stats.appointments.dated.day90 }}</td>
+		<td>{{ stats.appointments.dated.day180 }}</td>
+		<td>{{ stats.appointments.dated.day365 }}</td>
+		<td>{{ stats.appointments.count }}</td>
+	</tr>
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>All blog posts:</td>
+		{% for n in stats.posts_and_video_daystat.posts_all %}
+			<td>{{ n }}</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td>Published blog posts:</td>
+		{% for n in stats.posts_and_video_daystat.posts_published %}
+			<td>{{ n }}</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td>Client Videos:</td>
+		{% for n in stats.posts_and_video_daystat.videos %}
+			<td>{{ n }}</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Messages sent by registered users:</td>
+		{% for n in stats.messages.registered %}
+			<td>{{ n }}</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td>Messages sent by unregistered users:</td>
+		{% for n in stats.messages.unregistered %}
+			<td>{{ n }}</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td colspan="12">&nbsp;</td>
+	</tr>
+	<tr>
+		<td>Intake forms created:</td>
+		{% for n in stats.intake_form_stats.created %}
+			<td>{{ n }}</td>
+		{% endfor %}
+	</tr>
+	<tr>
+		<td>Intake forms sent:</td>
+		{% for n in stats.intake_form_stats.sent %}
+			<td>{{ n }}</td>
+		{% endfor %}
+	</tr>
+	</tbody>
+	</table>
+
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th colspan="2">Appts for Healers 30d</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for instance in stats.healers_with_most_appointments %}
+			<tr>
+				<td> {{ instance }} </td>
+				<td> {{ instance.num_appointments }} </td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th colspan="2">Cities Search 30d</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for city_search_count_instance in stats.top_city_searches %}
+			<tr>
+				<td> {{ city_search_count_instance.city }} </td>
+				<td> {{ city_search_count_instance.num_of_searches }} </td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th colspan="2">Specialities Search 30d</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for modality_search_count_instance in stats.top_modality_searches %}
+			<tr>
+				<td> {{ modality_search_count_instance.title }} </td>
+				<td> {{ modality_search_count_instance.num_of_searches }} </td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th>Specialties</th>
+			<th>T</th>
+			<th>C</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for sp in stats.specialties_top10 %}
+			<tr>
+				<td>{{ sp.title }}</td>
+				<td>{{ sp.healers }}</td>
+				<td>{{ sp.healers_c }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	<table class="stats_table">
+		<tr>
+			<th>Categories</th>
+			<th>T</th>
+			<th>C</th>
+		</tr>
+		{% for cc in stats.specialties_categories %}
+			<tr>
+				<td>{{ cc.title }}</td>
+				<td>{{ cc.healers }}</td>
+				<td>{{ cc.healers_c }}</td>
+			</tr>
+		{% endfor %}
+	</table>
+
+	<table class="stats_table">
+		<tr>
+			<th>Cities</th>
+			<th>T</th>
+			<th>C</th>
+		</tr>
+		<tbody>
+		{% for hiz in stats.healers_in_zip %}
+			<tr>
+				<td>{{ hiz.city }}, {{ hiz.state }}</td>
+				<td>{{ hiz.healers }}</td>
+				<td>{{ hiz.healers_c }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	<table class="stats_table">
+		<tr>
+			<th colspan="{{ stats.source|length }}">How did you find us?</th>
+		</tr>
+		{% for item in stats.source %}
+			<tr>
+				<td>{{ item.name }}</td>
+				<td> {{ item.total }} </td>
+			</tr>
+		{% endfor %}
+	</table>
+
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th>Healing Requests</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td># of HR's created</td>
+			<td> {{ stats.hr.requests_count }} </td>
+		</tr>
+		<tr>
+			<td># of searches</td>
+			<td> {{ stats.hr.searches_count }} </td>
+		</tr>
+		<tr>
+			<td># of saved searches</td>
+			<td> {{ stats.hr.saved_searches_count }} </td>
+		</tr>
+		<tr>
+			<td># of people contacted</td>
+			<td> {{ stats.hr.people_contacted_count }} </td>
+		</tr>
+		</tbody>
+	</table>
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th>GHP</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr>
+			<td>Total Healing Sent</td>
+			<td> {{ stats.ghp.total_healing_sent }} </td>
+		</tr>
+		<tr>
+			<td>Number of Members</td>
+			<td> {{ stats.ghp.number_of_members }}</td>
+		</tr>
+		</tbody>
+	</table>
+
+	<table class="stats_table">
+		<thead>
+			<tr>
+				<th>Phonegap</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Number of users signed up through app</td>
+				<td> {{ stats.phonegap_registrations_number }} </td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="clearfix"></div>
+
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th>Top 5 Ambassadors</th>
+			<th>Number of Users signed up through Ambassador</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for ambassador in stats.ambassador.top_five %}
+			<tr>
+				<td>{{ ambassador }}</td>
+				<td>{{ ambassador.number_of_signed_up_users }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th colspan="2">Ambassadors</th>
+		</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Total Number of Ambassadors</td>
+				<td>{{ stats.ambassador.total }}</td>
+			</tr>
+			<tr>
+				<td>Total Number of Users signed up through Ambassador</td>
+				<td>{{ stats.ambassador.number_of_signed_up_users }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="clearfix"></div>
+
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th colspan="2">Payments</th>
+		</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Total Number of Users Subscribed to Notes</td>
+				<td>{{ stats.payments_notes_subscriptions_total }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th>Notes</th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for healer in stats.notes.healers_with_most_notes %}
+			<tr>
+				<td> {{ healer }} </td>
+				<td> {{ healer.number_of_notes }} </td>
+			</tr>
+		{% endfor %}
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+			<td>Total</td>
+			<td> {{ stats.notes.total_number_of_notes }} </td>
+		</tr>
+		<tr>
+			<td>Healers w note</td>
+			<td> {{ stats.notes.number_of_healers_with_notes }} </td>
+		</tr>
+		<tr>
+			<td># healers with > 7 notes</td>
+			<td> {{ stats.notes.number_of_healers_with_more_than_seven_notes }} </td>
+		</tr>
+
+		</tbody>
+	</table>
+
+	<table class="stats_table">
+		<thead>
+		<tr>
+			<th>Stripe Connect</th>
+			<th></th>
+		</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>Total</td>
+				<td>{{ stats.stripe.stripe_connect_users_count }}</td>
+			</tr>
+		<tr>
+			<td>1%</td>
+			<td> {{ stats.stripe.stripe_connect_percentage_fee }} </td>
+		</tr>
+		<tr>
+			<td>${{ stats.stripe.BOOKING_HEALERSOURCE_FEE }}</td>
+			<td> {{ stats.stripe.stripe_connect_fixed_fee }} </td>
+		</tr>
+		<tr>
+			<td>GC Users</td>
+			<td> {{ stats.stripe.gc_enabled_total }} </td>
+		</tr>
+
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+			<td>Total Charged</td>
+			<td> ${{ stats.stripe.stripe_connect_total_amount }} </td>
+		</tr>
+		<tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+			<td colspan="2">Healers Charged</td>
+			{% for charge in stats.payments_all %}
+				<tr>
+					<td>{{ charge.0 }}</td>
+					<td>{{ charge.1 }}</td>
+				</tr>
+			{% endfor %}
+		</tr>
+		</tbody>
+	</table>
+
+{% endif %}
+<div class="clearfix"></div>

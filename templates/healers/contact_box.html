@@ -1,0 +1,20 @@
+<div class="info_box grey_box" id="healer_contact_box">
+	<h4>Contact</h4>
+	<div>
+		{% include "healers/healer_contact_info.html" %}
+		{% if healer.website %}<div style="overflow: hidden;"><a class="hyphenate" href="{{ healer.website_link }}" title="{{ healer.website }}" target="_blank">{{ healer.website }}</a></div>{% endif %}
+	</div>
+
+	{% if request.friend_type and not is_me %}
+		<h4>Connection</h4>
+		<div>{% include "healers/referral_invite_bar.html" %}</div>
+	{% endif %}
+
+	{% if is_review_permission %}
+		<div class="divider">&nbsp;</div>
+		<div class="icon_star_single icon_star_gold">
+			{% include 'review/write_review_link.html' %}
+		</div>
+	{% endif %}
+	{% if is_me and not info_only %}<a href="{% url 'healer_edit' %}#my_info" class="message" style="margin-left: 10px;">&laquo; edit contact info &raquo;</a>{% endif %}
+</div>

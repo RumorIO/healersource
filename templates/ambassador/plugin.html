@@ -1,0 +1,17 @@
+{% extends 'base_new.html' %}
+{% load compress %}
+
+{% block extra_head %}
+	{{ block.super }}
+	{% include 'about/search/extra_head.html' %}
+	{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/embed.css" />
+	{% endcompress %}
+{% endblock %}
+
+{% block body_class %}{{block.super}} embed{% endblock %}
+{% block body_style %}{{block.super}} {% if embed.background_color %}background-color: {{embed.background_color}};{% endif %}{% endblock %}
+
+{% block inner_content %}
+	{% include 'about/search/content.html' %}
+{% endblock %}

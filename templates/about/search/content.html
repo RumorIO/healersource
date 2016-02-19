@@ -1,0 +1,29 @@
+<form action='{% url 'search_results' %}' method='GET' name="search_form"
+	id="healers_form" class="search_form" fire_event="true">
+	{% csrf_token %}
+
+	{% with 1 as search_display_button %}
+		{% include 'about/search/form_fields.html' %}
+	{% endwith %}
+
+	{{ modality_menu|safe }}
+</form>
+
+<div class="clearfix"></div>
+
+{% if user.is_superuser or user.is_staff %}
+	{% include 'about/stats_admin.html' %}
+{% endif %}
+
+{% if message %}
+	<p class="message">{{ message }}</p>
+{% endif %}
+
+<div id="search_results">
+    {% if found_providers %}
+        {% with 1 as skip_first_hr %}
+            {% include 'about/search/results_list.html' %}
+        {% endwith %}
+    {% endif %}
+    {% include 'about/search/results_not_found.html' %}
+</div>

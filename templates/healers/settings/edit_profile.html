@@ -1,0 +1,87 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Edit Profile{% endblock %}
+
+{% block extra_head %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/confirm_delete.js"></script>
+	<script> var url_delete_account = '{% url 'delete_account' %}';</script>
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_my_profile" xmlns="http://www.w3.org/1999/html">Edit Profile{% if not editing_self %}: {{ healer.user.client }}{% endif %}</h1>{% endblock %}
+
+{% block body %}
+
+	{% with profile=healer.user.client first_name=healer.user.first_name %}
+
+		{{ form.media }}
+
+		<div id="tabs_profile" style="padding-right: 0;">
+
+			{% include "form_errors.html" %}
+
+			{% include "healers/healer_profile_incomplete_warning.html" %}
+
+			<form id="profile_form" action="{% url 'healer_edit' healer.user.username %}" method="post">
+				{% csrf_token %}
+
+				<a style="float: right; margin-right: 10px; padding: 3px 6px 3px 29px; position: relative; top: -10px;"
+				   class="highlight_button floatbox nav_icon icon_eye"
+				   href="{% url 'healer_info' healer.user.username %}"
+				   data-fb-options="type:ajax width:765">Preview Profile</a>
+
+				<h3 style1="margin-top:0; clear: both;"><a name='my_info'></a>{% if editing_self %}Basic{% else %}{{ first_name }}'s{% endif %} Info</h3>
+			<div class="clearfix"></div>
+				<div id="healer_profile_edit_my_info" class="healer_settings">
+					{% with 1 as show_edit %}{% with healer.user as user %}
+						{% include "clients/avatar.html" %}
+					{% endwith %}{% endwith %}
+					<label>Name</label><div>{{ form.first_name }} {{ form.last_name }}</div>
+					<label>Email Address</label><div>{{ healer.user.email }} | <a href="{% url 'edit_email' username %}">edit</a></div>
+					{% include "healers/settings/edit_profile_content_optional_info.html" %}
+					<label>Specialties<br>(Modalities {% if editing_self %}You Practice{% else %}{{ first_name }} Practices{% endif %})</label><div>{% with 1 as show_no_modalities_warning %}{% include "healers/settings/specialties_add.html" %}{% endwith %}</div>
+				</div>
+
+				{% if not healer.about %}
+					{% include "healers/settings/edit_profile_about_me.html" %}
+				{% endif %}
+
+				<div class="healer_settings">
+					<span class="look_like_link" style="float: right; margin-top: 16px;" onclick="confirm_delete();">Delete My Account</span>
+					<h3><a name="settings"></a>Profile Settings</h3>
+					<label>{{ form.timezone.label }}</label><div>{{ form.timezone }} {% if not healer.timezone %}<span class="warning_button">* Required</span>{% endif %}</div>
+					<label>{{ form.profileVisibility.label }}</label><div>{{ form.profileVisibility }}</div>
+					{% if healer.user.is_staff %}<label>{{ form.location_bar_title.label }}</label><div>{{ form.location_bar_title  }}</div>{% endif %}
+					<label>{{ form.client_screening.label }}</label><div>{{ form.client_screening }}</div>
+					<div>{{ form.send_reminders }} <label>{{ form.send_reminders.label }}</label></div>
+					<div><label>{{ form.ghp_notification_frequency.label }}:</label> {{ form.ghp_notification_frequency }}</div>
+					{% include "healers/settings/remote_sessions_option.html" %}
+					<div>
+						<img src="{{ STATIC_URL }}healersource/img/nav_bar/nav_gift.png" style="vertical-align: middle; margin-right: 4px;" />
+						<a href="{% url 'gift_certificates' %}">Manage your Gift Certificates &raquo;</a>
+					</div>
+
+					{% if fill_warning_links %}
+						<div><label>Send me an email if my profile is not complete every {{ form.profile_completeness_reminder_interval }}</label></div>
+					{% endif %}
+				</div>
+
+				{% include "healers/settings/edit_profile_content_links.html" %}
+
+				<p><input type="submit" value="Save Profile" /></p>
+				{% if healer.about %}
+					{% include "healers/settings/edit_profile_about_me.html" %}
+					<p><input type="submit" value="Save Profile" /></p>
+				{% endif %}
+			</form>
+
+		</div>
+
+		<script type="text/javascript">
+			{% if fill_warning_links.about %}
+				$(function() {
+					addRedBorder('.te');
+				});
+			{% endif %}
+		</script>
+	{% endwith %}
+{% endblock %}

@@ -1,0 +1,6 @@
+Appointment confirmed by {{ from_user_name }}.
+
+{{ appointment.plain_text }}
+
+{% include "healers/emails/appointment_footer.txt" %}
+

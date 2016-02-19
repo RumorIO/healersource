@@ -1,0 +1,23 @@
+{% extends 'base_phonegap.html' %}
+{% load compress %}
+
+{% block extra_head %}
+	{% compress js %}
+		<script src="js/phonegap_home.js"></script>
+	{% endcompress %}
+{% endblock %}
+
+{% block header %}
+	<div class="center" style="margin-top: 24px;">
+		<a href="https://www.healersource.com" target="_blank"><img src="site_media/static/healersource/img/hs_logo.png" width="183" height="150"></a><br><br>
+	</div>
+{% endblock %}
+
+{% block body %}
+	<div id="menu">
+		{% include 'phonegap/login_buttons.html' %}
+{#		<a href="find_a_provider.html" class="menu-link phonegap-menu-item pg_find_a_provider_button">Find a Provider</a>#}
+		<a href="notes.html" id="notes_button" class="menu-link phonegap-menu-item pg_notes_button" style="display: none;">SOAP Notes</a>
+		<a href="ghp.html" class="menu-link phonegap-menu-item pg_ghp_button">Healing Circle</a>
+	</div>
+{% endblock %}

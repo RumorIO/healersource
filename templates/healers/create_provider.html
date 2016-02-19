@@ -1,0 +1,55 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Create a New Provider{% endblock %}
+
+{% block extra_head %}
+	{{ form.media }}
+	<script>
+		var FacebookSignup = false;
+		var intake_form = false;
+	</script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/signup.js"></script>
+	<style type="text/css">
+		#error_1_id_username { padding-top: 0;}
+		.signup_error { display: inline;  }
+	</style>
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon icon_users_add">Create a New Provider</h1>{% endblock %}
+
+{% block body %}
+
+	{% if existing_user_error %}<p class="single_button" style="color: #8b0000">{{ existing_user_error }}</p>{% endif %}
+
+	{% include "form_errors.html" %}
+
+	<form id="profile_form" action="." method="post">
+		{% csrf_token %}
+
+		<div class="healer_settings">
+			<label>Name</label><div>{{ form.first_name }} {{ form.last_name }}</div>
+			<br/>
+			<label>{{ form.email.label }}</label><div>{{ form.email }}</div>
+			<br/>
+			{% include 'healers/settings/edit_profile_content_optional_info.html' %}<br/>
+			<label>Specialties</label><div>{% with 1 as use_parent_js %}{% include "healers/settings/specialties_add.html" %}{% endwith %}</div>
+		</div>
+
+		<h3>About</h3>
+		{{ form.about }}
+
+		<p><input type="submit" value="Save" /></p>
+	</form>
+
+	<script>
+	function parentAddModality(item) {
+		$('#profile_form').append($('<input type="hidden" name="modalities" id="modality_'+item.id+'" value="'+item.id+'"/>'));
+	}
+
+	function parentRemoveModality(id) {
+		$('#modality_'+id).remove();
+	}
+
+	</script>
+
+{% endblock %}

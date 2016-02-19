@@ -1,0 +1,37 @@
+<p>Congratulations!</p>
+<p>
+	You've received healing from
+	{% if healers|length > 1 %}
+		the following Healers
+	{% else %}
+		{% if healers.0.healer %}
+			<a href="{{ healers.0.healer.get_full_url }}">{{ healers.0 }}</a>
+		{% else %}
+			{{ healers.0 }}
+		{% endif %}
+	{% endif %}
+	via the HealerSource Healing Circle!
+</p>
+{% if healers|length > 1 %}
+	<ul>
+		{% for healer in healers %}
+			<li>
+				{% if healer.healer %}
+					<a href="{{ healer.healer.get_full_url }}">{{ healer }}</a>
+				{% else %}
+					{{ healer }}
+				{% endif %}
+			</li>
+		{% endfor %}
+	</ul>
+{% endif %}
+<p>Give some healing back to {{ healers.0.user.first_name }} - <a href="https://{{ site }}{% url 'send_healing_to_person' healers.0.user.username %}">click here</a>!</p>
+<br>
+<br>
+<p>Change your notification preferences - I want to receive these messages:</p>
+<p>
+	<a href="https://{{ site }}{% url 'save_ghp_notification_frequency_setting' 'every time' %}">Every time I receive healing</a><br>
+	<a href="https://{{ site }}{% url 'save_ghp_notification_frequency_setting' 'daily' %}">Once a day</a><br>
+	<a href="https://{{ site }}{% url 'save_ghp_notification_frequency_setting' 'weekly' %}">Once a week</a><br>
+	<a href="https://{{ site }}{% url 'save_ghp_notification_frequency_setting' 'unsubscribe' %}">Unsubscribe</a>
+</p>

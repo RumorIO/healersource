@@ -1,0 +1,31 @@
+{% extends 'mobile/mobile_base.html' %}
+{% load healer_tags %}
+{% block extra_head %}
+	{% jquery_ui_css_import %}
+	{% jquery_ui_js_import %}
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/jquery.ui.autocomplete.html.js"></script>
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/util.js"></script>
+	{% include 'common_js_vars.html' %}
+{% endblock %}
+{% block content %}
+	{% if invitation_sent_to or client_requests or provider_requests %}
+	<div class="single_button">
+		{% if client_requests %}
+			Persons with these emails ({{ client_requests|join:", " }}) are already a members of HealerSource. <br />
+			We've added them to your Clients.
+		{% endif %}
+		{% if provider_requests %}
+			Persons with these emails ({{ provider_requests|join:", " }}) are already a members of HealerSource. <br />
+			We've added them to your Referrals.
+		{% endif %}
+		{% if  invitation_sent_to %}
+			Your invitation has been sent to {{ invitation_sent_to|join:", " }}.<br />
+		{% endif %}
+	</div>
+	<div class="message">Send another one!</div>
+	{% else %}
+		{% with invite_postcard_css_id="invite_postcard_iphone" %}
+			{% include "friends_app/invite_postcard_form_iphone.html" %}
+		{% endwith %}
+	{% endif %}
+{% endblock %}

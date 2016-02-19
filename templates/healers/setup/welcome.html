@@ -1,0 +1,20 @@
+{% extends "healers/setup/setup_base.html" %}
+
+{% block setup_body %}
+	<div class="single_button" style="font-style: italic; font-size: 1.1em; line-height:1.5em; padding:10px 18px; overflow: hidden;">
+		<img style="float: left; margin-right: 14px;" src="{{ STATIC_URL }}healersource/img/what_next/open.png" width="79" height="64" />
+		<div style="font-size: 1.3em; font-weight: bold; text-decoration: underline; margin-top: 10px;">Welcome to HealerSource and thanks for signing up! </div>
+		We're completely committed that this is the best experience for you, so feel free to be in touch.
+		{#  using the Feedback Box at the bottom of the page.  #}<br />
+		{#		In the meantime, here are some things you can do to get started:#}
+	</div>
+
+	<div style="padding: 10px; font-size: 1.2em; font-style: italic;">
+		<p>This handy Account Setup Guide will walk you through everything you need to get started.  It'll take you less than 5 - 10 min to complete. If you can't finish everything today, you can always come back later - we'll remember where you left off.
+		</p>
+		<p>If you're really in a rush, just click through all the steps to find out all the great features that HealerSource has to offer!</p>
+		<p>Click the <b><a href="{% url 'provider_setup' 1 %}">Next</a></b> button below to get started.</p>
+	</div>
+
+	{% include "healers/setup/setup_controls.html" %}
+{% endblock %}

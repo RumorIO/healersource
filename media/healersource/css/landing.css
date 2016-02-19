@@ -1,0 +1,37 @@
+body {
+	max-width: 1060px;
+	margin: auto;
+	padding: 0;
+}
+
+.col_group {
+	max-width: none;
+	margin-bottom: 6px;
+}
+
+.smallscreen_logo {
+	color: #717171;
+	font-style: italic;
+	font-size: 19px;
+	margin: 0 !important;
+}
+
+#top_menu {
+	display: none;
+}
+
+@media screen and (min-width: 760px) {
+	#top_menu {
+		display: block;
+	}
+}
+
+@media screen and (min-width: 34em) {
+	.smallscreen_logo {
+		margin: 10px 0 !important;
+	}
+
+	.smallscreen_logo img {
+		border-bottom: 1px solid #18210b;
+	}
+}

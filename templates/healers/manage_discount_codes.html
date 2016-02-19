@@ -1,0 +1,35 @@
+{% extends "site_base.html" %}
+
+{% block head_title %}Discount Codes{% endblock %}
+{% block extra_head %}
+	{{ form.media }}
+{% endblock %}
+
+{% block page_title %}<h1>Discount Codes</h1>{% endblock %}
+
+{% block body %}
+		{% if discount_codes %}
+			<table class="client_list responsive_table">
+				{% for code in discount_codes %}
+					<tr>
+						<td>
+							{{ code }}
+						</td>
+						<td class="right">
+							<a href="{% url 'edit_discount_code' code.pk %}">Edit</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% else %}
+			<p class="message">No Discount Codes yet. Create one below!</p>
+		{% endif %}
+	<div class="clearfix"></div>
+	<br>
+	<div class="add_box">
+		<h3>+ Create a New Code</h3>
+		{% include 'healers/discount_code_form.html' %}
+	</div>
+	<div class="clearfix"></div>
+	<br>
+{% endblock %}

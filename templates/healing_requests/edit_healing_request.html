@@ -1,0 +1,27 @@
+{% extends 'site_base.html' %}
+{% load compress %}
+{% block extra_head %}
+	{% compress js %}
+		{{ request_form.media }}
+		<script type="text/javascript" src="{{ STATIC_URL }}endless_pagination/js/endless-pagination.js"></script>
+		<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/healing_requests.js"></script>
+	{% endcompress %}
+{% endblock %}
+
+{% block page_title %}<h1>Edit My Healing Request</h1>{% endblock %}
+
+{% block body %}
+
+	<div id='healing_requests'>
+		<form action='' method='post'>
+			<div>{{ request_form.errors }}</div>
+			{% include 'healing_requests/request_form.html' with edit_request=1 %}
+		</form>
+		<a id='delete_request' class='link_form float_right mrm' data-method='post' href="{% url 'delete_healing_request' healing_request.id %}" data-confirm='Are you sure?'>Delete Request</a>
+	</div>
+
+	<div class='clearfix'></div>
+
+	<p><a href="{% url 'healing_request_home' %}">&laquo; Back to Healing Requests</a></p>
+
+{% endblock %}

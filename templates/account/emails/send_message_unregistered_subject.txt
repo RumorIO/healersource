@@ -1,0 +1,1 @@
+{% autoescape off %}You have a new message from {{ sender }} on {{ SITE_NAME }}{% endautoescape %}

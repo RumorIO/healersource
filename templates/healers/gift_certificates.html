@@ -1,0 +1,79 @@
+{% extends "site_base.html" %}
+
+{% load healer_tags %}
+{% load compress %}
+
+{% block head_title %}Gift Cerfiticates{% endblock %}
+
+{% block extra_head %}
+	<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/gift_certificates.css" />
+	<script type="text/javascript" src="{{ STATIC_URL }}healersource/js/gift_certificates.js"></script>
+	<script>
+		var stripe_connect_enabled = {{ is_healer.has_enabled_stripe_connect|yesno:"true,false" }};
+	</script>
+{% endblock %}
+
+{% block page_title %}<h1 class="nav_icon nav_gift">Gift Cerfiticates</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "form_errors.html" %}
+
+	{% if is_healer.is_enabled_gift_certificates %}
+		{% if certificates %}
+			<table class="headings" id="gift_certificates">
+				<th>Purchased For</th>
+				<th>Purchased By</th>
+				<th>Amount</th>
+				<th>Code</th>
+				<th>Purchase Date</th>
+				<th>Expiry Date</th>
+				<th>Status</th>
+				{% for certificate in certificates %}
+					<tr>
+						<td>{{ certificate.purchased_for }}</td>
+						<td>{{ certificate.purchased_by }}</td>
+						<td>{{ certificate.discount_code.amount }}</td>
+						<td>{{ certificate.discount_code.code }}</td>
+						<td>{{ certificate.purchase_date }}</td>
+						<td class="{{ certificate.is_expired|yesno:'expired,' }}">{{ certificate.expiry_date }}</td>
+						<td>
+							<ul id="status_selection_{{ certificate.id }}" class="menu_selection menu">
+								<li>
+									<a href="javascript:void(0);" class="{% if certificate.redeemed %} redeemed {% else %} grey_box {% endif %}">{% if certificate.redeemed %}Redeemed{% else %}Unused{% endif %} {% if not certificate.redeemed %}v{% endif %}</a>
+									<ul class="menu_selection_submenu">
+										{% if not certificate.redeemed %}
+											<li><a href="{% url 'redeem_certificate' certificate.discount_code.code %}">Redeem</a></li>
+										{% endif %}
+									</ul>
+								</li>
+							</ul>
+						</td>
+					</tr>
+				{% endfor %}
+			</table>
+			<hr>
+		{% endif %}
+
+		<b>Here's what your certificate will look like:</b>
+		<div class="grey_box" style="padding: 10px 12px;">
+			{% include "healers/gift_certificate.html" with healer=is_healer %}
+		</div>
+		<hr>
+	{% endif %}
+
+	<form id="gift_certificate_form" action="" method="post">
+		{% csrf_token %}
+		{% include "healers/yes_no_select_button.html" with field=form.gift_certificates setting_name='gift_certificates' %}
+		<div id="stripe_connect_required">
+			<p>You must enable Payments so people can buy your Gift Certificates.</p>
+			<p><a href="{% url 'stripe_connect_payments' %}">Continue &raquo;</a></p>
+		</div>
+
+
+		<div {{ is_healer.is_enabled_gift_certificates|yesno:',class=hidden' }}>
+			<p>Certificates Expire {{ form.gift_certificates_expiration_period }} {{ form.gift_certificates_expiration_period_type }} after purchase</p>
+			<input type="submit" value="Save" />
+		</div>
+	</form>
+{% endblock %}

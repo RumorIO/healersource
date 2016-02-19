@@ -1,0 +1,36 @@
+[
+	{
+		"pk": 1,
+		"model": "healers.healer",
+		"fields": {
+			"scheduleUpdatedThrough": "2011-03-12",
+			"bookAheadDays": 30,
+			"defaultTimeslotLength": 2.0,
+			"leadTime": 24,
+			"scheduleVisibility": 0,
+			"timezone": "+00:00"
+		}
+	},
+	{
+		"pk": 3,
+		"model": "healers.healer",
+		"fields": {
+			"scheduleUpdatedThrough": "2011-03-06",
+			"bookAheadDays": 30,
+			"defaultTimeslotLength": 2.0,
+			"leadTime": 24,
+			"timezone": "+00:00"
+		}
+	},
+	{
+		"pk": 4,
+		"model": "healers.healer",
+		"fields": {
+			"scheduleUpdatedThrough": "2011-02-09",
+			"bookAheadDays": 30,
+			"defaultTimeslotLength": 2.0,
+			"leadTime": 24,
+			"timezone": "+00:00"
+		}
+	}
+]

@@ -1,0 +1,64 @@
+{% extends phonegap|yesno:'base_phonegap.html,base_new.html' %}
+
+{% load i18n %}
+{% load compress %}
+{% load jquery_validation %}
+{% load humanize %}
+
+{% block head_title %}Signup{% endblock %}
+{% block extra_head %}
+	{{ block.super }}
+	{% include_validation %}
+	{% if embed %}
+		{% compress css %}
+		<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}healersource/css/embed.css" />
+		{% endcompress %}
+	{% endif %}
+	{% compress css %}
+		<link rel="stylesheet" href="{{ STATIC_URL }}healersource/css/signup.css" />
+	{% endcompress %}
+	{% if phonegap %}
+		<link rel="stylesheet" href="css/login.css" />
+	{% endif %}
+{% endblock %}
+
+{% block body_class %}{{block.super}} {% if embed %}embed{% endif %}{% endblock %}
+{% block body_style %}{{block.super}} {% if embed.background_color %}background-color: {{embed.background_color}};{% endif %}{% endblock %}
+
+{% block inner_content %}
+	{% if not request.user.is_authenticated %}
+		{% include 'account/signup_content.html' %}
+		{% if not embed  and not intake_form %}
+			<hr>
+			<div id="signup">
+				<div class="signup_content">
+					{{ number_of_healers|intcomma }} Healers and<br>
+					{{ number_of_centers|intcomma }} Centers have<br>
+					Joined our Community.<br>
+					Today it's your Turn.
+					<br><br>
+					<a class="signup_button" href="#signup_panel">Sign Up Now</a>
+				</div>
+			</div>
+		{% endif %}
+	{% else %}
+		<div class="panel">
+			<div class="panel_title" id="panel_title_signup">Sign Up</div>
+			<div class="content panel_content_signup">
+				{% if user.is_authenticated %}
+					<p class="message">{% trans "You are already logged in." %}
+						<span style="display:inline; font-style: normal;">&nbsp;|&nbsp;<a href="{% url 'logout_page' %}">logout</a></span>
+					</p>
+				{% else %}
+					{% if message %}
+						<p class="message">{{ message }}</p>
+					{% endif %}
+				{% endif %}
+			</div>
+		</div>
+	{% endif %}
+{% endblock %}
+
+{% block extra_body %}
+	{% include 'account/signup_content_additional.html' with signup_form=client_signup_form %}
+{% endblock %}

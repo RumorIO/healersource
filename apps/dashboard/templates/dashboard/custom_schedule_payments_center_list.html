@@ -1,0 +1,12 @@
+{% extends 'dashboard/base.html' %}
+
+{% block head_title %}Custom Schedule Payments Center List{% endblock %}
+{% block page_title %}<h1>Custom Schedule Payments Center List</h1>{% endblock %}
+
+{% block body %}
+	{% for user in users %}
+		<a href="{% url 'dashboard:custom_schedule_payment_center' user.username %}">{{ user.get_full_name }}</a>
+		{% if user.customer.is_custom_schedule_plan %} [custom] {% endif %}
+		<br>
+	{% endfor %}
+{% endblock %}

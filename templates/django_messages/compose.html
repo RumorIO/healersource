@@ -1,0 +1,50 @@
+{% extends "django_messages/base.html" %}
+
+{% load i18n %}
+{% load uni_form_tags %}
+
+{% block extra_head %}
+<style type="text/css">
+#div_id_recipient { display: none; }
+</style>
+{% endblock %}
+
+{% block page_title %}<h1>{% trans "Reply To"%} {{ form.data.recipient.0.client }}</h1>{% endblock %}
+
+{% block body %}
+
+	{% include "django_messages/inbox_nav.html" %}
+
+	<form action="" method="post" class="uniForm">
+		{% csrf_token %}
+		<fieldset class="inlineLabels">
+			{{ form|as_uni_form }}
+			<div class="form_block">
+				<input type="submit" value="{% trans "Send" %} &raquo;"/>
+			</div>
+			<input type="hidden" id="recipient_hidden" />
+		</fieldset>
+	</form>
+{% endblock %}
+
+{% block extra_body %}
+	{{ block.super }}
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+			$('textarea[id="id_body"]').val('');
+//			$("#id_recipient").attr("name", "recipient_input");
+//			$("#recipient_hidden").attr("name", "recipient");
+//			$('#div_id_recipient').hide();
+{#			$("#id_recipient").autocomplete({#}
+{#				source: "{% url autocomplete_friends_first_or_last %}",#}
+{#				minLength: 1,#}
+{#				html: true,#}
+{#				select: function(event, ui) {#}
+{#					$("#recipient_hidden").val(ui.item.id);#}
+{#				}#}
+{#			});#}
+		});
+
+	</script>
+{% endblock %}

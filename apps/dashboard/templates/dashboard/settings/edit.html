@@ -1,0 +1,20 @@
+{% extends 'dashboard/base.html' %}
+{% load uni_form_tags %}
+
+{% block head_title %}Admin Settings{% endblock %}
+{% block page_title %}<h1 class="nav_icon nav_settings">Settings edit</h1>{% endblock %}
+
+{% block body %}
+
+    <form action="" method="post" class="uniForm">
+		{% csrf_token %}
+		<fieldset class="inlineLabels">
+			{{ form|as_uni_form }}
+			<div class="form_block">
+				<input type="submit" value="Save"/>
+			</div>
+		</fieldset>
+	</form>
+
+{% endblock %}
+

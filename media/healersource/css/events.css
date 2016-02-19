@@ -1,0 +1,68 @@
+.timepicker {
+	padding: 0;
+}
+
+#location_form {
+	display: none;
+	width: 100%;
+	border: 1px solid grey;
+	margin: 10px 0;
+	padding: 5px;
+}
+
+#location_form td {
+	width: 100%;
+}
+
+#location_form input {
+	width: 95%;
+}
+
+.event_form_box{
+	max-width: 95%;
+}
+
+/*.event_form_box input {
+	max-width: 100%;
+}*/
+
+#id_title {
+	width: 80%;
+}
+
+.event_form table,.event_form tbody,.event_form tr,.event_form td{
+	display: block;
+}
+
+.new_client_link {
+	margin-left: 5px;
+}
+
+#new_client_dialog {
+	display: none;
+}
+
+.attendees input, .attendees span {
+	float: left;
+}
+
+#hosts, #attendees {
+	margin: 0;
+}
+
+@media screen and (min-width: 36.25em) {
+	.event_form table{display: table; }
+	.event_form tbody{display: table-header-group; }
+	.event_form tr{display: table-row; }
+	.event_form th{
+		display: table-cell;
+		text-decoration: none;
+	}
+	.event_form td{
+		display: table-cell;
+	}
+
+	#location_form td, #location_form input, #location_form {
+		width: auto;
+	}
+}

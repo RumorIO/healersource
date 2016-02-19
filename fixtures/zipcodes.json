@@ -1,0 +1,46 @@
+[
+	{
+		"pk": 1,
+		"model": "healers.zipcode",
+		"fields": {
+			"code": "08401",
+			"point": "0101000020E61000007B14AE47E19A52C0AE47E17A14AE4340",
+			"city": "ATLANTIC CITY",
+			"state": "NJ",
+			"population": 29186
+		}
+	},
+	{
+		"pk": 2,
+		"model": "healers.zipcode",
+		"fields": {
+			"code": "10170",
+			"point": "0101000020E61000008FC2F5285C7F52C07B14AE47E15A4440",
+			"city": "NEW YORK",
+			"state": "NY",
+			"population": 504
+		}
+	},
+	{
+		"pk": 3,
+		"model": "healers.zipcode",
+		"fields": {
+			"code": "98109",
+			"point": "0101000020E6100000F6285C8FC2955EC0713D0AD7A3D04740",
+			"city": "SEATTLE",
+			"state": "WA",
+			"population": 16733
+		}
+	},
+	{
+		"pk": 4,
+		"model": "healers.zipcode",
+		"fields": {
+			"code": "08405",
+			"point": "0101000020E61000007B14AE47E19A52C0AE47E17A14AE4340",
+			"city": "ATLANTIC CITY",
+			"state": "NJ",
+			"population": 0
+		}
+	}
+]

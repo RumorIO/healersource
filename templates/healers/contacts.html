@@ -1,0 +1,20 @@
+{% load pagination_tags %}
+{% if contacts %}
+	{% autopaginate contacts 20 %}
+
+	<div id="imported_contacts">
+		{% include "healers/search_contacts.html" %}
+		<h3>Imported Contacts</h3>
+		<table class="client_list">
+			{% for contact in contacts %}
+				{% include "healers/contact_row.html" %}
+			{% endfor %}
+		</table>
+
+		<div style="margin-top: 10px;">
+			{% paginate %}
+		</div>
+	</div>
+{% endif %}
+
+{% if not hide_import_bar %}{% include "friends_app/import_contacts_bar.html" %}{% endif %}

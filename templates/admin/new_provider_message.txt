@@ -1,0 +1,6 @@
+Details for new provider:
+
+Full Name: {{ first_name }} {{ last_name }}
+Email: {{ email }}
+Username: {{ username }}
+URL: {{ provider_url }}

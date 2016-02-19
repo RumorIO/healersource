@@ -1,0 +1,42 @@
+{% if appointment_list %}
+	<table class="headings responsive_table responsive_table_block">
+		<th>Date</th>
+		{% if is_wellness_center %}<th>Provider</th>{% endif %}
+		<th>Client</th>
+		<th>Treatment</th>
+		<th>Status</th>
+		{% regroup appointment_list by week as week_list%}
+		{% for appts in week_list %}
+			{% if forloop.counter0 %}<tr class="divider"><td colspan="{{ is_wellness_center|yesno:'5,4' }}"><hr/></td></tr>{% endif %}
+			{% for appt in appts.list %}
+				<tr class="appointment appointment_{{ appt.is_paid|yesno:'paid,unpaid' }}">
+					<td style="padding-right: 6px;" width="0" nowrap>{{ appt.start|date:"D, M j" }} - {{ appt.start|date:"g:i" }} {% if appt.repeat_period %}<sup>*</sup>{% endif %}
+						{% if not appt.confirmed %}<span style="color: red;">(unconfirmed)</span>{% endif %}</td>
+					{% if is_wellness_center %}<td>{{ appt.healer }}</td>{% endif %}
+					<td><a href="{% url 'client_detail' appt.client.user.username %}" class="client_detail floatbox" data-fb-options="type:ajax">{{ appt.client }}</a></td>
+					<td><a href="javascript:void(0);" onclick="open_discount_codes_dialog({{ appt.id }}, '{% if appt.discount_code %}{{ appt.discount_code.pk }}{% endif %}');">{{ appt.treatment_type_length_name }} - ${{ appt.cost|stringformat:".2f" }}</a></td>
+					<td>
+						<ul id="menu_selection_{{ appt.id }}_{{ appt.start_date|date:'m_d_Y' }}" class="menu_selection menu">
+							<li>
+								<a href="javascript:void(0);" class="
+								{{ appt.is_paid_with_card|yesno:',grey_box' }} {{ appt.is_paid|yesno:'paid,' }}
+
+								">{% if appt.is_paid %}Paid{% else %}Unpaid{% endif %} {% if not appt.is_paid_with_card %}v{% endif %}</a>
+								<ul class="menu_selection_submenu" data-id="{{ appt.id }}" data-date="{{ appt.start_date|date:'m/d/Y' }}">
+									{% if appt.is_paid %}
+										{% if not appt.is_paid_with_card %}
+											<li><a href="javascript:void(0);" data-action="mark_unpaid" class="payment_action">Mark Unpaid</a></li>
+										{% endif %}
+									{% else %}
+										<li><a href="javascript:void(0);" data-action="charge_card" class="payment_action">Charge Card</a></li>
+										<li><a href="javascript:void(0);" data-action="mark_paid" class="payment_action">Mark Paid</a></li>
+									{% endif %}
+								</ul>
+							</li>
+						</ul>
+					</td>
+				</tr>
+			{% endfor %}
+		{% endfor %}
+	</table>
+{% endif %}

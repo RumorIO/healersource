@@ -1,0 +1,12 @@
+{% load healer_tags %}
+
+{% if healer.review_permission != healer.VISIBLE_DISABLED %}
+	{% with healer.reviews.all as reviews %}
+	{% if reviews %}
+		<a href="{% if in_email %}{{ healer.healer_profile_url }}{% else %}{% url 'review_list_popup' healer.user.username %}{% endif %}" class="reviews_link floatbox icon_star {% rating_star_css_class healer.ratings_average %}" data-fb-options="type:ajax width:800 height:550" rel="nofollow">{{ reviews|length }} Review{{ reviews|pluralize }}</a>
+	{% else %}
+		<span class="reviews_link floatbox icon_star {% rating_star_css_class healer.ratings_average %}">0 Reviews</span>
+	{% endif %}
+	{% endwith %}
+	<br/>
+{% endif %}

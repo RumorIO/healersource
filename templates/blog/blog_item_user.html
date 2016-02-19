@@ -1,0 +1,4 @@
+{% load client_tags %}
+{% if not blog_user %}
+	<div class="blog_post_avatar_container"><a href="{% url 'healer_info' blog_post.user.username %}" class="avatar floatbox" data-fb-options="type:ajax width:765">{% avatar blog_post.user 130 %}<br>{{ blog_post.user.client }}</a></div>
+{% endif %}

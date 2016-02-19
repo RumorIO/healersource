@@ -1,0 +1,13 @@
+{% if events %}
+	<div class="grey_box">
+		<h3>Events</h3>
+		<div class="featured_articles">
+			{% for event in events %}
+				<div class="title"><a href="{% url 'event' event.pk %}">{{ event }}</a></div>
+				{% include 'events/event_content.html' with short=True %}
+				<a href="{% url 'event' event.pk %}" class="italic">Read more</a>
+				<hr>
+			{% endfor %}
+		</div>
+	</div>
+{% endif %}

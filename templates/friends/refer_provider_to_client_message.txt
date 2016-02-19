@@ -1,0 +1,8 @@
+{{ mail_message }}
+
+{{ provider.client_ptr }}
+
+{% if phone %}Phone: {{ phone }}{% endif %}
+{% if modalities %}Specialities: {{ modalities|join:", " }}{% endif %}
+
+To see {{ provider.client_ptr }}'s profile, {% with provider.get_full_url as link %}{% include "email_link.html" %}{% endwith %}
